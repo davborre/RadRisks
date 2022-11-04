@@ -1,5 +1,5 @@
 # Introduction
-RadRisks is a tool that allows radiation protection professionals to calculate the lifetime risk per unit intake by inhalation or ingestion for a specific radionuclide over a specified period of time. It is currently in development and being built with Tauri, React, Typescript, and Rust.
+RadRisks is a tool that allows radiation protection professionals to calculate the lifetime risk per unit intake by inhalation or ingestion for a specific radionuclide over a specified period of time. It is currently in development and being built with Tauri, React, Typescript, Tailwind CSS, and Rust.
 
 
 # Installation
