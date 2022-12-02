@@ -1,6 +1,6 @@
 const InputMenu = () => {
   return (
-    <div className="h-screen w-60 bg-lime-300">
+    <div className="h-screen w-80 bg-epasagegreen">
 
     </div>
   );

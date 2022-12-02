@@ -2,9 +2,6 @@ import NavBarButton from "./NavBarButton";
 import { BarChart, BookOpen, FileText, Info, Settings } from "react-feather";
 
 const NavBar = () => {
-
-  const labels: string[] = []
-
   return (
     <div className="h-screen w-20 flex flex-col">
       <div className="h-fit flex flex-col">
