@@ -1,8 +1,8 @@
-data = open("RskIND.NDX", "r")
+data = open("scripts/RskInd.NDX", "r")
 
 lines = data.readlines()
 
-for line in lines
+for line in lines:
   print(line[:line.find(" ")] + ",")
 
 data.close
