@@ -10,25 +10,30 @@ const InputMenu = () => {
   return (
     <div className="h-screen w-80 bg-epasagegreen pl-2 pt-4 flex flex-col gap-10">
       <h1 className="font-bold">Inputs</h1>
-      <div className="flex flex-row gap-5">
-        <h2>Radionuclides:</h2>
-        <Dropdown options={radionuclides} />
+      <div className="flex flex-row">
+        <label>Radionuclides:{' '}
+          <Dropdown options={radionuclides} />
+        </label>
       </div>
       <div className="flex flex-row gap-5">
-        <h2>Intake method:</h2>
-        <Dropdown options={intakeMethods} />
+        <label className="grow">Intake method:{' '}
+          <Dropdown options={intakeMethods} />
+        </label>
       </div>
       <div className="flex flex-row gap-5">
-        <h2>Age at exposure:</h2>
-        <Dropdown options={ages} />
+        <label>Age at exposure:{' '}
+          <Dropdown options={ages} />
+        </label>
       </div>
       <div className="flex flex-row gap-5">
-        <h2>Length of exposure:</h2>
-        <Dropdown options={ages} />
+        <label>Length of exposure:{' '}
+          <Dropdown options={ages} />
+        </label>
       </div>
       <div className="flex flex-row gap-5">
-        <h2>Sex:</h2>
-        <Dropdown options={sexes} />
+        <label>Sex:
+          <Dropdown options={sexes} />
+        </label>
       </div>
     </div>
   );

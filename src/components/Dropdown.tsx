@@ -1,13 +1,20 @@
-import { TextField, Autocomplete } from "@mui/material";
+import { TextField, Autocomplete, autocompleteClasses } from "@mui/material";
 
 const Dropdown = ({ options }: { options: string[] }) => {
   return (
     <Autocomplete
-      className="bg-white"
-      sx={{ width: 200 }}
-      disablePortal
+      sx={{
+        display: 'inline-block',
+        '& input': {
+          width: 100,
+        },
+      }}
       options={options}
-      renderInput={(params) => <TextField {...params} label="" />}
+      renderInput={(params) => (
+        <div ref={params.InputProps.ref}>
+          <input type="text" {...params.inputProps} />
+        </div>
+      )}
     />
   );
 };
