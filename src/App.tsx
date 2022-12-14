@@ -1,21 +1,21 @@
-import { useState } from "react";
-import { invoke } from "@tauri-apps/api/tauri";
+import React, { useState } from "react";
 import NavBar from "./components/NavBar";
 import InputMenu from "./components/InputMenu";
+import HistoryMenu from "./components/HistoryMenu";
+import DataMenu from "./components/DataMenu";
+import SettingsMenu from "./components/SettingsMenu";
+
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMsg(await invoke("greet", { name }));
-  }
+  const [menu, setMenu] = useState([true, false, false, false]);
 
   return (
     <div className="flex">
-      <NavBar />
-      <InputMenu />
+      <NavBar setMenu={setMenu} />
+      {menu[0] && <InputMenu />}
+      {menu[1] && <HistoryMenu />}
+      {menu[2] && <DataMenu />}
+      {menu[3] && <SettingsMenu />}
     </div>
   );
 }

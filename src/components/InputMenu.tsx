@@ -31,7 +31,7 @@ const InputMenu = () => {
         </label>
       </div>
       <div className="flex flex-row gap-5">
-        <label>Sex:
+        <label>Sex:{' '}
           <Dropdown options={sexes} />
         </label>
       </div>
