@@ -1,12 +1,12 @@
 import { TextField, Autocomplete, autocompleteClasses } from "@mui/material";
 
-const Dropdown = ({ options }: { options: string[] }) => {
+const Dropdown = ({ options, width }: { options: string[], width: number }) => {
   return (
     <Autocomplete
       sx={{
         display: 'inline-block',
         '& input': {
-          width: 100,
+          width: { width },
         },
       }}
       options={options}

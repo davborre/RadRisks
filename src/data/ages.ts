@@ -1,4 +1,5 @@
 const ages: string[] = [
+  "Newborn",
   "1",
   "2",
   "3",

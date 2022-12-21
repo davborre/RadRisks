@@ -10,32 +10,41 @@ const InputMenu = () => {
   return (
     <div className="h-screen w-80 bg-epasagegreen px-2 pt-4 flex flex-col gap-10">
       <h1 className="font-bold">Inputs</h1>
-      <div className="flex flex-row">
+      <div>
         <label>Radionuclides:{' '}
-          <Dropdown options={radionuclides} />
+          <Dropdown options={radionuclides} width={100} />
         </label>
       </div>
-      <div className="flex flex-row gap-5">
+      <div>
         <label className="grow">Intake method:{' '}
-          <Dropdown options={intakeMethods} />
+          <Dropdown options={intakeMethods} width={100} />
         </label>
       </div>
-      <div className="flex flex-row gap-5">
+      <div>
         <label>Age at exposure:{' '}
-          <Dropdown options={ages} />
+          <Dropdown options={ages} width={90} />
         </label>
       </div>
-      <div className="flex flex-row gap-5">
-        <label>Length of exposure:{' '}
-          <Dropdown options={ages} />
+      <div>
+        <label className="flex gap-2">Length of exposure:{' '}
+          <div className="flex flex-col gap-2">
+            <div>
+              <Dropdown options={ages} width={50} />
+              {' '}years
+            </div>
+            <div>
+              <Dropdown options={ages} width={50} />
+              {' '}days
+            </div>
+          </div>
         </label>
       </div>
-      <div className="flex flex-row gap-5">
+      <div>
         <label>Sex:{' '}
-          <Dropdown options={sexes} />
+          <Dropdown options={sexes} width={75} />
         </label>
       </div>
-      <button className="border-2 border-epablue text-epablue w-fit mx-auto p-2 rounded-lg hover:bg-epablue hover:text-white">Calculate</button>
+      <button type="button" className="border-2 border-epablue text-epablue w-fit mx-auto p-2 rounded-lg hover:bg-epablue hover:text-white">Calculate</button>
     </div>
   );
 };
