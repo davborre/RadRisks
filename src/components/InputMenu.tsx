@@ -8,7 +8,7 @@ const InputMenu = () => {
   const sexes: string[] = ["Male", "Female"];
 
   return (
-    <div className="h-screen w-80 bg-epasagegreen pl-2 pt-4 flex flex-col gap-10">
+    <div className="h-screen w-80 bg-epasagegreen px-2 pt-4 flex flex-col gap-10">
       <h1 className="font-bold">Inputs</h1>
       <div className="flex flex-row">
         <label>Radionuclides:{' '}
@@ -35,6 +35,7 @@ const InputMenu = () => {
           <Dropdown options={sexes} />
         </label>
       </div>
+      <button className="border-2 border-epablue text-epablue w-fit mx-auto p-2 rounded-lg hover:bg-epablue hover:text-white">Calculate</button>
     </div>
   );
 };
