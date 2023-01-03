@@ -1,9 +1,11 @@
 import Dropdown from "./Dropdown";
 import { radionuclides } from "../data/radionuclides";
 import { ages } from "../data/ages";
+import { useState } from "react";
 
 const InputMenu = () => {
 
+  const [age, setAge] = useState(0);
   const intakeMethods: string[] = ["Ingestion", "Inhalation"];
   const sexes: string[] = ["Male", "Female"];
 
@@ -29,7 +31,7 @@ const InputMenu = () => {
         <label className="flex gap-2">Length of exposure:{' '}
           <div className="flex flex-col gap-2">
             <div>
-              <Dropdown options={ages} width={50} />
+              <Dropdown options={ages.slice(1)} width={50} />
               {' '}years
             </div>
             <div>

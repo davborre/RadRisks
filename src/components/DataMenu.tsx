@@ -10,10 +10,16 @@ const DataMenu = () => {
           <ChevronDown className="ml-auto group-open:rotate-180" />
         </summary>
         <ul className="pl-2 pt-2 space-y-2 list-none text-sm">
-          <li>Inhalation, 25-26, Female, 2022/12/11</li>
-          <li>Ingestion, 25-28, Male, 2022/12/11</li>
-          <li>Inhalation, 26-30, Female, 2022/12/11</li>
-          <li>Inhalation, 25-26, Male, 2022/12/13</li>
+          <li>Ac-224</li>
+          <ul className="pl-4">
+            <li>Esophagus</li>
+            <li>Stomach</li>
+            <li>Colon</li>
+            <li>...</li>
+          </ul>
+          <li>Ac-225</li>
+          <li>Ac-226</li>
+          <li>...</li>
         </ul>
       </details>
       <details className="even:bg-epaolivegreen p-2 select-none group">
@@ -22,10 +28,10 @@ const DataMenu = () => {
           <ChevronDown className="ml-auto group-open:rotate-180" />
         </summary>
         <ul className="pl-2 pt-2 space-y-2 list-none text-sm">
-          <li>Inhalation, 25-26, Female, 2022/12/11</li>
-          <li>Ingestion, 25-28, Male, 2022/12/11</li>
-          <li>Inhalation, 26-30, Female, 2022/12/11</li>
-          <li>Inhalation, 25-26, Male, 2022/12/13</li>
+          <li>Inhalation</li>
+          <li>Tapwater Usage</li>
+          <li>Dietary Ingestion</li>
+          <li>All</li>
         </ul>
       </details>
       <details className="even:bg-epaolivegreen p-2 select-none group">
@@ -34,10 +40,10 @@ const DataMenu = () => {
           <ChevronDown className="ml-auto group-open:rotate-180" />
         </summary>
         <ul className="pl-2 pt-2 space-y-2 list-none text-sm">
-          <li>Inhalation, 25-26, Female, 2022/12/11</li>
-          <li>Ingestion, 25-28, Male, 2022/12/11</li>
-          <li>Inhalation, 26-30, Female, 2022/12/11</li>
-          <li>Inhalation, 25-26, Male, 2022/12/13</li>
+          <li>Extrapolated Survival</li>
+          <li>Average Remaining Lifetime</li>
+          <li>Male to Female Ratio</li>
+          <li>All</li>
         </ul>
       </details>
     </div>
