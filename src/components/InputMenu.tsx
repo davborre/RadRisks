@@ -2,6 +2,7 @@ import Dropdown from "./Dropdown";
 import { radionuclides } from "../data/radionuclides";
 import { ages } from "../data/ages";
 import { useState } from "react";
+import ComboBox from "./ComboBox";
 
 const InputMenu = () => {
 
@@ -46,6 +47,13 @@ const InputMenu = () => {
           <Dropdown options={sexes} width={75} />
         </label>
       </div>
+      {/*
+      <div>
+        <label>Sex:{' '}
+          <ComboBox options={sexes} />
+        </label>
+      </div>
+      */}
       <button type="button" className="border-2 border-epablue text-epablue w-fit mx-auto p-2 rounded-lg hover:bg-epablue hover:text-white">Calculate</button>
     </div>
   );

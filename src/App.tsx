@@ -4,10 +4,11 @@ import InputMenu from "./components/InputMenu";
 import HistoryMenu from "./components/HistoryMenu";
 import DataMenu from "./components/DataMenu";
 import SettingsMenu from "./components/SettingsMenu";
+import Modal from "./components/Modal";
 
 
 function App() {
-  const [menu, setMenu] = useState([true, false, false, false]);
+  const [menu, setMenu] = useState([true, false, false, false, false]);
 
   return (
     <div className="flex">
@@ -16,6 +17,7 @@ function App() {
       {menu[1] && <HistoryMenu />}
       {menu[2] && <DataMenu />}
       {menu[3] && <SettingsMenu />}
+      <Modal isOpen={menu[4]} setIsOpen={setMenu} />
     </div>
   );
 }

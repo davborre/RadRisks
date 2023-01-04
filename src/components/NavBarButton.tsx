@@ -4,16 +4,19 @@ const NavBarButton = ({ icon, label, setMenu }: { icon: React.ReactNode, label: 
 
   function handleMenuChange(e: React.MouseEvent) {
     if (label == "Inputs") {
-      setMenu([true, false, false, false]);
+      setMenu([true, false, false, false, false]);
     }
     else if (label == "History") {
-      setMenu([false, true, false, false]);
+      setMenu([false, true, false, false, false]);
     }
     else if (label == "Data") {
-      setMenu([false, false, true, false]);
+      setMenu([false, false, true, false, false]);
     }
     else if (label == "Settings") {
-      setMenu([false, false, false, true]);
+      setMenu([false, false, false, true, false]);
+    }
+    else if (label == "Info") {
+      setMenu([true, false, false, false, true]);
     }
   }
 
