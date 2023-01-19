@@ -5,3 +5,8 @@
 summary::-webkit-details-marker {
   display: none;
 }
+
+td,
+th {
+  @apply border-2;
+}
