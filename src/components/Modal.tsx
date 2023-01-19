@@ -55,7 +55,7 @@ const Modal = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: React.Dispat
                 <br />
                 <p>Made with Tauri, React, Typescript, Rust, and Tailwind CSS.</p>
                 <br />
-                <p>See the code on <a href="https://github.com/davborre/RadRisks" target="_blank">GitHub</a>.</p>
+                <p>See the code on <a href="https://github.com/davborre/RadRisks">GitHub</a>.</p>
               </div>
             </div>}
           <div className="flex justify-center gap-5 pt-10">

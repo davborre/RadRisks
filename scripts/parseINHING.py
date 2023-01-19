@@ -1,14 +1,17 @@
-data = open("", "r")
+with open("scripts/FGR13INH.RSK", "r") as input_file:
+  lines = input_file.readlines()
 
-lines = data.readlines()
+currentRadionuclide = ""
+currentType = ""
 
-newFile = ""
+for index, line in enumerate(lines):
+  if lines[index + 1].find("Cancer site: esophagus") == 0:
+    currentRadionuclide = line.split()[0]
+    currentType = line.split()[2]
 
-for line in lines
-  if line.find("Cancer site") != -1 //Mortality only appears once so search for "Cancer site" and look at the line above
-    newFile = ""
-  
-  with open(newFile, "a") as f:
-    f.write(line)
+  outputFileName = "src/data/inhalationCoefficients/" + currentRadionuclide + currentType + ".txt"
 
-data.close
+  with open(outputFileName, "a") as output_file:
+    output_file.write(line)
+
+
