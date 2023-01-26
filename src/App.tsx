@@ -19,7 +19,7 @@ function App() {
       {menu[2] && <DataMenu />}
       {menu[3] && <SettingsMenu />}
       {menu[2] &&
-        <div className="grow p-20">
+        <div className="grow p-20 h-screen overflow-auto">
           <h1 className="text-center font-bold text-2xl"> Usage Function </h1>
           <DataTable />
         </div>

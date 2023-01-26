@@ -5,7 +5,7 @@ import React from "react";
 const NavBar = ({ setMenu }: { setMenu: React.Dispatch<React.SetStateAction<boolean[]>> }) => {
 
   return (
-    <div className="h-screen w-20 flex flex-col">
+    <div className="h-screen w-20 flex flex-col overflow-auto">
       <div className="h-fit flex flex-col">
         <NavBarButton setMenu={setMenu} icon={<BarChart size="50" color="#0E6CB6" strokeWidth="1px" />} label="Inputs" />
         <NavBarButton setMenu={setMenu} icon={<BookOpen size="50" color="#0E6CB6" strokeWidth="1px" />} label="History" />
