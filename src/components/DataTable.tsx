@@ -4,31 +4,31 @@ const DataTable = () => {
   return (
     <table className="table-auto mx-auto text-left mt-5">
       <thead className="bg-epablue text-white">
-        <tr className="border">
-          <th className="border" />
-          <th colSpan={2} className="border">Inhalation (m3/d)</th>
-          <th colSpan={2} className="border">Tapwater Usage (L/d)</th>
-          <th colSpan={2} className="border">Dietary (kcal/d)</th>
+        <tr>
+          <th />
+          <th colSpan={2}>Inhalation (m3/d)</th>
+          <th colSpan={2}>Tapwater Usage (L/d)</th>
+          <th colSpan={2}>Dietary (kcal/d)</th>
         </tr>
         <tr>
-          <th className="pr-10 border">Age</th>
-          <th className="pr-20 border">Male</th>
-          <th className="pr-20 border">Female</th>
-          <th className="pr-20 border">Male</th>
-          <th className="pr-20 border">Female</th>
-          <th className="pr-20 border">Male</th>
-          <th className="pr-20 border">Female</th>
+          <th className="pr-10">Age</th>
+          <th className="pr-20">Male</th>
+          <th className="pr-20">Female</th>
+          <th className="pr-20">Male</th>
+          <th className="pr-20">Female</th>
+          <th className="pr-20">Male</th>
+          <th className="pr-20">Female</th>
         </tr>
       </thead>
       <tbody>
         <tr className="bg-epalightblue">
-          <td className="border">0</td>
-          <td className="border">2.900E+00</td>
-          <td className="border">2.900E+00</td>
-          <td className="border">1.911E-01</td>
-          <td className="border">1.880E-01</td>
-          <td className="border">4.777E+02</td>
-          <td className="border">4.700E+02</td>
+          <td  >0</td>
+          <td  >2.900E+00</td>
+          <td  >2.900E+00</td>
+          <td  >1.911E-01</td>
+          <td  >1.880E-01</td>
+          <td  >4.777E+02</td>
+          <td  >4.700E+02</td>
         </tr>
         <tr>
           <td>1</td>
