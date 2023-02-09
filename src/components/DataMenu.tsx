@@ -35,7 +35,7 @@ const DataMenu = ({ setTable }: { setTable: React.Dispatch<React.SetStateAction<
         </ul>
       </details>
       <details className="even:bg-epaolivegreen p-2 select-none group">
-        <summary className="flex">
+        <summary className="flex" onClick={() => setTable(1)}>
           Survival Function
           <ChevronDown className="ml-auto group-open:rotate-180" />
         </summary>

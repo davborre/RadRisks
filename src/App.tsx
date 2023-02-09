@@ -6,6 +6,7 @@ import DataMenu from "./components/DataMenu";
 import SettingsMenu from "./components/SettingsMenu";
 import Modal from "./components/Modal";
 import UsageTable from "./components/UsageTable";
+import SurvTable from "./components/SurvTable";
 
 
 function App() {
@@ -23,6 +24,12 @@ function App() {
         <div className="grow p-20 h-screen overflow-auto">
           <h1 className="text-center font-bold text-2xl"> Usage Function </h1>
           <UsageTable />
+        </div>
+      }
+      {menu[2] && table == 1 &&
+        <div className="grow p-20 h-screen overflow-auto">
+          <h1 className="text-center font-bold text-2xl"> Survival Function </h1>
+          <SurvTable />
         </div>
       }
       <Modal isOpen={menu[4]} setIsOpen={setMenu} />

@@ -3,6 +3,7 @@
     windows_subsystem = "windows"
 )]
 
+mod survival;
 use std::collections::HashMap;
 
 #[tauri::command]
@@ -133,16 +134,9 @@ fn usage() -> HashMap<u8, [f32;6]> {
   return usage_data
 }
 
-/*
-#[tauri::command]
-fn usage() -> String {
-  "Hello from Rust!".into()
-}
-*/
-
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![usage])
+        .invoke_handler(tauri::generate_handler![usage, survival::survival])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
