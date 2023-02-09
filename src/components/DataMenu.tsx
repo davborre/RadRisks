@@ -1,6 +1,6 @@
 import { ChevronDown } from "react-feather";
 
-const DataMenu = () => {
+const DataMenu = ({ setTable }: { setTable: React.Dispatch<React.SetStateAction<number>> }) => {
   return (
     <div className="h-screen w-80 bg-epasagegreen pt-4 flex flex-col overflow-auto">
       <h1 className="font-bold pl-2 mb-8">Data</h1>
@@ -23,7 +23,7 @@ const DataMenu = () => {
         </ul>
       </details>
       <details className="even:bg-epaolivegreen p-2 select-none group">
-        <summary className="flex">
+        <summary className="flex" onClick={() => setTable(0)}>
           Usage Function
           <ChevronDown className="ml-auto group-open:rotate-180" />
         </summary>

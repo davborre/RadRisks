@@ -5,10 +5,12 @@ const DataTable = () => {
   const [usage, setUsage] = useState({});
 
   useEffect(() => {
-    invoke("usage")
-      .then((res: any) => {
-        setUsage(res)
-      })
+    if (Object.keys(usage).length == 0) {
+      invoke("usage")
+        .then((res: any) => {
+          setUsage(res)
+        })
+    }
   });
 
   return (
