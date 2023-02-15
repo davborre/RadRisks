@@ -38,9 +38,9 @@ const SurvTable = () => {
           return (
             <tr className="odd:bg-epalightblue">
               <td> {entries[0]} </td>
-              <td> {entries[1][0].toExponential(4)} </td>
-              <td> {entries[1][1].toExponential(4)} </td>
-              <td> {entries[1][2].toExponential(4)} </td>
+              <td> {entries[1][0].toExponential(3)} </td>
+              <td> {entries[1][1].toExponential(3)} </td>
+              <td> {entries[1][2].toExponential(3)} </td>
               <td> {entries[1][3].toFixed(3)} </td>
               <td> {entries[1][4].toFixed(3)} </td>
               <td> {entries[1][5].toFixed(3)} </td>
