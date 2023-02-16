@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect, useState } from 'react'
 
-const DataTable = () => {
+const UsageTable = () => {
   const [usage, setUsage] = useState({});
 
   useEffect(() => {
@@ -51,4 +51,4 @@ const DataTable = () => {
   )
 }
 
-export default DataTable
+export default UsageTable
