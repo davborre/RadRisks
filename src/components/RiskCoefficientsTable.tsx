@@ -1,16 +1,14 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect, useState } from 'react'
 
-const RiskCoefficientsTable = () => {
-  const [radionuclide, setRadionuclide] = useState({});
+const RiskCoefficientsTable = ({ radionuclide, cancer }: { radionuclide: string, cancer: string }) => {
+  const [table, setTable] = useState({});
 
   useEffect(() => {
-    if (Object.keys(radionuclide).length == 0) {
-      invoke("Ac224Sesophagus")
-        .then((res: any) => {
-          setRadionuclide(res)
-        })
-    }
+    invoke(`${radionuclide}S${cancer}`)
+      .then((res: any) => {
+        setTable(res)
+      })
   });
 
   return (
@@ -32,16 +30,16 @@ const RiskCoefficientsTable = () => {
         </tr>
       </thead>
       <tbody>
-        {Object.entries(radionuclide).map((entries: any) => {
+        {Object.entries(table).map((entries: any) => {
           return (
             <tr className="odd:bg-epalightblue">
               <td> {entries[0]} </td>
-              <td> {entries[1][0].toExponential(3)} </td>
-              <td> {entries[1][1].toExponential(3)} </td>
-              <td> {entries[1][2].toExponential(3)} </td>
-              <td> {entries[1][3].toExponential(3)} </td>
-              <td> {entries[1][4].toExponential(3)} </td>
-              <td> {entries[1][5].toExponential(3)} </td>
+              <td> {entries[1][0].toExponential(2)} </td>
+              <td> {entries[1][1].toExponential(2)} </td>
+              <td> {entries[1][2].toExponential(2)} </td>
+              <td> {entries[1][3].toExponential(2)} </td>
+              <td> {entries[1][4].toExponential(2)} </td>
+              <td> {entries[1][5].toExponential(2)} </td>
             </tr>
           );
         })}

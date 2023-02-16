@@ -13,17 +13,19 @@ import RiskCoefficientsTable from "./components/RiskCoefficientsTable";
 function App() {
   const [menu, setMenu] = useState([true, false, false, false, false]);
   const [table, setTable] = useState(-1);
+  const [radionuclide, setRadionuclide] = useState("")
+  const [cancer, setCancer] = useState("")
 
   return (
     <div className="flex">
       <NavBar setMenu={setMenu} />
       {menu[0] && <InputMenu />}
       {menu[1] && <HistoryMenu />}
-      {menu[2] && <DataMenu setTable={setTable} />}
+      {menu[2] && <DataMenu setTable={setTable} setRadionuclide={setRadionuclide} setCancer={setCancer} />}
       {menu[3] && <SettingsMenu />}
       {menu[2] && table == 1 &&
         <div className="grow p-20 h-screen overflow-auto">
-          <RiskCoefficientsTable />
+          <RiskCoefficientsTable radionuclide={radionuclide} cancer={cancer} />
         </div>
       }
       {menu[2] && table == 2 &&
