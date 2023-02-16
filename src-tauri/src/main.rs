@@ -4,6 +4,7 @@
 )]
 
 mod survival;
+mod Ac224;
 use std::collections::HashMap;
 
 #[tauri::command]
@@ -136,7 +137,7 @@ fn usage() -> HashMap<u8, [f32;6]> {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![usage, survival::survival])
+        .invoke_handler(tauri::generate_handler![usage, survival::survival, Ac224::Ac224Sesophagus])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -7,6 +7,7 @@ import SettingsMenu from "./components/SettingsMenu";
 import Modal from "./components/Modal";
 import UsageTable from "./components/UsageTable";
 import SurvTable from "./components/SurvTable";
+import RiskCoefficientsTable from "./components/RiskCoefficientsTable";
 
 
 function App() {
@@ -20,13 +21,18 @@ function App() {
       {menu[1] && <HistoryMenu />}
       {menu[2] && <DataMenu setTable={setTable} />}
       {menu[3] && <SettingsMenu />}
-      {menu[2] && table == 0 &&
+      {menu[2] && table == 1 &&
+        <div className="grow p-20 h-screen overflow-auto">
+          <RiskCoefficientsTable />
+        </div>
+      }
+      {menu[2] && table == 2 &&
         <div className="grow p-20 h-screen overflow-auto">
           <h1 className="text-center font-bold text-2xl"> Usage Function </h1>
           <UsageTable />
         </div>
       }
-      {menu[2] && table == 1 &&
+      {menu[2] && table == 3 &&
         <div className="grow p-20 h-screen overflow-auto">
           <h1 className="text-center font-bold text-2xl"> Survival Function </h1>
           <SurvTable />

@@ -48,7 +48,7 @@ const DataMenu = ({ setTable }: { setTable: React.Dispatch<React.SetStateAction<
                 {radionuclide}
               </summary>
               <ul className="pl-4">
-                <li>Esophagus</li>
+                <li onClick={() => setTable(1)}>Esophagus</li>
                 <li>Stomach</li>
                 <li>Colon</li>
                 <li>Liver</li>
@@ -68,12 +68,12 @@ const DataMenu = ({ setTable }: { setTable: React.Dispatch<React.SetStateAction<
         })}
       </details>
       <details className="even:bg-epaolivegreen p-2">
-        <summary className="flex" onClick={() => setTable(0)}>
+        <summary className="flex" onClick={() => setTable(2)}>
           Usage Function
         </summary>
       </details>
       <details className="even:bg-epaolivegreen p-2">
-        <summary className="flex" onClick={() => setTable(1)}>
+        <summary className="flex" onClick={() => setTable(3)}>
           Survival Function
         </summary>
       </details>
