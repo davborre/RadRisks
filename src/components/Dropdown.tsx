@@ -1,8 +1,12 @@
-import { TextField, Autocomplete, autocompleteClasses } from "@mui/material";
+import { Autocomplete } from "@mui/material";
 
-const Dropdown = ({ options, width }: { options: string[], width: number }) => {
+const Dropdown = ({ options, width, value, setValue }: { options: string[], width: number, value: string | null, setValue: React.Dispatch<React.SetStateAction<string | null>> }) => {
   return (
     <Autocomplete
+      value={value}
+      onChange={(event: any, newValue: string | null) => {
+        setValue(newValue);
+      }}
       sx={{
         display: 'inline-block',
         '& input': {

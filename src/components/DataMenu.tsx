@@ -4,7 +4,7 @@ import { radionuclides } from "../data/radionuclides";
 const DataMenu = ({ setTable, setRadionuclide, setCancer }: { setTable: React.Dispatch<React.SetStateAction<number>>, setRadionuclide: React.Dispatch<React.SetStateAction<string>>, setCancer: React.Dispatch<React.SetStateAction<string>> }) => {
 
   function handleClick(radionuclide: string, cancer: string) {
-    const radionuclideNoDash = radionuclide.split("-").join("")
+    const radionuclideNoDash = radionuclide.split("-").join("").toLowerCase()
     setTable(1);
     setRadionuclide(radionuclideNoDash);
     setCancer(cancer);
