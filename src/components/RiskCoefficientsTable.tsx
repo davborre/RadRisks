@@ -5,11 +5,11 @@ const RiskCoefficientsTable = ({ radionuclide, cancer }: { radionuclide: string,
   const [table, setTable] = useState({});
 
   useEffect(() => {
-    invoke(`${radionuclide}S${cancer}`)
+    invoke(`plugin:inh_${radionuclide}|${cancer}_s`)
       .then((res: any) => {
         setTable(res)
       })
-  });
+  }, [radionuclide, cancer]);
 
   return (
     <table className="table-auto mx-auto text-left mt-5">
