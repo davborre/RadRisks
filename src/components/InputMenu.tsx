@@ -10,6 +10,7 @@ const InputMenu = ({ setCalculation, setTable }: { setCalculation: React.Dispatc
   const [intakeMethod, setIntakeMethod] = useState<string | null>(null);
   const [age, setAge] = useState<string | null>(null);
   const [exposureLength, setExposureLength] = useState<string | null>(null);
+  const [fractionalExposure, setFractionalExposure] = useState<string | null>(null);
   const [sex, setSex] = useState<string | null>(null);
   const intakeMethods: string[] = ["Ingestion", "Inhalation"];
   const sexes: string[] = ["Male", "Female", "Both"];
@@ -21,6 +22,9 @@ const InputMenu = ({ setCalculation, setTable }: { setCalculation: React.Dispatc
     setCalculation(form);
     setTable(0);
   }
+
+  const slicedAges = ages.slice(0, -Number(age));
+  const days = Array.from(Array(366).keys()).slice(1).map(String);
 
   return (
     <div className="h-screen w-80 bg-epasagegreen px-2 pt-4 flex flex-col gap-10">
@@ -44,11 +48,11 @@ const InputMenu = ({ setCalculation, setTable }: { setCalculation: React.Dispatc
         <label className="flex gap-2">Length of exposure:{' '}
           <div className="flex flex-col gap-2">
             <div>
-              <Dropdown options={ages.slice(1)} width={50} value={exposureLength} setValue={setExposureLength} />
+              <Dropdown options={slicedAges} width={50} value={exposureLength} setValue={setExposureLength} />
               {' '}years
             </div>
             <div>
-              <Dropdown options={ages} width={50} value={exposureLength} setValue={setExposureLength} />
+              <Dropdown options={days} width={50} value={fractionalExposure} setValue={setFractionalExposure} />
               {' '}days
             </div>
           </div>
