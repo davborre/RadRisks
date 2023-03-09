@@ -11,19 +11,17 @@ const InputMenu = ({ setCalculation, setTable }: { setCalculation: React.Dispatc
   const [age, setAge] = useState<string | null>(null);
   const [exposureLength, setExposureLength] = useState<string | null>(null);
   const [fractionalExposure, setFractionalExposure] = useState<string | null>(null);
-  const [sex, setSex] = useState<string | null>(null);
   const intakeMethods: string[] = ["Ingestion", "Inhalation"];
-  const sexes: string[] = ["Male", "Female", "Both"];
 
   function handleSubmit() {
     const formattedRadionuclide = radionuclide?.split("-").join("").toLowerCase();
-    const form = { "radionuclide": formattedRadionuclide, "intakeMethod": intakeMethod?.toLowerCase().substring(0, 3), "age": Number(age), "exposureLength": Number(exposureLength), "sex": sex }
+    const form = { "radionuclide": formattedRadionuclide, "intakeMethod": intakeMethod?.toLowerCase().substring(0, 3), "age": Number(age), "exposureLength": Number(exposureLength) }
     console.log(form);
     setCalculation(form);
     setTable(0);
   }
 
-  const slicedAges = ages.slice(0, -Number(age));
+  const slicedAges = (age == "0") ? ages : ages.slice(0, -Number(age));
   const days = Array.from(Array(366).keys()).slice(1).map(String);
 
   return (
@@ -56,11 +54,6 @@ const InputMenu = ({ setCalculation, setTable }: { setCalculation: React.Dispatc
               {' '}days
             </div>
           </div>
-        </label>
-      </div>
-      <div>
-        <label>Sex:{' '}
-          <Dropdown options={sexes} width={75} value={sex} setValue={setSex} />
         </label>
       </div>
       {/*
