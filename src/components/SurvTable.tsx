@@ -5,13 +5,11 @@ const SurvTable = () => {
   const [surv, setSurv] = useState({});
 
   useEffect(() => {
-    if (Object.keys(surv).length == 0) {
-      invoke("survival")
-        .then((res: any) => {
-          setSurv(res)
-        })
-    }
-  });
+    invoke("survival")
+      .then((res: any) => {
+        setSurv(res)
+      })
+  }, []);
 
   return (
     <table className="table-auto mx-auto text-left mt-5">

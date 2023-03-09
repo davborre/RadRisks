@@ -5,13 +5,11 @@ const UsageTable = () => {
   const [usage, setUsage] = useState({});
 
   useEffect(() => {
-    if (Object.keys(usage).length == 0) {
-      invoke("usage")
-        .then((res: any) => {
-          setUsage(res)
-        })
-    }
-  });
+    invoke("usage")
+      .then((res: any) => {
+        setUsage(res)
+      })
+  }, []);
 
   return (
     <table className="table-auto mx-auto text-left mt-5">
