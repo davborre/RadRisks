@@ -9,44 +9,49 @@ const CalculationsTable = ({ calculation }: { calculation: any }) => {
   const { radionuclide, age, exposureLength, intakeMethod } = calculation;
 
   useEffect(() => {
-    setTables([]);
-    const newTables: any = [];
-    Promise.all([invoke("usage"), invoke("survival")])
-      .then((results) => {
-        const usageTable: any = results[0];
-        console.log(usageTable);
-        const survivalTable: any = results[1];
-        console.log(survivalTable);
-        const table: any = {};
-        cancers.forEach((cancer) => {
-          const calculations: number[] = [];
-          Promise.resolve(invoke(`plugin:${intakeMethod}_${radionuclide}|${cancer}_f`))
-            .then((riskCoefficients: any) => {
-              for (let i = 0; i < 6; i++) {
-                let lifetimeRisk = 0;
-                let unitIntake = 0;
-                const startingYear = age;
-                const endingYear = age + exposureLength;
-                for (let j = startingYear; j <= endingYear; j++) {
-                  if (j == startingYear || j == endingYear) {
-                    lifetimeRisk += 0.5 * survivalTable[`${j}`][1] * usageTable[`${j}`][0] * 365 * riskCoefficients[`${j}`][i];
-                    unitIntake += 0.5 * survivalTable[`${j}`][1] * usageTable[`${j}`][0] * 365;
-                  }
-                  else {
-                    lifetimeRisk += survivalTable[`${j}`][1] * usageTable[`${j}`][0] * 365 * riskCoefficients[`${j}`][i];
-                    unitIntake += survivalTable[`${j}`][1] * usageTable[`${j}`][0] * 365;
-                  }
-                }
-                calculations.push(lifetimeRisk / unitIntake);
-              }
+    (async () => {
+      const newTables: any = [];
+      const usageTable: any = await invoke('usage');
+      const survivalTable: any = await invoke('survival');
+      const table: any = {}
 
-              table[cancer] = calculations;
-            })
-          newTables.push(table);
-        });
-      })
-
-    setTables(newTables);
+      for (let i = 0; i < cancers.length; i++) {
+        const calculations: number[] = [];
+        const riskCoefficientsTable: any = await invoke(`plugin:${intakeMethod}_${radionuclide}|${cancers[i]}_f`);
+        for (let j = 0; j < 6; j++) {
+          let lifetimeRisk = 0;
+          let unitIntake = 0;
+          const startingYear = age;
+          const endingYear = age + exposureLength;
+          let survCol;
+          let usageCol;
+          if (j == 0 || j == 3) {
+            survCol = 1;
+            usageCol = 0;
+          } else if (j == 1 || j == 4) {
+            survCol = 2;
+            usageCol = 1;
+          } else {
+            survCol = 0;
+            usageCol = 0;
+          }
+          for (let k = startingYear; k <= endingYear; k++) {
+            if (k == startingYear || k == endingYear) {
+              lifetimeRisk += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
+              unitIntake += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+            }
+            else {
+              lifetimeRisk += survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
+              unitIntake += survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+            }
+          }
+          calculations.push(lifetimeRisk / unitIntake);
+        }
+        table[cancers[i]] = calculations;
+      }
+      newTables.push(table);
+      setTables(newTables);
+    })();
   }, [calculation])
 
   return (
