@@ -6,6 +6,7 @@
 mod survival;
 mod usage;
 mod inhalation_coefficients;
+mod types;
 
 fn main() {
     tauri::Builder::default()
@@ -746,6 +747,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
           usage::usage, 
           survival::survival, 
+          types::inhalation_types,
           ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
