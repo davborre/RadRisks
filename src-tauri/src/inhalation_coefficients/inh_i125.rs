@@ -6,7 +6,7 @@ use tauri::{
 };
 
 #[tauri::command]
-fn esophagus_v() -> HashMap<u8, [f32;6]> {
+fn esophagus_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [1.41E-12, 3.12E-12, 2.25E-12, 1.57E-12, 3.47E-12, 2.50E-12]),
     (1, [1.13E-12, 2.49E-12, 1.79E-12, 1.26E-12, 2.77E-12, 1.99E-12]),
@@ -124,7 +124,7 @@ fn esophagus_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn stomach_v() -> HashMap<u8, [f32;6]> {
+fn stomach_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [8.95E-13, 1.79E-12, 1.33E-12, 9.95E-13, 1.99E-12, 1.48E-12]),
     (1, [5.78E-13, 1.15E-12, 8.58E-13, 6.42E-13, 1.28E-12, 9.53E-13]),
@@ -242,7 +242,7 @@ fn stomach_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn colon_v() -> HashMap<u8, [f32;6]> {
+fn colon_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [1.54E-11, 2.29E-11, 1.90E-11, 2.79E-11, 4.16E-11, 3.46E-11]),
     (1, [1.02E-11, 1.51E-11, 1.26E-11, 1.85E-11, 2.74E-11, 2.29E-11]),
@@ -360,7 +360,7 @@ fn colon_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn liver_v() -> HashMap<u8, [f32;6]> {
+fn liver_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [2.38E-13, 1.56E-13, 1.98E-13, 2.51E-13, 1.64E-13, 2.09E-13]),
     (1, [1.75E-13, 1.14E-13, 1.45E-13, 1.84E-13, 1.20E-13, 1.53E-13]),
@@ -478,7 +478,7 @@ fn liver_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn lung_v() -> HashMap<u8, [f32;6]> {
+fn lung_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [4.84E-12, 7.75E-12, 6.26E-12, 5.09E-12, 8.16E-12, 6.59E-12]),
     (1, [3.85E-12, 6.16E-12, 4.98E-12, 4.06E-12, 6.48E-12, 5.24E-12]),
@@ -596,7 +596,7 @@ fn lung_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn bone_v() -> HashMap<u8, [f32;6]> {
+fn bone_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [5.82E-14, 5.85E-14, 5.83E-14, 8.31E-14, 8.36E-14, 8.33E-14]),
     (1, [4.17E-14, 4.19E-14, 4.18E-14, 5.96E-14, 5.99E-14, 5.97E-14]),
@@ -714,7 +714,7 @@ fn bone_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn skin_v() -> HashMap<u8, [f32;6]> {
+fn skin_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [2.43E-14, 2.70E-14, 2.56E-14, 2.43E-14, 2.70E-14, 2.56E-14]),
     (1, [1.71E-14, 1.90E-14, 1.80E-14, 1.71E-14, 1.90E-14, 1.80E-14]),
@@ -832,7 +832,7 @@ fn skin_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn breast_v() -> HashMap<u8, [f32;6]> {
+fn breast_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [0.00E+00, 3.00E-12, 1.46E-12, 0.00E+00, 6.01E-12, 2.93E-12]),
     (1, [0.00E+00, 2.34E-12, 1.14E-12, 0.00E+00, 4.68E-12, 2.28E-12]),
@@ -950,7 +950,7 @@ fn breast_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn ovary_v() -> HashMap<u8, [f32;6]> {
+fn ovary_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [0.00E+00, 6.24E-13, 3.05E-13, 0.00E+00, 8.92E-13, 4.35E-13]),
     (1, [0.00E+00, 4.49E-13, 2.19E-13, 0.00E+00, 6.41E-13, 3.13E-13]),
@@ -1068,7 +1068,7 @@ fn ovary_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn bladder_v() -> HashMap<u8, [f32;6]> {
+fn bladder_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [1.16E-12, 5.66E-13, 8.72E-13, 2.33E-12, 1.13E-12, 1.74E-12]),
     (1, [9.59E-13, 4.65E-13, 7.18E-13, 1.92E-12, 9.30E-13, 1.44E-12]),
@@ -1186,7 +1186,7 @@ fn bladder_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn kidney_v() -> HashMap<u8, [f32;6]> {
+fn kidney_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [7.54E-14, 4.79E-14, 6.20E-14, 1.16E-13, 7.37E-14, 9.54E-14]),
     (1, [5.61E-14, 3.56E-14, 4.61E-14, 8.64E-14, 5.48E-14, 7.10E-14]),
@@ -1304,7 +1304,7 @@ fn kidney_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn thyroid_v() -> HashMap<u8, [f32;6]> {
+fn thyroid_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [3.51E-10, 7.75E-10, 5.58E-10, 3.51E-09, 7.75E-09, 5.58E-09]),
     (1, [3.87E-10, 8.53E-10, 6.14E-10, 3.87E-09, 8.53E-09, 6.14E-09]),
@@ -1422,7 +1422,7 @@ fn thyroid_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn leukemia_v() -> HashMap<u8, [f32;6]> {
+fn leukemia_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [9.60E-13, 8.83E-13, 9.23E-13, 9.70E-13, 8.92E-13, 9.32E-13]),
     (1, [7.17E-13, 6.49E-13, 6.84E-13, 7.24E-13, 6.56E-13, 6.91E-13]),
@@ -1540,7 +1540,7 @@ fn leukemia_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn residual_v() -> HashMap<u8, [f32;6]> {
+fn residual_v1() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [6.29E-12, 9.17E-12, 7.70E-12, 8.87E-12, 1.29E-11, 1.08E-11]),
     (1, [5.12E-12, 7.43E-12, 6.25E-12, 7.20E-12, 1.05E-11, 8.80E-12]),
@@ -1658,7 +1658,7 @@ fn residual_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn esophagus_v() -> HashMap<u8, [f32;6]> {
+fn esophagus_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [1.08E-12, 2.38E-12, 1.71E-12, 1.20E-12, 2.65E-12, 1.91E-12]),
     (1, [8.67E-13, 1.91E-12, 1.38E-12, 9.63E-13, 2.12E-12, 1.53E-12]),
@@ -1776,7 +1776,7 @@ fn esophagus_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn stomach_v() -> HashMap<u8, [f32;6]> {
+fn stomach_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [3.75E-13, 7.50E-13, 5.58E-13, 4.17E-13, 8.33E-13, 6.20E-13]),
     (1, [2.63E-13, 5.26E-13, 3.91E-13, 2.93E-13, 5.84E-13, 4.35E-13]),
@@ -1894,7 +1894,7 @@ fn stomach_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn colon_v() -> HashMap<u8, [f32;6]> {
+fn colon_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [1.16E-11, 1.72E-11, 1.43E-11, 2.10E-11, 3.13E-11, 2.60E-11]),
     (1, [7.65E-12, 1.14E-11, 9.46E-12, 1.39E-11, 2.06E-11, 1.72E-11]),
@@ -2012,7 +2012,7 @@ fn colon_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn liver_v() -> HashMap<u8, [f32;6]> {
+fn liver_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [1.83E-13, 1.19E-13, 1.52E-13, 1.92E-13, 1.26E-13, 1.60E-13]),
     (1, [1.34E-13, 8.75E-14, 1.11E-13, 1.41E-13, 9.21E-14, 1.17E-13]),
@@ -2130,7 +2130,7 @@ fn liver_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn lung_v() -> HashMap<u8, [f32;6]> {
+fn lung_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [3.64E-12, 5.83E-12, 4.71E-12, 3.83E-12, 6.13E-12, 4.95E-12]),
     (1, [2.91E-12, 4.65E-12, 3.76E-12, 3.06E-12, 4.89E-12, 3.96E-12]),
@@ -2248,7 +2248,7 @@ fn lung_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn bone_v() -> HashMap<u8, [f32;6]> {
+fn bone_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [4.46E-14, 4.49E-14, 4.47E-14, 6.37E-14, 6.41E-14, 6.39E-14]),
     (1, [3.21E-14, 3.23E-14, 3.22E-14, 4.59E-14, 4.61E-14, 4.60E-14]),
@@ -2366,7 +2366,7 @@ fn bone_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn skin_v() -> HashMap<u8, [f32;6]> {
+fn skin_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [1.87E-14, 2.08E-14, 1.97E-14, 1.87E-14, 2.08E-14, 1.97E-14]),
     (1, [1.32E-14, 1.47E-14, 1.39E-14, 1.32E-14, 1.47E-14, 1.39E-14]),
@@ -2484,7 +2484,7 @@ fn skin_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn breast_v() -> HashMap<u8, [f32;6]> {
+fn breast_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [0.00E+00, 2.31E-12, 1.12E-12, 0.00E+00, 4.61E-12, 2.25E-12]),
     (1, [0.00E+00, 1.80E-12, 8.79E-13, 0.00E+00, 3.60E-12, 1.76E-12]),
@@ -2602,7 +2602,7 @@ fn breast_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn ovary_v() -> HashMap<u8, [f32;6]> {
+fn ovary_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [0.00E+00, 4.78E-13, 2.33E-13, 0.00E+00, 6.83E-13, 3.33E-13]),
     (1, [0.00E+00, 3.44E-13, 1.68E-13, 0.00E+00, 4.91E-13, 2.40E-13]),
@@ -2720,7 +2720,7 @@ fn ovary_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn bladder_v() -> HashMap<u8, [f32;6]> {
+fn bladder_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [9.06E-13, 4.40E-13, 6.79E-13, 1.81E-12, 8.80E-13, 1.36E-12]),
     (1, [7.47E-13, 3.62E-13, 5.59E-13, 1.49E-12, 7.24E-13, 1.12E-12]),
@@ -2838,7 +2838,7 @@ fn bladder_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn kidney_v() -> HashMap<u8, [f32;6]> {
+fn kidney_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [5.83E-14, 3.71E-14, 4.80E-14, 8.97E-14, 5.71E-14, 7.38E-14]),
     (1, [4.35E-14, 2.76E-14, 3.57E-14, 6.69E-14, 4.25E-14, 5.50E-14]),
@@ -2956,7 +2956,7 @@ fn kidney_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn thyroid_v() -> HashMap<u8, [f32;6]> {
+fn thyroid_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [2.74E-10, 6.04E-10, 4.35E-10, 2.74E-09, 6.04E-09, 4.35E-09]),
     (1, [3.01E-10, 6.65E-10, 4.79E-10, 3.01E-09, 6.65E-09, 4.79E-09]),
@@ -3074,7 +3074,7 @@ fn thyroid_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn leukemia_v() -> HashMap<u8, [f32;6]> {
+fn leukemia_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [7.40E-13, 6.81E-13, 7.11E-13, 7.47E-13, 6.88E-13, 7.18E-13]),
     (1, [5.54E-13, 5.02E-13, 5.28E-13, 5.59E-13, 5.07E-13, 5.34E-13]),
@@ -3192,7 +3192,7 @@ fn leukemia_v() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn residual_v() -> HashMap<u8, [f32;6]> {
+fn residual_v2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [4.79E-12, 6.98E-12, 5.86E-12, 6.75E-12, 9.83E-12, 8.25E-12]),
     (1, [3.91E-12, 5.68E-12, 4.78E-12, 5.51E-12, 8.01E-12, 6.73E-12]),
@@ -8268,34 +8268,34 @@ fn residual_m() -> HashMap<u8, [f32;6]> {
 pub fn init<R: Runtime>() -> TauriPlugin<R> {
   Builder::new("inh_i125")
     .invoke_handler(tauri::generate_handler![
-      esophagus_v,
-      stomach_v,
-      colon_v,
-      liver_v,
-      lung_v,
-      bone_v,
-      skin_v,
-      breast_v,
-      ovary_v,
-      bladder_v,
-      kidney_v,
-      thyroid_v,
-      leukemia_v,
-      residual_v,
-      esophagus_v,
-      stomach_v,
-      colon_v,
-      liver_v,
-      lung_v,
-      bone_v,
-      skin_v,
-      breast_v,
-      ovary_v,
-      bladder_v,
-      kidney_v,
-      thyroid_v,
-      leukemia_v,
-      residual_v,
+      esophagus_v1,
+      stomach_v1,
+      colon_v1,
+      liver_v1,
+      lung_v1,
+      bone_v1,
+      skin_v1,
+      breast_v1,
+      ovary_v1,
+      bladder_v1,
+      kidney_v1,
+      thyroid_v1,
+      leukemia_v1,
+      residual_v1,
+      esophagus_v2,
+      stomach_v2,
+      colon_v2,
+      liver_v2,
+      lung_v2,
+      bone_v2,
+      skin_v2,
+      breast_v2,
+      ovary_v2,
+      bladder_v2,
+      kidney_v2,
+      thyroid_v2,
+      leukemia_v2,
+      residual_v2,
       esophagus_f,
       stomach_f,
       colon_f,
