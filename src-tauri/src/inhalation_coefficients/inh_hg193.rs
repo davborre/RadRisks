@@ -3310,7 +3310,7 @@ fn residual_m1() -> HashMap<u8, [f32;6]> {
 }
 
 #[tauri::command]
-fn esophagus_m() -> HashMap<u8, [f32;6]> {
+fn esophagus_m2() -> HashMap<u8, [f32;6]> {
   let data = HashMap::from([
     (0, [5.47E-14, 1.21E-13, 8.68E-14, 6.07E-14, 1.34E-13, 9.65E-14]),
     (1, [3.25E-14, 7.16E-14, 5.16E-14, 3.61E-14, 7.96E-14, 5.74E-14]),
