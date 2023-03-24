@@ -1,4 +1,5 @@
 src/data/inhalationCoefficients/
+src/data/ingestionCoefficients/
 
 # Logs
 logs
