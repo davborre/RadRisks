@@ -49,7 +49,6 @@ const SettingsMenu = () => {
           <input className="scale-150 ml-2 accent-epablue" type="checkbox" />
         </label>
       </div>
-      <button type="button" className="border-2 border-epablue text-epablue w-fit mx-auto p-2 rounded-lg hover:bg-epablue hover:text-white">Save</button>
     </div>
   );
 };
