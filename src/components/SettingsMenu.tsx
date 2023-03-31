@@ -1,8 +1,30 @@
 import Dropdown from "./Dropdown";
+import { useEffect, useState } from "react";
+import { Store } from "tauri-plugin-store-api";
 
 const SettingsMenu = () => {
+  const [fileType, setFileType] = useState<string | null>(null);
+  const fileTypes = ["pdf", "txt"];
 
-  const fileTypes = ["pdf", "txt"]
+  useEffect(() => {
+    (async () => {
+      const settings = new Store('.settings.dat');
+      const fileType = await settings.get('fileType') as string;
+      setFileType(fileType);
+    })();
+  }, [])
+
+  useEffect(() => {
+    if (fileType == null) {
+      return;
+    }
+
+    (async () => {
+      const settings = new Store('.settings.dat');
+      await settings.set('fileType', fileType);
+      await settings.save();
+    })();
+  }, [fileType])
 
   return (
     <div className="h-screen w-80 bg-epasagegreen px-2 pt-4 flex flex-col gap-10">
@@ -14,7 +36,7 @@ const SettingsMenu = () => {
       </div>
       <div>
         <label>Output File Type:{' '}
-          <Dropdown options={fileTypes} width={75} />
+          <Dropdown options={fileTypes} width={75} value={fileType} setValue={setFileType} />
         </label>
       </div>
       <div>
