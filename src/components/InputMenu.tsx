@@ -33,12 +33,28 @@ const InputMenu = ({ setCalculation, setTable, txtTables }: { setCalculation: Re
   const [fractionalExposure, setFractionalExposure] = useState<string | null>(null);
   const intakeMethods: string[] = ["Ingestion", "Inhalation"];
 
-  function handleCalculate() {
-    const formattedRadionuclide = radionuclide?.split("-").join("").toLowerCase();
-    const form = { "radionuclide": formattedRadionuclide, "intakeMethod": intakeMethod?.toLowerCase().substring(0, 3), "age": Number(age), "exposureLength": Number(exposureLength) }
+  async function handleCalculate() {
+    if (!radionuclide || !intakeMethod || !age || !exposureLength) {
+      return;
+    }
+
+    const formattedRadionuclide = radionuclide.split("-").join("").toLowerCase();
+    const form = { "radionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLength": Number(exposureLength) }
     console.log(form);
     setCalculation(form);
     setTable(0);
+
+    const history = new Store('.history.dat');
+    if (!(await history.has(radionuclide))) {
+      await history.set(radionuclide, []);
+    }
+
+    const prevHistory = new Set(await history.get(radionuclide) as string[]);
+    prevHistory.add(`${age}, ${exposureLength} yrs, ${intakeMethod}`);
+    history.set(radionuclide, Array.from(prevHistory));
+    await history.save();
+
+    console.log(await history.entries());
   }
 
   async function handleExport() {
