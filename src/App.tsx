@@ -17,14 +17,15 @@ function App() {
   const [radionuclide, setRadionuclide] = useState("");
   const [cancer, setCancer] = useState("");
   const [calculation, setCalculation] = useState({});
+  const [txtTables, setTxtTables] = useState([]);
 
   return (
     <div className="flex">
       <NavBar setMenu={setMenu} />
-      {menu[0] && <InputMenu setCalculation={setCalculation} setTable={setTable} />}
+      {menu[0] && <InputMenu setCalculation={setCalculation} setTable={setTable} txtTables={txtTables} />}
       {menu[0] && table == 0 &&
         <div className="grow p-20 h-screen overflow-auto">
-          <CalculationsTable calculation={calculation} />
+          <CalculationsTable calculation={calculation} setTxtTables={setTxtTables} />
         </div>
       }
       {menu[1] && <HistoryMenu />}

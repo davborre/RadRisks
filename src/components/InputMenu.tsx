@@ -1,14 +1,31 @@
 import Dropdown from "./Dropdown";
+import ComboBox from "./ComboBox";
 import { radionuclides } from "../data/radionuclides";
 import { ages } from "../data/ages";
 import { useState } from "react";
-import { writeBinaryFile } from "@tauri-apps/api/fs";
+import { writeBinaryFile, writeTextFile } from "@tauri-apps/api/fs";
 import { save } from "@tauri-apps/api/dialog";
-import ComboBox from "./ComboBox";
+import { Store } from "tauri-plugin-store-api";
 import jsPDF from "jspdf";
 
-const InputMenu = ({ setCalculation, setTable }: { setCalculation: React.Dispatch<React.SetStateAction<Object>>, setTable: React.Dispatch<React.SetStateAction<number>> }) => {
+function formatTextContent(txtTables: Object[]): string {
+  let text = "";
 
+  for (let i = 0; i < txtTables.length; i++) {
+    text += `
+            --------Mortality (/Bq)--------   -------Morbidity (/Bq)------- 
+ Cancer     Male        Female         Both   Male        Female        Both
+ ---------------------------------------------------------------------------\n`;
+
+    Object.entries(txtTables[i]).map((entries) => {
+      text += ` ${entries[0]}${' '.repeat(12 - entries[0].length)}${entries[1].map((entry: number) => String(entry.toExponential(2)) + ' '.repeat(8 - String(entry.toExponential(2)).length)).join('   ')}\n`
+    })
+  }
+
+  return text;
+}
+
+const InputMenu = ({ setCalculation, setTable, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<Object>>, setTable: React.Dispatch<React.SetStateAction<number>>, txtTables: any }) => {
   const [radionuclide, setRadionuclide] = useState<string | null>(null);
   const [intakeMethod, setIntakeMethod] = useState<string | null>(null);
   const [age, setAge] = useState<string | null>(null);
@@ -25,10 +42,13 @@ const InputMenu = ({ setCalculation, setTable }: { setCalculation: React.Dispatc
   }
 
   async function handleExport() {
+    const settings = new Store('.settings.dat');
+    const fileType = await settings.get('fileType') as string;
+
     const path = await save({
       filters: [{
-        name: 'pdf',
-        extensions: ['pdf'],
+        name: fileType,
+        extensions: [fileType],
       }]
     });
 
@@ -36,30 +56,36 @@ const InputMenu = ({ setCalculation, setTable }: { setCalculation: React.Dispatc
       return;
     }
 
-    const doc = new jsPDF();
+    if (fileType == 'pdf') {
+      const input = document.getElementById("tables");
+      console.log(input);
 
-    const input = document.getElementById("tables");
+      if (!input) {
+        return;
+      }
 
-    if (!input) {
-      return;
+      const doc = new jsPDF();
+
+      doc.html(input, {
+        callback: async function (doc) {
+          await writeBinaryFile(path, doc.output('arraybuffer'));
+        },
+        x: 20,
+        width: 170,
+        windowWidth: 900,
+      });
     }
-
-    doc.html(input, {
-      callback: async function (doc) {
-        await writeBinaryFile(path, doc.output('arraybuffer'));
-      },
-      x: 20,
-      width: 170,
-      windowWidth: 900,
-    });
-
+    else if (fileType == 'txt') {
+      const content = formatTextContent(txtTables);
+      await writeTextFile(path, content);
+    }
   }
 
   const slicedAges = (age == "0") ? ages : ages.slice(0, -Number(age));
   const days = Array.from(Array(366).keys()).slice(1).map(String);
 
   return (
-    <div className="h-screen w-80 bg-epasagegreen px-2 pt-4 flex flex-col gap-10 relative">
+    <div className="h-screen w-80 bg-epasagegreen px-2 pt-4 flex flex-col gap-20 relative">
       <h1 className="font-bold">Inputs</h1>
       <div>
         <label>Radionuclide:{' '}

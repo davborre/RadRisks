@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { cancers } from '../data/cancers';
 
 
-const CalculationsTable = ({ calculation }: { calculation: any }) => {
+const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, setTxtTables: React.Dispatch<React.SetStateAction<any>> }) => {
   const [tables, setTables] = useState([]);
   const [absorptionTypes, setAbsorptionTypes] = useState<string[]>([]);
 
@@ -17,7 +17,6 @@ const CalculationsTable = ({ calculation }: { calculation: any }) => {
       const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: radionuclide }) : await invoke('ingestion_types', { radionuclide: radionuclide })
       const absorptionTypes = types.split("-");
       setAbsorptionTypes(absorptionTypes);
-      console.log(absorptionTypes);
 
       for (let absorptionType = 0; absorptionType < absorptionTypes.length; absorptionType++) {
         const table: any = {}
@@ -58,6 +57,7 @@ const CalculationsTable = ({ calculation }: { calculation: any }) => {
         newTables.push(table);
       }
       setTables(newTables);
+      setTxtTables(newTables);
     })();
   }, [calculation])
 
