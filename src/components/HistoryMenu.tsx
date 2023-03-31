@@ -7,6 +7,13 @@ import { Store } from "tauri-plugin-store-api";
 const HistoryMenu = () => {
   const [history, setHistory] = useState<Object | null>(null)
 
+  async function handleClear() {
+    const storedHistory = new Store('.history.dat');
+    await storedHistory.clear();
+    await storedHistory.save();
+    setHistory(null);
+  }
+
   async function handleExport() {
     const savePath = await save();
     console.log(savePath);
@@ -47,6 +54,13 @@ const HistoryMenu = () => {
         )
       })}
       <div className="flex absolute bottom-0 inset-x-0 pb-4">
+        <button
+          type="button"
+          onClick={() => handleClear()}
+          className="border-2 border-epablue text-epablue w-fit mx-auto p-2 rounded-lg hover:bg-epablue hover:text-white"
+        >
+          Clear
+        </button>
         <button
           type="button"
           onClick={() => handleExport()}
