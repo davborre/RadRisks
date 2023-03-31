@@ -14,7 +14,7 @@ const CalculationsTable = ({ calculation }: { calculation: any }) => {
       const newTables: any = [];
       const usageTable: any = await invoke('usage');
       const survivalTable: any = await invoke('survival');
-      const types: string = await invoke('inhalation_types', { radionuclide: radionuclide })
+      const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: radionuclide }) : await invoke('ingestion_types', { radionuclide: radionuclide })
       const absorptionTypes = types.split("-");
       setAbsorptionTypes(absorptionTypes);
       console.log(absorptionTypes);
@@ -62,12 +62,12 @@ const CalculationsTable = ({ calculation }: { calculation: any }) => {
   }, [calculation])
 
   return (
-    <div>
+    <div id="tables" className="relative">
       {tables.map((table, i) => {
         return (
-          <div>
+          <div key={i}>
             <h1 className="text-center font-bold text-2xl">{radionuclide} {age}-{age + exposureLength} {absorptionTypes[i]}</h1>
-            <table key={i} className="table-auto mx-auto text-left my-5">
+            <table className="table-auto mx-auto text-left my-5">
               <thead className="bg-epablue text-white">
                 <tr>
                   <th />
@@ -75,7 +75,7 @@ const CalculationsTable = ({ calculation }: { calculation: any }) => {
                   <th colSpan={3}>Morbidity (/Bq)</th>
                 </tr>
                 <tr>
-                  <th className="pr-10">Age</th>
+                  <th className="pr-10">Cancer</th>
                   <th className="pr-20">Male</th>
                   <th className="pr-20">Female</th>
                   <th className="pr-20">Both</th>
