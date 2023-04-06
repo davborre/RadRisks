@@ -7,10 +7,10 @@ const InputScreen = () => {
   const [txtTables, setTxtTables] = useState([]);
 
   return (
-    <div>
+    <>
       <InputMenu setCalculation={setCalculation} txtTables={txtTables} />
       <CalculationsTable calculation={calculation} setTxtTables={setTxtTables} />
-    </div>
+    </>
   )
 }
 

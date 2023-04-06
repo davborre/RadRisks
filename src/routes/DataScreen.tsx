@@ -10,7 +10,7 @@ const DataScreen = () => {
   const [table, setTable] = useState(-1);
 
   return (
-    <div>
+    <>
       <DataMenu setRadionuclide={setRadionuclide} setCancer={setCancer} setTable={setTable} />
       <div className="grow p-20 h-screen overflow-auto">
         {table == 1 && <h1 className="text-center font-bold text-2xl"> {radionuclide} {cancer} </h1>}
@@ -20,7 +20,7 @@ const DataScreen = () => {
         {table == 3 && <h1 className="text-center font-bold text-2xl"> Survival Function </h1>}
         {table == 3 && <SurvTable />}
       </div>
-    </div>
+    </>
   )
 }
 

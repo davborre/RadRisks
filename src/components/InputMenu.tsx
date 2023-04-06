@@ -25,7 +25,7 @@ function formatTextContent(txtTables: Object[]): string {
   return text;
 }
 
-const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<Object>>, txtTables: any }) => {
+const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<any>>, txtTables: any }) => {
   const [radionuclide, setRadionuclide] = useState<string | null>(null);
   const [intakeMethod, setIntakeMethod] = useState<string | null>(null);
   const [age, setAge] = useState<string | null>(null);

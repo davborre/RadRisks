@@ -2,7 +2,9 @@ import HistoryMenu from "../components/HistoryMenu";
 
 const HistoryScreen = () => {
   return (
-    <HistoryMenu />
+    <>
+      <HistoryMenu />
+    </>
   )
 }
 
