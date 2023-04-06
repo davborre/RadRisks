@@ -18,46 +18,105 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
       const absorptionTypes = types.split("-");
       setAbsorptionTypes(absorptionTypes);
 
-      for (let absorptionType = 0; absorptionType < absorptionTypes.length; absorptionType++) {
-        const table: any = {}
-        for (let i = 0; i < cancers.length; i++) {
-          const calculations: number[] = [];
-          const riskCoefficientsTable: any = await invoke(`plugin:${intakeMethod}_${radionuclide}|${cancers[i]}_${absorptionTypes[absorptionType]}`);
-          for (let j = 0; j < 6; j++) {
-            let lifetimeRisk = 0;
-            let unitIntake = 0;
-            const startingYear = age;
-            const endingYear = age + exposureLength;
-            let survCol;
-            let usageCol;
-            if (j == 0 || j == 3) {
-              survCol = 1;
-              usageCol = 0;
-            } else if (j == 1 || j == 4) {
-              survCol = 2;
-              usageCol = 1;
-            } else {
-              survCol = 0;
-              usageCol = 0;
-            }
-            for (let k = startingYear; k <= endingYear; k++) {
-              if (k == startingYear || k == endingYear) {
-                lifetimeRisk += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
-                unitIntake += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+      if (intakeMethod == "inh") {
+        for (let absorptionType = 0; absorptionType < absorptionTypes.length; absorptionType++) {
+          const table: any = {}
+          for (let i = 0; i < cancers.length; i++) {
+            const calculations: number[] = [];
+            const riskCoefficientsTable: any = await invoke(`plugin:${intakeMethod}_${radionuclide}|${cancers[i]}_${absorptionTypes[absorptionType]}`);
+            for (let j = 0; j < 6; j++) {
+              let lifetimeRisk = 0;
+              let unitIntake = 0;
+              const startingYear = age;
+              const endingYear = age + exposureLength;
+              let survCol;
+              let usageCol;
+              if (j == 0 || j == 3) {
+                survCol = 1;
+                usageCol = 0;
+              } else if (j == 1 || j == 4) {
+                survCol = 2;
+                usageCol = 1;
+              } else {
+                survCol = 0;
+                usageCol = 0;
               }
-              else {
-                lifetimeRisk += survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
-                unitIntake += survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+              for (let k = startingYear; k <= endingYear; k++) {
+                if (k == startingYear || k == endingYear) {
+                  lifetimeRisk += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
+                  unitIntake += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+                }
+                else {
+                  lifetimeRisk += survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
+                  unitIntake += survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+                }
               }
+              calculations.push(lifetimeRisk / unitIntake);
             }
-            calculations.push(lifetimeRisk / unitIntake);
+            table[cancers[i]] = calculations;
           }
-          table[cancers[i]] = calculations;
+          newTables.push(table);
         }
-        newTables.push(table);
+        setTables(newTables);
+        setTxtTables(newTables);
+      } else {
+        for (let usage = 0; usage < 2; usage++) {
+          for (let absorptionType = 0; absorptionType < absorptionTypes.length; absorptionType++) {
+            const table: any = {}
+            for (let i = 0; i < cancers.length; i++) {
+              const calculations: number[] = [];
+              const riskCoefficientsTable: any = await invoke(`plugin:${intakeMethod}_${radionuclide}|${cancers[i]}_${absorptionTypes[absorptionType]}`);
+              for (let j = 0; j < 6; j++) {
+                let lifetimeRisk = 0;
+                let unitIntake = 0;
+                const startingYear = age;
+                const endingYear = age + exposureLength;
+                let survCol;
+                let usageCol;
+                if (usage == 0) { //tapwater
+                  if (j == 0 || j == 3) {
+                    survCol = 1;
+                    usageCol = 2;
+                  } else if (j == 1 || j == 4) {
+                    survCol = 2;
+                    usageCol = 3;
+                  } else {
+                    survCol = 0;
+                    usageCol = 2;
+                  }
+                } else { //dietary
+                  if (j == 0 || j == 3) {
+                    survCol = 1;
+                    usageCol = 4;
+                  } else if (j == 1 || j == 4) {
+                    survCol = 2;
+                    usageCol = 5;
+                  } else {
+                    survCol = 0;
+                    usageCol = 4;
+                  }
+                }
+                for (let k = startingYear; k <= endingYear; k++) {
+                  if (k == startingYear || k == endingYear) {
+                    lifetimeRisk += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
+                    unitIntake += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+                  }
+                  else {
+                    lifetimeRisk += survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
+                    unitIntake += survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+                  }
+                }
+                calculations.push(lifetimeRisk / unitIntake);
+              }
+              table[cancers[i]] = calculations;
+            }
+            newTables.push(table);
+          }
+        }
+        setTables(newTables);
+        setTxtTables(newTables);
+        setAbsorptionTypes([...absorptionTypes].concat(absorptionTypes))
       }
-      setTables(newTables);
-      setTxtTables(newTables);
     })();
   }, [calculation])
 
