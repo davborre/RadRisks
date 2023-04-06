@@ -5,7 +5,7 @@ const NavBarButton = ({ icon, label, route }: { icon: React.ReactNode, label: st
 
   return (
     <NavLink to={route}
-      className={({ isActive, isPending }) => isActive ? 'active bg-epalightblue' : isPending ? 'pending bg-epalightblue' : ''}
+      className={({ isActive, isPending }) => isActive ? 'active bg-epalightblue font-bold' : isPending ? 'pending bg-epalightblue font-bold' : ''}
     >
       <div className="relative flex items-center justify-center w-20 h-20 hover:bg-epalightblue">
         {icon}
