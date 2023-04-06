@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Store } from "tauri-plugin-store-api";
 
 
-const HistoryMenu = () => {
+const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<any>>, txtTables: any }) => {
   const [history, setHistory] = useState<Object | null>(null)
 
   async function handleClear() {
@@ -17,6 +17,18 @@ const HistoryMenu = () => {
   async function handleExport() {
     const savePath = await save();
     console.log(savePath);
+  }
+
+  function handleSelect(radionuclide: string, entry: string) {
+    const inputs = entry.split(", ");
+    const age = inputs[0];
+    const exposureLength = inputs[1][0];
+    const intakeMethod = inputs[2];
+
+    const formattedRadionuclide = radionuclide.split("-").join("").toLowerCase();
+    const form = { "radionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLength": Number(exposureLength) }
+    console.log(form);
+    setCalculation(form);
   }
 
   useEffect(() => {
@@ -46,7 +58,7 @@ const HistoryMenu = () => {
             <ul className="pl-2 pt-2 space-y-2 list-none text-sm">
               {entry[1].map((subhistory: string) => {
                 return (
-                  <li>{subhistory}</li>
+                  <li onClick={() => handleSelect(entry[0], subhistory)}>{subhistory}</li>
                 )
               })}
             </ul>
