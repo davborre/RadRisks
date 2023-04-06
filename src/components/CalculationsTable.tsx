@@ -62,7 +62,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
   }, [calculation])
 
   return (
-    <div id="tables" className="relative">
+    <div id="tables" className="relative grow p-20 h-screen overflow-auto">
       {tables.map((table, i) => {
         return (
           <div key={i}>

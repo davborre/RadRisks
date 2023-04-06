@@ -25,7 +25,7 @@ function formatTextContent(txtTables: Object[]): string {
   return text;
 }
 
-const InputMenu = ({ setCalculation, setTable, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<Object>>, setTable: React.Dispatch<React.SetStateAction<number>>, txtTables: any }) => {
+const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<Object>>, txtTables: any }) => {
   const [radionuclide, setRadionuclide] = useState<string | null>(null);
   const [intakeMethod, setIntakeMethod] = useState<string | null>(null);
   const [age, setAge] = useState<string | null>(null);
@@ -42,7 +42,6 @@ const InputMenu = ({ setCalculation, setTable, txtTables }: { setCalculation: Re
     const form = { "radionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLength": Number(exposureLength) }
     console.log(form);
     setCalculation(form);
-    setTable(0);
 
     const history = new Store('.history.dat');
     if (!(await history.has(radionuclide))) {
