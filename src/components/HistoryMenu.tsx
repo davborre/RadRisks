@@ -1,8 +1,26 @@
 import { ChevronDown } from "react-feather";
 import { save } from "@tauri-apps/api/dialog";
+import { writeBinaryFile, writeTextFile } from "@tauri-apps/api/fs";
 import { useEffect, useState } from "react";
 import { Store } from "tauri-plugin-store-api";
+import jsPDF from "jspdf";
 
+function formatTextContent(txtTables: Object[]): string {
+  let text = "";
+
+  for (let i = 0; i < txtTables.length; i++) {
+    text += `
+            --------Mortality (/Bq)--------   -------Morbidity (/Bq)------- 
+ Cancer     Male        Female         Both   Male        Female        Both
+ ---------------------------------------------------------------------------\n`;
+
+    Object.entries(txtTables[i]).map((entries) => {
+      text += ` ${entries[0]}${' '.repeat(12 - entries[0].length)}${entries[1].map((entry: number) => String(entry.toExponential(2)) + ' '.repeat(8 - String(entry.toExponential(2)).length)).join('   ')}\n`
+    })
+  }
+
+  return text;
+}
 
 const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<any>>, txtTables: any }) => {
   const [history, setHistory] = useState<Object | null>(null)
@@ -15,8 +33,43 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
   }
 
   async function handleExport() {
-    const savePath = await save();
-    console.log(savePath);
+    const settings = new Store('.settings.dat');
+    const fileType = await settings.get('fileType') as string;
+
+    const path = await save({
+      filters: [{
+        name: fileType,
+        extensions: [fileType],
+      }]
+    });
+
+    if (!path) {
+      return;
+    }
+
+    if (fileType == 'pdf') {
+      const input = document.getElementById("tables");
+      console.log(input);
+
+      if (!input) {
+        return;
+      }
+
+      const doc = new jsPDF();
+
+      doc.html(input, {
+        callback: async function (doc) {
+          await writeBinaryFile(path, doc.output('arraybuffer'));
+        },
+        x: 20,
+        width: 170,
+        windowWidth: 900,
+      });
+    }
+    else if (fileType == 'txt') {
+      const content = formatTextContent(txtTables);
+      await writeTextFile(path, content);
+    }
   }
 
   function handleSelect(radionuclide: string, entry: string) {
