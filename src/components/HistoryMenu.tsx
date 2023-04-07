@@ -79,10 +79,11 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
     const age = inputs[0];
     const exposureLength = inputs[1].split(" ");
     const exposureLengthYears = exposureLength[0];
+    const exposureLengthDays = exposureLength[2];
     const intakeMethod = inputs[2];
 
     const formattedRadionuclide = radionuclide.split("-").join("").toLowerCase();
-    const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLength": Number(exposureLengthYears) }
+    const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLengthYears": Number(exposureLengthYears), "exposureLengthDays": Number(exposureLengthDays) }
     console.log(form);
     setCalculation(form);
     setSelectedRadionuclide(radionuclide);

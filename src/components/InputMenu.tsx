@@ -34,12 +34,12 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   const intakeMethods: string[] = ["Ingestion", "Inhalation"];
 
   async function handleCalculate() {
-    if (!radionuclide || !intakeMethod || !age || !exposureLength) {
+    if (!radionuclide || !intakeMethod || !age || !exposureLength || !fractionalExposure) {
       return;
     }
 
     const formattedRadionuclide = radionuclide.split("-").join("").toLowerCase();
-    const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLength": Number(exposureLength) }
+    const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLengthYears": Number(exposureLength), "exposureLengthDays": Number(fractionalExposure) }
     console.log(form);
     setCalculation(form);
 
@@ -49,7 +49,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
     }
 
     const prevHistory = new Set(await history.get(radionuclide) as string[]);
-    prevHistory.add(`${age}, ${exposureLength} yrs, ${intakeMethod}`);
+    prevHistory.add(`${age}, ${exposureLength} yrs ${fractionalExposure} dys, ${intakeMethod}`);
     history.set(radionuclide, Array.from(prevHistory));
     await history.save();
 
@@ -97,7 +97,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   }
 
   const slicedAges = (age == "0") ? ages : ages.slice(0, -Number(age));
-  const days = Array.from(Array(366).keys()).slice(1).map(String);
+  const days = Array.from(Array(366).keys()).slice().map(String);
 
   return (
     <div className="h-screen w-80 bg-epasagegreen px-2 pt-4 flex flex-col gap-20 relative">
