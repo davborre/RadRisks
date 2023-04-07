@@ -11,6 +11,10 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
 
   useEffect(() => {
     (async () => {
+      if (!radionuclide || !formattedRadionuclide || age == null || !exposureLength || !intakeMethod) {
+        return;
+      }
+
       const newTables: any = [];
       const usageTable: any = await invoke('usage');
       const survivalTable: any = await invoke('survival');
@@ -132,7 +136,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
         {tables.map((table, i) => {
           return (
             <div key={i}>
-              {absorptionTypes[i] && <h1 className="text-center font-bold text-2xl mb-5">Absorption Type: {(intakeMethod == 'ing' && i < absorptionTypes.length / 2) ? 'Drinking Water' : (intakeMethod == 'ing') ? 'Diet' : ''} {(absorptionTypes[i] !== 'n' && intakeMethod == 'inh') ? absorptionTypes[i].toUpperCase() : (absorptionTypes[i] !== 'n' && intakeMethod == 'ing') ? '(' + absorptionTypes[i].toUpperCase() + ')' : ''}</h1>}
+              {absorptionTypes[i] && <h1 className="text-center font-bold text-2xl mb-5">Absorption Type: {(intakeMethod == 'ing' && i < absorptionTypes.length / 2) ? 'Drinking Water' : (intakeMethod == 'ing') ? 'Diet' : ''}{(absorptionTypes[i] !== 'n' && intakeMethod == 'inh') ? absorptionTypes[i].toUpperCase() : (absorptionTypes[i] !== 'n' && intakeMethod == 'ing') ? ' (' + absorptionTypes[i].toUpperCase() + ')' : ''}</h1>}
               <table className="table-auto mx-auto text-left mb-20">
                 <thead className="bg-epablue text-white">
                   <tr>
