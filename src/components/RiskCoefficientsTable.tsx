@@ -3,15 +3,18 @@ import { useEffect, useState } from 'react'
 
 const RiskCoefficientsTable = ({ radionuclide, cancer, intakeMethod }: { radionuclide: string, cancer: string, intakeMethod: string }) => {
   const [tables, setTables] = useState([]);
+  const [absorptionTypes, setAbsorptionTypes] = useState<string[]>([]);
 
   useEffect(() => {
     (async () => {
-      const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: radionuclide }) : await invoke('ingestion_types', { radionuclide: radionuclide });
-      const absorptionTypes = types.split("-");
+      const radionuclideNoDash = radionuclide.split("-").join("").toLowerCase()
 
+      const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: radionuclideNoDash }) : await invoke('ingestion_types', { radionuclide: radionuclideNoDash });
+      const absorptionTypes = types.split("-");
+      setAbsorptionTypes(absorptionTypes);
       const newTables: any = [];
       for (let i = 0; i < absorptionTypes.length; i++) {
-        const newTable = await invoke(`plugin:${intakeMethod}_${radionuclide}|${cancer}_${absorptionTypes[i]}`);
+        const newTable = await invoke(`plugin:${intakeMethod}_${radionuclideNoDash}|${cancer}_${absorptionTypes[i]}`);
         newTables.push(newTable);
       }
 
@@ -24,8 +27,9 @@ const RiskCoefficientsTable = ({ radionuclide, cancer, intakeMethod }: { radionu
       {
         tables.map((table, i) => {
           return (
-            <div>
-              <table className="table-auto mx-auto text-left mt-20">
+            <div className="mt-20">
+              {(absorptionTypes[i] !== 'n') && <h2 className="text-center font-bold text-xl">Absorption Type: {absorptionTypes[i].toUpperCase()}</h2>}
+              <table className="table-auto mx-auto text-left">
                 <thead className="bg-epablue text-white">
                   <tr>
                     <th />

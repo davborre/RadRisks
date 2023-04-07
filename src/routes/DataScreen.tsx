@@ -14,7 +14,7 @@ const DataScreen = () => {
     <>
       <DataMenu setRadionuclide={setRadionuclide} setCancer={setCancer} setTable={setTable} setIntakeMethod={setIntakeMethod} />
       <div className="grow p-20 h-screen overflow-auto">
-        {table == 1 && <h1 className="text-center font-bold text-2xl"> {radionuclide} {cancer} </h1>}
+        {table == 1 && <h1 className="text-center font-bold text-2xl"> {radionuclide} {cancer.charAt(0).toUpperCase() + cancer.slice(1)} Risk Coefficients</h1>}
         {table == 1 && <RiskCoefficientsTable radionuclide={radionuclide} cancer={cancer} intakeMethod={intakeMethod} />}
         {table == 2 && <h1 className="text-center font-bold text-2xl"> Usage Function </h1>}
         {table == 2 && <UsageTable />}

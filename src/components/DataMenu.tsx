@@ -8,9 +8,8 @@ const DataMenu = ({ setTable, setRadionuclide, setCancer, setIntakeMethod }: { s
   const [selectedCancer, setSelectedCancer] = useState('');
 
   function handleClick(radionuclide: string, cancer: string, selectedFunction: string) {
-    const radionuclideNoDash = radionuclide.split("-").join("").toLowerCase()
     setTable(1);
-    setRadionuclide(radionuclideNoDash);
+    setRadionuclide(radionuclide);
     setCancer(cancer);
     setSelectedRadionuclide(radionuclide);
     setSelectedCancer(cancer);
