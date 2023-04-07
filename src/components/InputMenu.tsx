@@ -39,7 +39,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
     }
 
     const formattedRadionuclide = radionuclide.split("-").join("").toLowerCase();
-    const form = { "radionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLength": Number(exposureLength) }
+    const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLength": Number(exposureLength) }
     console.log(form);
     setCalculation(form);
 

@@ -7,14 +7,14 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
   const [tables, setTables] = useState([]);
   const [absorptionTypes, setAbsorptionTypes] = useState<string[]>([]);
 
-  const { radionuclide, age, exposureLength, intakeMethod } = calculation;
+  const { radionuclide, formattedRadionuclide, age, exposureLength, intakeMethod } = calculation;
 
   useEffect(() => {
     (async () => {
       const newTables: any = [];
       const usageTable: any = await invoke('usage');
       const survivalTable: any = await invoke('survival');
-      const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: radionuclide }) : await invoke('ingestion_types', { radionuclide: radionuclide })
+      const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: formattedRadionuclide }) : await invoke('ingestion_types', { radionuclide: formattedRadionuclide })
       const absorptionTypes = types.split("-");
       setAbsorptionTypes(absorptionTypes);
 
@@ -23,7 +23,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
           const table: any = {}
           for (let i = 0; i < cancers.length; i++) {
             const calculations: number[] = [];
-            const riskCoefficientsTable: any = await invoke(`plugin:${intakeMethod}_${radionuclide}|${cancers[i]}_${absorptionTypes[absorptionType]}`);
+            const riskCoefficientsTable: any = await invoke(`plugin:${intakeMethod}_${formattedRadionuclide}|${cancers[i]}_${absorptionTypes[absorptionType]}`);
             for (let j = 0; j < 6; j++) {
               let lifetimeRisk = 0;
               let unitIntake = 0;
@@ -65,7 +65,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
             const table: any = {}
             for (let i = 0; i < cancers.length; i++) {
               const calculations: number[] = [];
-              const riskCoefficientsTable: any = await invoke(`plugin:${intakeMethod}_${radionuclide}|${cancers[i]}_${absorptionTypes[absorptionType]}`);
+              const riskCoefficientsTable: any = await invoke(`plugin:${intakeMethod}_${formattedRadionuclide}|${cancers[i]}_${absorptionTypes[absorptionType]}`);
               for (let j = 0; j < 6; j++) {
                 let lifetimeRisk = 0;
                 let unitIntake = 0;
@@ -123,11 +123,17 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
   return (
     <div className="grow p-20 h-screen overflow-auto">
       <div id="tables" className="relative">
+        {intakeMethod &&
+          <div>
+            <h1 className="text-center font-bold text-3xl mb-3"> {(intakeMethod == 'inh') ? 'Inhalation' : 'Ingestion'} Risk Coefficients</h1>
+            <h2 className="text-center font-bold text-2xl mb-20">{radionuclide} {age}-{age + exposureLength}</h2>
+          </div>
+        }
         {tables.map((table, i) => {
           return (
             <div key={i}>
-              <h1 className="text-center font-bold text-2xl">{radionuclide} {age}-{age + exposureLength} {absorptionTypes[i]}</h1>
-              <table className="table-auto mx-auto text-left my-5">
+              {absorptionTypes[i] && <h1 className="text-center font-bold text-2xl mb-5">Absorption Type: {(intakeMethod == 'ing' && i < absorptionTypes.length / 2) ? 'Drinking Water' : (intakeMethod == 'ing') ? 'Diet' : ''} {(absorptionTypes[i] !== 'n' && intakeMethod == 'inh') ? absorptionTypes[i].toUpperCase() : (absorptionTypes[i] !== 'n' && intakeMethod == 'ing') ? '(' + absorptionTypes[i].toUpperCase() + ')' : ''}</h1>}
+              <table className="table-auto mx-auto text-left mb-20">
                 <thead className="bg-epablue text-white">
                   <tr>
                     <th />
