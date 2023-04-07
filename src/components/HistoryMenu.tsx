@@ -24,6 +24,8 @@ function formatTextContent(txtTables: Object[]): string {
 
 const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<any>>, txtTables: any }) => {
   const [history, setHistory] = useState<Object | null>(null)
+  const [selectedRadionuclide, setSelectedRadionuclide] = useState('');
+  const [selectedCalculation, setSelectedCalculation] = useState('');
 
   async function handleClear() {
     const storedHistory = new Store('.history.dat');
@@ -83,6 +85,8 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
     const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLength": Number(exposureLengthYears) }
     console.log(form);
     setCalculation(form);
+    setSelectedRadionuclide(radionuclide);
+    setSelectedCalculation(entry);
   }
 
   useEffect(() => {
@@ -105,14 +109,14 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
       {history && Object.entries(history).map((entry, i) => {
         return (
           <details className="even:bg-epaolivegreen p-2 select-none group">
-            <summary className="flex">
+            <summary className={`flex ${(entry[0] == selectedRadionuclide) ? 'font-bold' : ''}`}>
               {entry[0]}
               <ChevronDown className="ml-auto group-open:rotate-180" />
             </summary>
             <ul className="pl-2 pt-2 space-y-2 list-none text-sm">
               {entry[1].map((subhistory: string) => {
                 return (
-                  <li onClick={() => handleSelect(entry[0], subhistory)}>{subhistory}</li>
+                  <li className={`${(entry[0] == selectedRadionuclide && subhistory == selectedCalculation) ? 'font-bold' : ''}`} onClick={() => handleSelect(entry[0], subhistory)}>{subhistory}</li>
                 )
               })}
             </ul>
