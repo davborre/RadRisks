@@ -121,48 +121,50 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
   }, [calculation])
 
   return (
-    <div id="tables" className="relative grow p-20 h-screen overflow-auto">
-      {tables.map((table, i) => {
-        return (
-          <div key={i}>
-            <h1 className="text-center font-bold text-2xl">{radionuclide} {age}-{age + exposureLength} {absorptionTypes[i]}</h1>
-            <table className="table-auto mx-auto text-left my-5">
-              <thead className="bg-epablue text-white">
-                <tr>
-                  <th />
-                  <th colSpan={3}>Mortality (/Bq)</th>
-                  <th colSpan={3}>Morbidity (/Bq)</th>
-                </tr>
-                <tr>
-                  <th className="pr-10">Cancer</th>
-                  <th className="pr-20">Male</th>
-                  <th className="pr-20">Female</th>
-                  <th className="pr-20">Both</th>
-                  <th className="pr-20">Male</th>
-                  <th className="pr-20">Female</th>
-                  <th className="pr-20">Both</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.entries(table).map((entries: any, j) => {
-                  return (
-                    <tr key={j} className="odd:bg-epalightblue">
-                      <td> {entries[0]} </td>
-                      <td> {entries[1][0].toExponential(2)} </td>
-                      <td> {entries[1][1].toExponential(2)} </td>
-                      <td> {entries[1][2].toExponential(2)} </td>
-                      <td> {entries[1][3].toExponential(2)} </td>
-                      <td> {entries[1][4].toExponential(2)} </td>
-                      <td> {entries[1][5].toExponential(2)} </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        );
-      })
-      }
+    <div className="grow p-20 h-screen overflow-auto">
+      <div id="tables" className="relative">
+        {tables.map((table, i) => {
+          return (
+            <div key={i}>
+              <h1 className="text-center font-bold text-2xl">{radionuclide} {age}-{age + exposureLength} {absorptionTypes[i]}</h1>
+              <table className="table-auto mx-auto text-left my-5">
+                <thead className="bg-epablue text-white">
+                  <tr>
+                    <th />
+                    <th colSpan={3}>Mortality (/Bq)</th>
+                    <th colSpan={3}>Morbidity (/Bq)</th>
+                  </tr>
+                  <tr>
+                    <th className="pr-10">Cancer</th>
+                    <th className="pr-20">Male</th>
+                    <th className="pr-20">Female</th>
+                    <th className="pr-20">Both</th>
+                    <th className="pr-20">Male</th>
+                    <th className="pr-20">Female</th>
+                    <th className="pr-20">Both</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(table).map((entries: any, j) => {
+                    return (
+                      <tr key={j} className="odd:bg-epalightblue">
+                        <td> {entries[0]} </td>
+                        <td> {entries[1][0].toExponential(2)} </td>
+                        <td> {entries[1][1].toExponential(2)} </td>
+                        <td> {entries[1][2].toExponential(2)} </td>
+                        <td> {entries[1][3].toExponential(2)} </td>
+                        <td> {entries[1][4].toExponential(2)} </td>
+                        <td> {entries[1][5].toExponential(2)} </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          );
+        })
+        }
+      </div>
     </div>
   )
 }
