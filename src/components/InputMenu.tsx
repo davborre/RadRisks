@@ -6,13 +6,24 @@ import { useState } from "react";
 import { writeBinaryFile, writeTextFile } from "@tauri-apps/api/fs";
 import { save } from "@tauri-apps/api/dialog";
 import { Store } from "tauri-plugin-store-api";
+import { invoke } from '@tauri-apps/api/tauri';
 import jsPDF from "jspdf";
 
-function formatTextContent(txtTables: Object[]): string {
-  let text = "";
+async function formatTextContent(txtTables: Object[], lastCalculation: any): Promise<string> {
+  const { radionuclide, formattedRadionuclide, age, exposureLengthYears, exposureLengthDays, intakeMethod } = lastCalculation;
+
+  let text = ' '.repeat(26) + ((intakeMethod == 'inh') ? 'Inhalation' : 'Ingestion');
+  text += ' Risk Coefficients\n'
+  text += ' '.repeat(22) + `${radionuclide}, Exposed Ages ${age}-${age + exposureLengthYears} and ${exposureLengthDays} Days\n`;
+
+  const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: formattedRadionuclide }) : await invoke('ingestion_types', { radionuclide: formattedRadionuclide })
+  const absorptionTypes = (intakeMethod == 'ing') ? types.split("-").concat(types.split("-")) : types.split("-");
+
+  console.log(absorptionTypes)
 
   for (let i = 0; i < txtTables.length; i++) {
     text += `
+                       Absorption Type: ${(intakeMethod == 'ing' && i < absorptionTypes.length / 2) ? 'Drinking Water' : (intakeMethod == 'ing') ? 'Diet' : ''}${(absorptionTypes[i] !== 'n' && intakeMethod == 'inh') ? absorptionTypes[i].toUpperCase() : (absorptionTypes[i] !== 'n' && intakeMethod == 'ing') ? ' (' + absorptionTypes[i].toUpperCase() + ')' : ''}
             --------Mortality (/Bq)--------   -------Morbidity (/Bq)------- 
  Cancer     Male        Female         Both   Male        Female        Both
  ---------------------------------------------------------------------------\n`;
@@ -31,6 +42,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   const [age, setAge] = useState<string | null>(null);
   const [exposureLength, setExposureLength] = useState<string | null>(null);
   const [fractionalExposure, setFractionalExposure] = useState<string | null>(null);
+  const [lastCalculation, setLastCalculation] = useState<any>(null);
   const intakeMethods: string[] = ["Ingestion", "Inhalation"];
 
   async function handleCalculate() {
@@ -42,6 +54,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
     const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLengthYears": Number(exposureLength), "exposureLengthDays": Number(fractionalExposure) }
     console.log(form);
     setCalculation(form);
+    setLastCalculation(form);
 
     const history = new Store('.history.dat');
     if (!(await history.has(radionuclide))) {
@@ -57,6 +70,10 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   }
 
   async function handleExport() {
+    if (lastCalculation == null) {
+      return;
+    }
+
     const settings = new Store('.settings.dat');
     const fileType = await settings.get('fileType') as string;
 
@@ -91,7 +108,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
       });
     }
     else if (fileType == 'txt') {
-      const content = formatTextContent(txtTables);
+      const content = await formatTextContent(txtTables, lastCalculation);
       await writeTextFile(path, content);
     }
   }
