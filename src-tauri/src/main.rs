@@ -19,6 +19,7 @@ mod types;
 fn main() {
     tauri::Builder::default()
         .plugin(inhalation_coefficients::inh_ac224::init())
+        /*
         .plugin(inhalation_coefficients::inh_ac224::init())
         .plugin(inhalation_coefficients::inh_tl202::init())
         .plugin(inhalation_coefficients::inh_co58m::init())
@@ -752,7 +753,9 @@ fn main() {
         .plugin(inhalation_coefficients::inh_br80::init())
         .plugin(inhalation_coefficients::inh_cl38::init())
         .plugin(inhalation_coefficients::inh_lu176m::init())
+        */
         .plugin(ingestion_coefficients::ing_tl198::init())
+        /*
         .plugin(ingestion_coefficients::ing_be10::init())
         .plugin(ingestion_coefficients::ing_sc43::init())
         .plugin(ingestion_coefficients::ing_pu234::init())
@@ -930,7 +933,6 @@ fn main() {
         .plugin(ingestion_coefficients::ing_cm243::init())
         .plugin(ingestion_coefficients::ing_ra223::init())
         .plugin(ingestion_coefficients::ing_yb169::init())
-        /*
         .plugin(ingestion_coefficients::ing_eu152m::init())
         .plugin(ingestion_coefficients::ing_cs135::init())
         .plugin(ingestion_coefficients::ing_i129::init())
