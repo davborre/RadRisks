@@ -1,14 +1,14 @@
 import { Dialog } from '@headlessui/react'
 import { useState } from 'react';
 
-const Modal = ({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean[]>> }) => {
+const Modal = ({ isOpen, setOpen }: { isOpen: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
 
   const [tab, setTab] = useState(0);
 
   return (
     <Dialog
       open={isOpen}
-      onClose={() => setIsOpen([true, false, false, false, false])}
+      onClose={() => setOpen(false)}
       className="relative z-50"
     >
       <div className="fixed inset-0 bg-black/50" aria-hidden="true" />

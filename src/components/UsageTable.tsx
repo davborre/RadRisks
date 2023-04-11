@@ -16,7 +16,7 @@ const UsageTable = () => {
       <thead className="bg-epablue text-white">
         <tr>
           <th />
-          <th colSpan={2}>Inhalation</th>
+          <th colSpan={2}>Inhalation (m3/d)</th>
           <th colSpan={2}>Tapwater Usage (L/d)</th>
           <th colSpan={2}>Dietary (kcal/d)</th>
         </tr>
