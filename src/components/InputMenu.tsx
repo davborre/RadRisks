@@ -13,9 +13,12 @@ import jsPDF from "jspdf";
 async function formatTextContent(txtTables: Object[], lastCalculation: any): Promise<string> {
   const { radionuclide, formattedRadionuclide, age, exposureLengthYears, exposureLengthDays, intakeMethod } = lastCalculation;
 
+  const agePlusExposure = age.map((a: number, i: number) => a + exposureLengthYears[i]);
+  const exposedString = `${radionuclide}, Exposed Ages: [${age.join(',')}]-[${agePlusExposure.join(',')}] and [${exposureLengthDays.join(',')}] Days`;
+
   let text = ' '.repeat(26) + ((intakeMethod == 'inh') ? 'Inhalation' : 'Ingestion');
   text += ' Risk Coefficients\n'
-  text += ' '.repeat(22) + `${radionuclide}, Exposed Ages ${age}-${age + exposureLengthYears} and ${exposureLengthDays} Days\n`;
+  text += ' '.repeat(22) + `${exposedString}\n`;
 
   const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: formattedRadionuclide }) : await invoke('ingestion_types', { radionuclide: formattedRadionuclide })
   const absorptionTypes = (intakeMethod == 'ing') ? types.split("-").concat(types.split("-")) : types.split("-");
@@ -65,7 +68,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
     }
 
     const prevHistory = new Set(await history.get(radionuclide) as string[]);
-    prevHistory.add(`${age}, ${exposureLength} yrs ${fractionalExposure} dys, ${intakeMethod}`);
+    prevHistory.add(`[${age.join(',')}]; [${exposureLength.join(',')}] yrs [${fractionalExposure.join(',')}] dys; ${intakeMethod}`);
     history.set(radionuclide, Array.from(prevHistory));
     await history.save();
 
