@@ -183,7 +183,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
         </div>
         {Array.from(Array(age.length), (e, i) => {
           return (
-            <div className="flex flex-col gap-10 odd:bg-epaolivegreen odd:py-10 p-2 relative">
+            <div key={i} className="flex flex-col gap-10 odd:bg-epaolivegreen odd:py-10 p-2 relative">
               <div>
                 <label>Age at exposure:{' '}
                   <Dropdown options={ages} width={90} value={age[i]} setValue={(newValue: string | null) => handleDropdownChange('age', newValue, i)} />
@@ -203,7 +203,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
                   </div>
                 </label>
               </div>
-              {(i == age.length - 1) &&
+              {(i == age.length - 1 && i != 0) &&
                 <Minus
                   onClick={() => handleSubtractAgeRange()}
                   className="absolute bottom-10 right-2"
