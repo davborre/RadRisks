@@ -11,7 +11,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
 
   useEffect(() => {
     (async () => {
-      if (!radionuclide || !formattedRadionuclide || age == null || exposureLengthYears == null || exposureLengthDays == null || !intakeMethod) {
+      if (!radionuclide || !formattedRadionuclide || age.includes(null) || exposureLengthYears.includes(null) || exposureLengthDays.includes(null) || !intakeMethod) {
         return;
       }
 
@@ -31,8 +31,6 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
             for (let j = 0; j < 6; j++) {
               let lifetimeRisk = 0;
               let unitIntake = 0;
-              const startingYear = age;
-              const endingYear = age + exposureLengthYears;
               let survCol;
               let usageCol;
               if (j == 0 || j == 3) {
@@ -45,34 +43,40 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
                 survCol = 0;
                 usageCol = 0;
               }
-              for (let k = startingYear; k <= endingYear; k++) {
-                if (k == startingYear || k == endingYear) {
-                  lifetimeRisk += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
-                  unitIntake += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+
+              for (let x = 0; x < age.length; x++) {
+                const startingYear = age[x];
+                const endingYear = age[x] + exposureLengthYears[x];
+
+                for (let k = startingYear; k <= endingYear; k++) {
+                  if (k == startingYear || k == endingYear) {
+                    lifetimeRisk += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
+                    unitIntake += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+                  }
+                  else {
+                    lifetimeRisk += survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
+                    unitIntake += survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+                  }
                 }
-                else {
-                  lifetimeRisk += survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
-                  unitIntake += survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
-                }
+
+                //fractional exposure
+
+                const riskSlope = (riskCoefficientsTable[endingYear + 1][j] - riskCoefficientsTable[endingYear][j]) / 365; // units = /day
+                const survSlope = (survivalTable[endingYear + 1][survCol] - survivalTable[endingYear][survCol]) / 365; //units = /day
+                const usageSlope = (usageTable[endingYear + 1][usageCol] - usageTable[endingYear][usageCol]) / 365; //units = /day^2
+
+                //trapezoidal integration = (b1 + b2) * 0.5h = [f(a) + f(b)] * 0.5dx
+                const endingRisk = riskCoefficientsTable[endingYear][j]; //at ending year
+                const endingSurv = survivalTable[endingYear][survCol];
+                const endingUsage = usageTable[endingYear][usageCol];
+
+                const riskFraction = endingRisk + (riskSlope * exposureLengthDays[x]);
+                const survFraction = endingSurv + (survSlope * exposureLengthDays[x]);
+                const usageFraction = endingUsage + (usageSlope * exposureLengthDays[x]);
+
+                lifetimeRisk += (0.5 * exposureLengthDays[x] / 365) * ((endingSurv * endingUsage * 365 * endingRisk) + (survFraction * usageFraction * 365 * riskFraction));
+                unitIntake += (0.5 * exposureLengthDays[x] / 365) * ((endingSurv * endingUsage * 365) + (survFraction * usageFraction * 365));
               }
-
-              //fractional exposure
-
-              const riskSlope = (riskCoefficientsTable[endingYear + 1][j] - riskCoefficientsTable[endingYear][j]) / 365; // units = /day
-              const survSlope = (survivalTable[endingYear + 1][survCol] - survivalTable[endingYear][survCol]) / 365; //units = /day
-              const usageSlope = (usageTable[endingYear + 1][usageCol] - usageTable[endingYear][usageCol]) / 365; //units = /day^2
-
-              //trapezoidal integration = (b1 + b2) * 0.5h = [f(a) + f(b)] * 0.5dx
-              const endingRisk = riskCoefficientsTable[endingYear][j]; //at ending year
-              const endingSurv = survivalTable[endingYear][survCol];
-              const endingUsage = usageTable[endingYear][usageCol];
-
-              const riskFraction = endingRisk + (riskSlope * exposureLengthDays);
-              const survFraction = endingSurv + (survSlope * exposureLengthDays);
-              const usageFraction = endingUsage + (usageSlope * exposureLengthDays);
-
-              lifetimeRisk += (0.5 * exposureLengthDays / 365) * ((endingSurv * endingUsage * 365 * endingRisk) + (survFraction * usageFraction * 365 * riskFraction));
-              unitIntake += (0.5 * exposureLengthDays / 365) * ((endingSurv * endingUsage * 365) + (survFraction * usageFraction * 365));
 
               calculations.push(lifetimeRisk / unitIntake);
             }
@@ -92,8 +96,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
               for (let j = 0; j < 6; j++) {
                 let lifetimeRisk = 0;
                 let unitIntake = 0;
-                const startingYear = age;
-                const endingYear = age + exposureLengthYears;
+
                 let survCol;
                 let usageCol;
                 if (usage == 0) { //tapwater
@@ -119,34 +122,40 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
                     usageCol = 4;
                   }
                 }
-                for (let k = startingYear; k <= endingYear; k++) {
-                  if (k == startingYear || k == endingYear) {
-                    lifetimeRisk += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
-                    unitIntake += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+
+                for (let x = 0; x < age.length; x++) {
+                  const startingYear = age[x];
+                  const endingYear = age[x] + exposureLengthYears[x];
+
+                  for (let k = startingYear; k <= endingYear; k++) {
+                    if (k == startingYear || k == endingYear) {
+                      lifetimeRisk += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
+                      unitIntake += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+                    }
+                    else {
+                      lifetimeRisk += survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
+                      unitIntake += survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+                    }
                   }
-                  else {
-                    lifetimeRisk += survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
-                    unitIntake += survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
-                  }
+
+                  //fractional exposure
+
+                  const riskSlope = (riskCoefficientsTable[endingYear + 1][j] - riskCoefficientsTable[endingYear][j]) / 365;
+                  const survSlope = (survivalTable[endingYear + 1][survCol] - survivalTable[endingYear][survCol]) / 365;
+                  const usageSlope = (usageTable[endingYear + 1][usageCol] - usageTable[endingYear][usageCol]) / 365;
+
+                  //trapezoidal integration = (b1 + b2) * 0.5h = [f(a) + f(b)] * 0.5dx
+                  const endingRisk = riskCoefficientsTable[endingYear][j]; //at ending year
+                  const endingSurv = survivalTable[endingYear][survCol];
+                  const endingUsage = usageTable[endingYear][usageCol];
+
+                  const riskFraction = endingRisk + (riskSlope * exposureLengthDays[x]);
+                  const survFraction = endingSurv + (survSlope * exposureLengthDays[x]);
+                  const usageFraction = endingUsage + (usageSlope * exposureLengthDays[x]);
+
+                  lifetimeRisk += (0.5 * exposureLengthDays[x] / 365) * ((endingSurv * endingUsage * 365 * endingRisk) + (survFraction * usageFraction * 365 * riskFraction));
+                  unitIntake += (0.5 * exposureLengthDays[x] / 365) * ((endingSurv * endingUsage * 365) + (survFraction * usageFraction * 365));
                 }
-
-                //fractional exposure
-
-                const riskSlope = (riskCoefficientsTable[endingYear + 1][j] - riskCoefficientsTable[endingYear][j]) / 365;
-                const survSlope = (survivalTable[endingYear + 1][survCol] - survivalTable[endingYear][survCol]) / 365;
-                const usageSlope = (usageTable[endingYear + 1][usageCol] - usageTable[endingYear][usageCol]) / 365;
-
-                //trapezoidal integration = (b1 + b2) * 0.5h = [f(a) + f(b)] * 0.5dx
-                const endingRisk = riskCoefficientsTable[endingYear][j]; //at ending year
-                const endingSurv = survivalTable[endingYear][survCol];
-                const endingUsage = usageTable[endingYear][usageCol];
-
-                const riskFraction = endingRisk + (riskSlope * exposureLengthDays);
-                const survFraction = endingSurv + (survSlope * exposureLengthDays);
-                const usageFraction = endingUsage + (usageSlope * exposureLengthDays);
-
-                lifetimeRisk += (0.5 * exposureLengthDays / 365) * ((endingSurv * endingUsage * 365 * endingRisk) + (survFraction * usageFraction * 365 * riskFraction));
-                unitIntake += (0.5 * exposureLengthDays / 365) * ((endingSurv * endingUsage * 365) + (survFraction * usageFraction * 365));
 
                 calculations.push(lifetimeRisk / unitIntake);
               }
@@ -162,13 +171,16 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
     })();
   }, [calculation])
 
+  const agePlusExposure = age.map((a: number, i: number) => a + exposureLengthYears[i]);
+  const exposedString = `${radionuclide}, Exposed Ages: [${age.join(',')}]-[${agePlusExposure.join(',')}] and [${exposureLengthDays.join(',')}] Days`;
+
   return (
     <div className="grow p-20 h-screen overflow-auto">
       <div id="tables" className="relative">
         {intakeMethod &&
           <div>
             <h1 className="text-center font-bold text-3xl mb-3"> {(intakeMethod == 'inh') ? 'Inhalation' : 'Ingestion'} Risk Coefficients</h1>
-            <h2 className="text-center font-bold text-2xl mb-20">{radionuclide}, Exposed Ages {age}-{age + exposureLengthYears} and {exposureLengthDays} Days</h2>
+            <h2 className="text-center font-bold text-2xl mb-20">{exposedString}</h2>
           </div>
         }
         {tables.map((table, i) => {
