@@ -1,15 +1,29 @@
 import { ChevronDown } from "react-feather";
 import { save } from "@tauri-apps/api/dialog";
 import { writeBinaryFile, writeTextFile } from "@tauri-apps/api/fs";
+import { invoke } from '@tauri-apps/api/tauri';
 import { useEffect, useState } from "react";
 import { Store } from "tauri-plugin-store-api";
 import jsPDF from "jspdf";
 
-function formatTextContent(txtTables: Object[]): string {
-  let text = "";
+async function formatTextContent(txtTables: Object[], lastCalculation: any): Promise<string> {
+  const { radionuclide, formattedRadionuclide, age, exposureLengthYears, exposureLengthDays, intakeMethod } = lastCalculation;
+
+  const agePlusExposure = age.map((a: number, i: number) => a + exposureLengthYears[i]);
+  const exposedString = `${radionuclide}, Exposed Ages: [${age.join(',')}]-[${agePlusExposure.join(',')}] and [${exposureLengthDays.join(',')}] Days`;
+
+  let text = ' '.repeat(24) + ((intakeMethod == 'inh') ? 'Inhalation' : 'Ingestion');
+  text += ' Risk Coefficients\n'
+  text += ' '.repeat((75 - exposedString.length) / 2) + `${exposedString}\n`;
+
+  const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: formattedRadionuclide }) : await invoke('ingestion_types', { radionuclide: formattedRadionuclide })
+  const absorptionTypes = (intakeMethod == 'ing') ? types.split("-").concat(types.split("-")) : types.split("-");
+
+  console.log(absorptionTypes)
 
   for (let i = 0; i < txtTables.length; i++) {
     text += `
+                             Absorption Type: ${(intakeMethod == 'ing' && i < absorptionTypes.length / 2) ? 'Drinking Water' : (intakeMethod == 'ing') ? 'Diet' : ''}${(absorptionTypes[i] !== 'n' && intakeMethod == 'inh') ? absorptionTypes[i].toUpperCase() : (absorptionTypes[i] !== 'n' && intakeMethod == 'ing') ? ' (' + absorptionTypes[i].toUpperCase() + ')' : ''}
             --------Mortality (/Bq)--------   -------Morbidity (/Bq)------- 
  Cancer     Male        Female         Both   Male        Female        Both
  ---------------------------------------------------------------------------\n`;
@@ -26,6 +40,7 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
   const [history, setHistory] = useState<Object | null>(null)
   const [selectedRadionuclide, setSelectedRadionuclide] = useState('');
   const [selectedCalculation, setSelectedCalculation] = useState('');
+  const [calculationOnScreen, setCalculationOnScreen] = useState<any>(null);
 
   async function handleClear() {
     const storedHistory = new Store('.history.dat');
@@ -69,7 +84,7 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
       });
     }
     else if (fileType == 'txt') {
-      const content = formatTextContent(txtTables);
+      const content = await formatTextContent(txtTables, calculationOnScreen);
       await writeTextFile(path, content);
     }
   }
@@ -87,6 +102,7 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
     const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": age, "exposureLengthYears": exposureLengthYears, "exposureLengthDays": exposureLengthDays }
     console.log(form);
     setCalculation(form);
+    setCalculationOnScreen(form);
     setSelectedRadionuclide(radionuclide);
     setSelectedCalculation(entry);
   }
