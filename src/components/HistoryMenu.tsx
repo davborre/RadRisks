@@ -75,15 +75,16 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
   }
 
   function handleSelect(radionuclide: string, entry: string) {
-    const inputs = entry.split(", ");
-    const age = inputs[0];
+    const inputs = entry.split("; ");
+    const age = JSON.parse(inputs[0]);
+    console.log(age);
     const exposureLength = inputs[1].split(" ");
-    const exposureLengthYears = exposureLength[0];
-    const exposureLengthDays = exposureLength[2];
+    const exposureLengthYears = JSON.parse(exposureLength[0]);
+    const exposureLengthDays = JSON.parse(exposureLength[2]);
     const intakeMethod = inputs[2];
 
     const formattedRadionuclide = radionuclide.split("-").join("").toLowerCase();
-    const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLengthYears": Number(exposureLengthYears), "exposureLengthDays": Number(exposureLengthDays) }
+    const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": age, "exposureLengthYears": exposureLengthYears, "exposureLengthDays": exposureLengthDays }
     console.log(form);
     setCalculation(form);
     setSelectedRadionuclide(radionuclide);
@@ -109,15 +110,15 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
       <h1 className="font-bold pl-2 mb-8">History</h1>
       {history && Object.entries(history).map((entry, i) => {
         return (
-          <details className="even:bg-epaolivegreen p-2 select-none group">
+          <details className="even:bg-epaolivegreen p-2 select-none group" key={i}>
             <summary className={`flex ${(entry[0] == selectedRadionuclide) ? 'font-bold' : ''}`}>
               {entry[0]}
               <ChevronDown className="ml-auto group-open:rotate-180" />
             </summary>
             <ul className="pl-2 pt-2 space-y-2 list-none text-sm">
-              {entry[1].map((subhistory: string) => {
+              {entry[1].map((subhistory: string, j: number) => {
                 return (
-                  <li className={`${(entry[0] == selectedRadionuclide && subhistory == selectedCalculation) ? 'font-bold' : ''}`} onClick={() => handleSelect(entry[0], subhistory)}>{subhistory}</li>
+                  <li className={`${(entry[0] == selectedRadionuclide && subhistory == selectedCalculation) ? 'font-bold' : ''}`} key={j} onClick={() => handleSelect(entry[0], subhistory)}>{subhistory}</li>
                 )
               })}
             </ul>
