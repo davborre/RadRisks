@@ -1,3 +1,6 @@
+pub mod ing_ac224;
+
+/*
 pub mod ing_tl198;
 pub mod ing_be10;
 pub mod ing_sc43;
@@ -176,7 +179,6 @@ pub mod ing_th232;
 pub mod ing_cm243;
 pub mod ing_ra223;
 pub mod ing_yb169;
-/*
 pub mod ing_eu152m;
 pub mod ing_cs135;
 pub mod ing_i129;
@@ -649,7 +651,6 @@ pub mod ing_in115;
 pub mod ing_la132;
 pub mod ing_nb98;
 pub mod ing_ra227;
-pub mod ing_ac224;
 pub mod ing_pu240;
 pub mod ing_tb150;
 pub mod ing_te133m;
