@@ -11,7 +11,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
 
   useEffect(() => {
     (async () => {
-      if (!radionuclide || !formattedRadionuclide || age.includes(null) || exposureLengthYears.includes(null) || exposureLengthDays.includes(null) || !intakeMethod) {
+      if (!radionuclide || !formattedRadionuclide || !age || age.includes(null) || exposureLengthYears.includes(null) || exposureLengthDays.includes(null) || !intakeMethod) {
         return;
       }
 
