@@ -171,8 +171,8 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
     })();
   }, [calculation])
 
-  const agePlusExposure = age.map((a: number, i: number) => a + exposureLengthYears[i]);
-  const exposedString = `${radionuclide}, Exposed Ages: [${age.join(',')}]-[${agePlusExposure.join(',')}] and [${exposureLengthDays.join(',')}] Days`;
+  const agePlusExposure = (age) ? age.map((a: number, i: number) => a + exposureLengthYears[i]) : '';
+  const exposedString = (age) ? `${radionuclide}, Exposed Ages: [${age.join(',')}]-[${agePlusExposure.join(',')}] and [${exposureLengthDays.join(',')}] Days` : '';
 
   return (
     <div className="grow p-20 h-screen overflow-auto">
