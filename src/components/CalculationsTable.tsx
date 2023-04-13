@@ -31,6 +31,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
             for (let j = 0; j < 6; j++) {
               let lifetimeRisk = 0;
               let unitIntake = 0;
+
               let survCol;
               let usageCol;
               if (j == 0 || j == 3) {

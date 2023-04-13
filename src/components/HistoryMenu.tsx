@@ -41,7 +41,7 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
   const [selectedRadionuclide, setSelectedRadionuclide] = useState('');
   const [selectedCalculation, setSelectedCalculation] = useState('');
   const [calculationOnScreen, setCalculationOnScreen] = useState<any>(null);
-
+  
   async function handleClear() {
     const storedHistory = new Store('.history.dat');
     await storedHistory.clear();
