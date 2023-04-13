@@ -754,8 +754,9 @@ fn main() {
         .plugin(inhalation_coefficients::inh_cl38::init())
         .plugin(inhalation_coefficients::inh_lu176m::init())
         */
-        .plugin(ingestion_coefficients::ing_tl198::init())
+        .plugin(ingestion_coefficients::ing_ac224::init())
         /*
+        .plugin(ingestion_coefficients::ing_tl198::init())
         .plugin(ingestion_coefficients::ing_be10::init())
         .plugin(ingestion_coefficients::ing_sc43::init())
         .plugin(ingestion_coefficients::ing_pu234::init())
@@ -1405,7 +1406,6 @@ fn main() {
         .plugin(ingestion_coefficients::ing_la132::init())
         .plugin(ingestion_coefficients::ing_nb98::init())
         .plugin(ingestion_coefficients::ing_ra227::init())
-        .plugin(ingestion_coefficients::ing_ac224::init())
         .plugin(ingestion_coefficients::ing_pu240::init())
         .plugin(ingestion_coefficients::ing_tb150::init())
         .plugin(ingestion_coefficients::ing_te133m::init())

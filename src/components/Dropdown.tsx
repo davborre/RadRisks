@@ -1,6 +1,7 @@
 import { Autocomplete } from "@mui/material";
+import React from "react";
 
-const Dropdown = ({ options, width, value, setValue }: { options: string[], width: number, value: string | null, setValue: React.Dispatch<React.SetStateAction<string | null>> }) => {
+const Dropdown = ({ options, width, value, setValue }: { options: string[], width: number, value: string | null, setValue: (newValue: string | null) => void }) => {
   return (
     <Autocomplete
       value={value}

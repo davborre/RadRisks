@@ -3,16 +3,31 @@ import ComboBox from "./ComboBox";
 import { radionuclides } from "../data/radionuclides";
 import { ages } from "../data/ages";
 import { useState } from "react";
+import { Plus, Minus } from "react-feather";
 import { writeBinaryFile, writeTextFile } from "@tauri-apps/api/fs";
 import { save } from "@tauri-apps/api/dialog";
 import { Store } from "tauri-plugin-store-api";
+import { invoke } from '@tauri-apps/api/tauri';
 import jsPDF from "jspdf";
 
-function formatTextContent(txtTables: Object[]): string {
-  let text = "";
+async function formatTextContent(txtTables: Object[], lastCalculation: any): Promise<string> {
+  const { radionuclide, formattedRadionuclide, age, exposureLengthYears, exposureLengthDays, intakeMethod } = lastCalculation;
+
+  const agePlusExposure = age.map((a: number, i: number) => a + exposureLengthYears[i]);
+  const exposedString = `${radionuclide}, Exposed Ages: [${age.join(',')}]-[${agePlusExposure.join(',')}] and [${exposureLengthDays.join(',')}] Days`;
+
+  let text = ' '.repeat(24) + ((intakeMethod == 'inh') ? 'Inhalation' : 'Ingestion');
+  text += ' Risk Coefficients\n'
+  text += ' '.repeat((75 - exposedString.length) / 2) + `${exposedString}\n`;
+
+  const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: formattedRadionuclide }) : await invoke('ingestion_types', { radionuclide: formattedRadionuclide })
+  const absorptionTypes = (intakeMethod == 'ing') ? types.split("-").concat(types.split("-")) : types.split("-");
+
+  console.log(absorptionTypes)
 
   for (let i = 0; i < txtTables.length; i++) {
     text += `
+                             Absorption Type: ${(intakeMethod == 'ing' && i < absorptionTypes.length / 2) ? 'Drinking Water' : (intakeMethod == 'ing') ? 'Diet' : ''}${(absorptionTypes[i] !== 'n' && intakeMethod == 'inh') ? absorptionTypes[i].toUpperCase() : (absorptionTypes[i] !== 'n' && intakeMethod == 'ing') ? ' (' + absorptionTypes[i].toUpperCase() + ')' : ''}
             --------Mortality (/Bq)--------   -------Morbidity (/Bq)------- 
  Cancer     Male        Female         Both   Male        Female        Both
  ---------------------------------------------------------------------------\n`;
@@ -25,23 +40,27 @@ function formatTextContent(txtTables: Object[]): string {
   return text;
 }
 
+const intakeMethods: string[] = ["Ingestion", "Inhalation"];
+const days = Array.from(Array(365).keys()).slice().map(String);
+
 const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<any>>, txtTables: any }) => {
   const [radionuclide, setRadionuclide] = useState<string | null>(null);
   const [intakeMethod, setIntakeMethod] = useState<string | null>(null);
-  const [age, setAge] = useState<string | null>(null);
-  const [exposureLength, setExposureLength] = useState<string | null>(null);
-  const [fractionalExposure, setFractionalExposure] = useState<string | null>(null);
-  const intakeMethods: string[] = ["Ingestion", "Inhalation"];
+  const [age, setAge] = useState<(string | null)[]>([null]);
+  const [exposureLength, setExposureLength] = useState<(string | null)[]>([null]);
+  const [fractionalExposure, setFractionalExposure] = useState<(string | null)[]>([null]);
+  const [lastCalculation, setLastCalculation] = useState<any>(null);
 
   async function handleCalculate() {
-    if (!radionuclide || !intakeMethod || !age || !exposureLength || !fractionalExposure) {
+    if (!radionuclide || !intakeMethod || age.includes(null) || exposureLength.includes(null) || fractionalExposure.includes(null)) {
       return;
     }
 
     const formattedRadionuclide = radionuclide.split("-").join("").toLowerCase();
-    const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": Number(age), "exposureLengthYears": Number(exposureLength), "exposureLengthDays": Number(fractionalExposure) }
+    const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": age.map(Number), "exposureLengthYears": exposureLength.map(Number), "exposureLengthDays": fractionalExposure.map(Number) }
     console.log(form);
     setCalculation(form);
+    setLastCalculation(form);
 
     const history = new Store('.history.dat');
     if (!(await history.has(radionuclide))) {
@@ -49,7 +68,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
     }
 
     const prevHistory = new Set(await history.get(radionuclide) as string[]);
-    prevHistory.add(`${age}, ${exposureLength} yrs ${fractionalExposure} dys, ${intakeMethod}`);
+    prevHistory.add(`[${age.join(',')}]; [${exposureLength.join(',')}] yrs [${fractionalExposure.join(',')}] dys; ${intakeMethod}`);
     history.set(radionuclide, Array.from(prevHistory));
     await history.save();
 
@@ -57,6 +76,10 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   }
 
   async function handleExport() {
+    if (lastCalculation == null) {
+      return;
+    }
+
     const settings = new Store('.settings.dat');
     const fileType = await settings.get('fileType') as string;
 
@@ -91,47 +114,115 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
       });
     }
     else if (fileType == 'txt') {
-      const content = formatTextContent(txtTables);
+      const content = await formatTextContent(txtTables, lastCalculation);
       await writeTextFile(path, content);
     }
   }
 
-  const slicedAges = (age == "0") ? ages : ages.slice(0, -Number(age));
-  const days = Array.from(Array(366).keys()).slice().map(String);
+  function handleDropdownChange(dropdown: string, value: string | null, index: number) {
+    if (dropdown == 'radionuclide') {
+      setRadionuclide(value);
+    } else if (dropdown == 'intake') {
+      setIntakeMethod(value);
+    } else if (dropdown == 'age') {
+      const nextAge = age.map((a, i) => {
+        if (i === index) {
+          return value;
+        } else {
+          return a;
+        }
+      });
+      setAge(nextAge);
+    } else if (dropdown == 'exposureLength') {
+      const nextExposure = exposureLength.map((e, i) => {
+        if (i === index) {
+          return value;
+        } else {
+          return e;
+        }
+      });
+      setExposureLength(nextExposure);
+    } else if (dropdown == 'fractionalExposure') {
+      const nextFrac = age.map((f, i) => {
+        if (i === index) {
+          return value;
+        } else {
+          return f;
+        }
+      });
+      setFractionalExposure(nextFrac);
+    }
+  }
+
+  function slicedAges(i: number) {
+    return (age[i] == "0") ? ages : ages.slice(0, -Number(age[i]));
+  }
+
+  function handleAddAgeRange() {
+    setAge([...age, null]);
+    setExposureLength([...exposureLength, null]);
+    setFractionalExposure([...fractionalExposure, null]);
+  }
+
+  function handleSubtractAgeRange() {
+    setAge(age.slice(0, -1));
+    setExposureLength(exposureLength.slice(0, -1));
+    setFractionalExposure(fractionalExposure.slice(0, -1));
+  }
 
   return (
-    <div className="h-screen w-80 bg-epasagegreen px-2 pt-4 flex flex-col gap-20 relative">
-      <h1 className="font-bold">Inputs</h1>
-      <div>
-        <label>Radionuclide:{' '}
-          <Dropdown options={radionuclides} width={100} value={radionuclide} setValue={setRadionuclide} />
-        </label>
-      </div>
-      <div>
-        <label className="grow">Intake method:{' '}
-          <Dropdown options={intakeMethods} width={100} value={intakeMethod} setValue={setIntakeMethod} />
-        </label>
-      </div>
-      <div>
-        <label>Age at exposure:{' '}
-          <Dropdown options={ages} width={90} value={age} setValue={setAge} />
-        </label>
-      </div>
-      <div>
-        <label className="flex gap-2">Length of exposure:{' '}
-          <div className="flex flex-col gap-2">
-            <div>
-              <Dropdown options={slicedAges} width={50} value={exposureLength} setValue={setExposureLength} />
-              {' '}years
+    <div className="h-screen w-80 bg-epasagegreen pt-4 flex flex-col gap-20 relative">
+      <h1 className="font-bold px-2">Inputs</h1>
+      <div className="grow flex flex-col gap-10 overflow-auto">
+        <div className="px-2">
+          <label>Radionuclide:{' '}
+            <Dropdown options={radionuclides} width={100} value={radionuclide} setValue={(newValue: string | null) => handleDropdownChange('radionuclide', newValue, 0)} />
+          </label>
+        </div>
+        <div className="px-2">
+          <label className="grow">Intake method:{' '}
+            <Dropdown options={intakeMethods} width={100} value={intakeMethod} setValue={(newValue: string | null) => handleDropdownChange('intake', newValue, 0)} />
+          </label>
+        </div>
+        {Array.from(Array(age.length), (e, i) => {
+          return (
+            <div key={i} className="flex flex-col gap-10 odd:bg-epaolivegreen odd:py-10 p-2 relative">
+              <div>
+                <label>Age at exposure:{' '}
+                  <Dropdown options={ages} width={90} value={age[i]} setValue={(newValue: string | null) => handleDropdownChange('age', newValue, i)} />
+                </label>
+              </div>
+              <div>
+                <label className="flex gap-2">Length of exposure:{' '}
+                  <div className="flex flex-col gap-2">
+                    <div>
+                      <Dropdown options={slicedAges(i)} width={50} value={exposureLength[i]} setValue={(newValue: string | null) => handleDropdownChange('exposureLength', newValue, i)} />
+                      {' '}years
+                    </div>
+                    <div>
+                      <Dropdown options={days} width={50} value={fractionalExposure[i]} setValue={(newValue: string | null) => handleDropdownChange('fractionalExposure', newValue, i)} />
+                      {' '}days
+                    </div>
+                  </div>
+                </label>
+              </div>
+              {(i == age.length - 1 && i != 0) &&
+                <Minus
+                  onClick={() => handleSubtractAgeRange()}
+                  className="absolute bottom-10 right-2"
+                />
+              }
+              {(i == age.length - 1) &&
+                <Plus
+                  onClick={() => handleAddAgeRange()}
+                  className="absolute bottom-2 right-2"
+                />
+              }
             </div>
-            <div>
-              <Dropdown options={days} width={50} value={fractionalExposure} setValue={setFractionalExposure} />
-              {' '}days
-            </div>
-          </div>
-        </label>
+          )
+        })}
       </div>
-      <div className="flex absolute bottom-0 inset-x-0 pb-4">
+      <div className="flex pb-4">
         <button
           type="button"
           onClick={() => handleCalculate()}
