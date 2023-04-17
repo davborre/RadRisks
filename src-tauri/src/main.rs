@@ -9,17 +9,35 @@ use tauri::Wry;
 use tauri::Manager;
 use tauri_plugin_store::StoreCollection;
 use tauri_plugin_store::with_store;
+use std::fs::File;
+//use bincode::serialize_into;
+use bincode::deserialize_from;
+use std::collections::HashMap;
+use std::io::BufReader;
 
 mod survival;
 mod usage;
-mod inhalation_coefficients;
-mod ingestion_coefficients;
+//mod inhalation_coefficients;
+//mod ingestion_coefficients;
 mod types;
+
+#[tauri::command]
+fn coefficients(intake_method: String, radionuclide: String, absorption_type: String, cancer: String, handle: tauri::AppHandle) -> HashMap<String, [f32;6]> {
+  let path = format!("resources/{}/{}/{}/{}.bin", intake_method, radionuclide, absorption_type, cancer);
+  let resource_path = handle.path_resolver()
+    .resolve_resource(&path)
+    .expect("failed to resolve resource");
+
+  let output_file = File::open(&resource_path).unwrap();
+  let reader = BufReader::new(output_file);
+  
+  let output_data: HashMap<String, [f32;6]> = deserialize_from(reader).unwrap();
+  return output_data
+}
 
 fn main() {
     tauri::Builder::default()
-        .plugin(inhalation_coefficients::inh_ac224::init())
-        /*
+    /*
         .plugin(inhalation_coefficients::inh_ac224::init())
         .plugin(inhalation_coefficients::inh_tl202::init())
         .plugin(inhalation_coefficients::inh_co58m::init())
@@ -753,9 +771,7 @@ fn main() {
         .plugin(inhalation_coefficients::inh_br80::init())
         .plugin(inhalation_coefficients::inh_cl38::init())
         .plugin(inhalation_coefficients::inh_lu176m::init())
-        */
         .plugin(ingestion_coefficients::ing_ac224::init())
-        /*
         .plugin(ingestion_coefficients::ing_tl198::init())
         .plugin(ingestion_coefficients::ing_be10::init())
         .plugin(ingestion_coefficients::ing_sc43::init())
@@ -1505,6 +1521,7 @@ fn main() {
           Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+          coefficients,
           usage::usage, 
           survival::survival, 
           types::inhalation_types,

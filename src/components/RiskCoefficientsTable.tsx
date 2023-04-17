@@ -14,7 +14,7 @@ const RiskCoefficientsTable = ({ radionuclide, cancer, intakeMethod }: { radionu
       setAbsorptionTypes(absorptionTypes);
       const newTables: any = [];
       for (let i = 0; i < absorptionTypes.length; i++) {
-        const newTable = await invoke(`plugin:${intakeMethod}_${radionuclideNoDash}|${cancer}_${absorptionTypes[i]}`);
+        const newTable = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: radionuclideNoDash, absorptionType: absorptionTypes[i], cancer: cancer });
         newTables.push(newTable);
       }
 
@@ -28,7 +28,7 @@ const RiskCoefficientsTable = ({ radionuclide, cancer, intakeMethod }: { radionu
         tables.map((table, i) => {
           return (
             <div className="mt-20">
-              {(absorptionTypes[i] !== 'n') && <h2 className="text-center font-bold text-xl">Absorption Type: {absorptionTypes[i].toUpperCase()}</h2>}
+              {(absorptionTypes[i] !== 'n') && <h2 className="text-center font-bold text-xl">Absorption Type: {absorptionTypes[i]?.toUpperCase()}</h2>}
               <table className="table-auto mx-auto text-left">
                 <thead className="bg-epablue text-white">
                   <tr>

@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "risktab3",
-    "version": "0.0.0"
+    "version": "0.0.1"
   },
   "tauri": {
     "allowlist": {
@@ -37,7 +37,10 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": [
+        "resources/ingestion/*",
+        "resources/inhalation/*"
+      ],
       "shortDescription": "",
       "targets": "all",
       "windows": {
