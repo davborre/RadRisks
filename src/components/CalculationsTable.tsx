@@ -27,7 +27,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
           const table: any = {}
           for (let i = 0; i < cancers.length; i++) {
             const calculations: number[] = [];
-            const riskCoefficientsTable: any = await invoke(`plugin:${intakeMethod}_${formattedRadionuclide}|${cancers[i]}_${absorptionTypes[absorptionType]}`);
+            const riskCoefficientsTable: any = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: formattedRadionuclide, absorptionType: absorptionTypes[absorptionType], cancer: cancers[i] });
             for (let j = 0; j < 6; j++) {
               let lifetimeRisk = 0;
               let unitIntake = 0;
@@ -93,7 +93,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
             const table: any = {}
             for (let i = 0; i < cancers.length; i++) {
               const calculations: number[] = [];
-              const riskCoefficientsTable: any = await invoke(`plugin:${intakeMethod}_${formattedRadionuclide}|${cancers[i]}_${absorptionTypes[absorptionType]}`);
+              const riskCoefficientsTable: any = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: formattedRadionuclide, absorptionType: absorptionTypes[absorptionType], cancer: cancers[i] });
               for (let j = 0; j < 6; j++) {
                 let lifetimeRisk = 0;
                 let unitIntake = 0;
