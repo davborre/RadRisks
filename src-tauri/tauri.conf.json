@@ -37,7 +37,10 @@
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": [
+        "resources/ingestion/*",
+        "resources/inhalation/*"
+      ],
       "shortDescription": "",
       "targets": "all",
       "windows": {

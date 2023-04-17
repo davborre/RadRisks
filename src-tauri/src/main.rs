@@ -22,11 +22,15 @@ mod usage;
 mod types;
 
 #[tauri::command]
-fn coefficients(intake_method: String, radionuclide: String, absorption_type: String, cancer: String) -> HashMap<String, [f32;6]> {
+fn coefficients(intake_method: String, radionuclide: String, absorption_type: String, cancer: String, handle: tauri::AppHandle) -> HashMap<String, [f32;6]> {
   let path = format!("resources/{}/{}/{}/{}.bin", intake_method, radionuclide, absorption_type, cancer);
+  let resource_path = handle.path_resolver()
+    .resolve_resource(&path)
+    .expect("failed to resolve resource");
 
-  let output_file = File::open(&path).unwrap();
+  let output_file = File::open(&resource_path).unwrap();
   let reader = BufReader::new(output_file);
+  
   let output_data: HashMap<String, [f32;6]> = deserialize_from(reader).unwrap();
   return output_data
 }
