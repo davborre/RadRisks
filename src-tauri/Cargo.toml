@@ -1,6 +1,6 @@
 [package]
-name = "risktab3"
-version = "0.0.0"
+name = "radrisks"
+version = "0.0.1"
 description = "A Tauri App"
 authors = ["you"]
 license = ""

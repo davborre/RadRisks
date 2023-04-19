@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "risktab3",
+    "productName": "RadRisks",
     "version": "0.0.1"
   },
   "tauri": {
@@ -60,7 +60,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "risktab3",
+        "title": "RadRisks",
         "width": 800
       }
     ]
