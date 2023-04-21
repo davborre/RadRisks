@@ -145,14 +145,14 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
         <button
           type="button"
           onClick={() => handleClear()}
-          className="border-2 border-epablue text-epablue w-fit mx-auto p-2 rounded-lg hover:bg-epablue hover:text-white"
+          className="border-2 border-epablue text-epablue hover:bg-epablue hover:text-white dark:border-epagreen dark:text-epagreen dark:hover:bg-epagreen dark:hover:text-white w-fit mx-auto p-2 rounded-lg"
         >
           Clear
         </button>
         <button
           type="button"
           onClick={() => handleExport()}
-          className="border-2 border-epablue text-epablue w-fit mx-auto p-2 rounded-lg hover:bg-epablue hover:text-white"
+          className="border-2 border-epablue text-epablue hover:bg-epablue hover:text-white dark:border-epagreen dark:text-epagreen dark:hover:bg-epagreen dark:hover:text-white w-fit mx-auto p-2 rounded-lg"
         >
           Export
         </button>
