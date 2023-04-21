@@ -4,15 +4,10 @@
 )]
 
 use bincode::deserialize_from;
-use serde_json::json;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::BufReader;
-use std::path::PathBuf;
-use tauri::Manager;
-use tauri::Wry;
-use tauri_plugin_store::StoreCollection;
-use tauri_plugin_store::with_store;
+use tauri_plugin_store::StoreBuilder;
 
 mod survival;
 mod usage;
@@ -34,18 +29,29 @@ fn coefficients(intake_method: String, radionuclide: String, absorption_type: St
 
 fn main() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_store::Builder::default().build())
         .setup(|app| {
-          let stores = app.state::<StoreCollection<Wry>>();
-          let path = PathBuf::from(".settings.dat");
-            
-          with_store(app.handle(), stores, path, |store| {
-            if !store.has("fileType") {
-              store.insert("fileType".to_string(), json!("pdf"))
-            } else {
-              Ok(())
-            }
-          })?;
+          let default_settings = HashMap::from([
+            ("fileType".to_string(), "pdf".into()),
+            ("fractionalExposure".to_string(), true.into()),
+          ]);
+
+          let settings = StoreBuilder::new(app.handle(), ".settings.dat".parse()?)
+            .defaults(default_settings)
+            .build();
+          
+          let history = StoreBuilder::new(app.handle(), ".history.dat".parse()?)
+            .build();
+
+          let handle = app.handle();
+
+          std::thread::spawn(move || {
+            handle.plugin(
+              tauri_plugin_store::Builder::default()
+                .stores([settings, history])
+                .freeze()
+                .build(),
+            )
+          });
 
           Ok(())
         })
