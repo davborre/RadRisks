@@ -11,6 +11,8 @@ module.exports = {
         epasagegreen: "#DBDEC9",
         epaolivegreen: "#C9CFA6",
         epagreen: "#62C342",
+        blackolive: "#3A3E3B",
+        eerieblack: "#23231A",
       }
     },
   },

@@ -7,7 +7,7 @@ const NavBar = ({ setOpen, darkMode }: { setOpen: React.Dispatch<React.SetStateA
   const iconColor = darkMode ? '#C9F0EE' : '#0E6CB6'
 
   return (
-    <div className="h-screen w-20 flex flex-col overflow-auto dark:bg-gray-900">
+    <div className="h-screen w-20 flex flex-col overflow-auto dark:bg-black">
       <div className="h-fit flex flex-col">
         <NavBarButton icon={<BarChart size="50" color={iconColor} strokeWidth="1px" />} label="Inputs" route="/" />
         <NavBarButton icon={<BookOpen size="50" color={iconColor} strokeWidth="1px" />} label="History" route="history" />

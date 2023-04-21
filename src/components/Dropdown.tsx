@@ -4,6 +4,7 @@ import React from "react";
 const Dropdown = ({ options, width, value, setValue }: { options: string[], width: number, value: string | null, setValue: (newValue: string | null) => void }) => {
   return (
     <Autocomplete
+      className="text-black"
       value={value}
       onChange={(event: any, newValue: string | null) => {
         setValue(newValue);
