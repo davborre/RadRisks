@@ -2,7 +2,7 @@ import Dropdown from "./Dropdown";
 import ComboBox from "./ComboBox";
 import { radionuclides } from "../data/radionuclides";
 import { ages } from "../data/ages";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Plus, Minus } from "react-feather";
 import { writeBinaryFile, writeTextFile } from "@tauri-apps/api/fs";
 import { save } from "@tauri-apps/api/dialog";
@@ -50,10 +50,23 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   const [exposureLength, setExposureLength] = useState<(string | null)[]>([null]);
   const [fractionalExposure, setFractionalExposure] = useState<(string | null)[]>([null]);
   const [lastCalculation, setLastCalculation] = useState<any>(null);
+  const [fractionalExposureSetting, setFractionalExposureSetting] = useState<boolean>(true);
+
+  useEffect(() => {
+    (async () => {
+      const settings = new Store('.settings.dat');
+      const fractionalExposureSetting = await settings.get('fractionalExposure') as boolean;
+      setFractionalExposureSetting(fractionalExposureSetting);
+    })();
+  }, [])
 
   async function handleCalculate() {
-    if (!radionuclide || !intakeMethod || age.includes(null) || exposureLength.includes(null) || fractionalExposure.includes(null)) {
+    if (!radionuclide || !intakeMethod || age.includes(null) || exposureLength.includes(null) || (fractionalExposure.includes(null) && fractionalExposureSetting)) {
       return;
+    }
+
+    if (!fractionalExposureSetting) {
+      setFractionalExposure(Array(age.length).fill("0"));
     }
 
     const formattedRadionuclide = radionuclide.split("-").join("").toLowerCase();
@@ -199,10 +212,12 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
                       <Dropdown options={slicedAges(i)} width={50} value={exposureLength[i]} setValue={(newValue: string | null) => handleDropdownChange('exposureLength', newValue, i)} />
                       {' '}years
                     </div>
-                    <div>
-                      <Dropdown options={days} width={50} value={fractionalExposure[i]} setValue={(newValue: string | null) => handleDropdownChange('fractionalExposure', newValue, i)} />
-                      {' '}days
-                    </div>
+                    {fractionalExposureSetting &&
+                      <div>
+                        <Dropdown options={days} width={50} value={fractionalExposure[i]} setValue={(newValue: string | null) => handleDropdownChange('fractionalExposure', newValue, i)} />
+                        {' '}days
+                      </div>
+                    }
                   </div>
                 </label>
               </div>
