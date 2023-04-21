@@ -41,7 +41,7 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
   const [selectedRadionuclide, setSelectedRadionuclide] = useState('');
   const [selectedCalculation, setSelectedCalculation] = useState('');
   const [calculationOnScreen, setCalculationOnScreen] = useState<any>(null);
-  
+
   async function handleClear() {
     const storedHistory = new Store('.history.dat');
     await storedHistory.clear();
@@ -122,11 +122,11 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
   }, [])
 
   return (
-    <div className="h-screen w-80 bg-epasagegreen pt-4 flex flex-col overflow-auto relative">
+    <div className="h-screen w-80 bg-epasagegreen dark:bg-blackolive dark:text-white pt-4 flex flex-col overflow-auto relative">
       <h1 className="font-bold pl-2 mb-8">History</h1>
       {history && Object.entries(history).map((entry, i) => {
         return (
-          <details className="even:bg-epaolivegreen p-2 select-none group" key={i}>
+          <details className="even:bg-epaolivegreen dark:even:bg-eerieblack p-2 select-none group" key={i}>
             <summary className={`flex ${(entry[0] == selectedRadionuclide) ? 'font-bold' : ''}`}>
               {entry[0]}
               <ChevronDown className="ml-auto group-open:rotate-180" />

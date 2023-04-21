@@ -189,7 +189,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   }
 
   return (
-    <div className="h-screen w-80 bg-epasagegreen pt-4 flex flex-col gap-20 relative">
+    <div className="h-screen w-80 bg-epasagegreen dark:bg-blackolive dark:text-white pt-4 flex flex-col gap-20 relative">
       <h1 className="font-bold px-2">Inputs</h1>
       <div className="grow flex flex-col gap-10 overflow-auto">
         <div className="px-2">
@@ -204,7 +204,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
         </div>
         {Array.from(Array(age.length), (e, i) => {
           return (
-            <div key={i} className="flex flex-col gap-10 odd:bg-epaolivegreen odd:py-10 p-2 relative">
+            <div key={i} className="flex flex-col gap-10 odd:bg-epaolivegreen dark:odd:bg-eerieblack odd:py-10 p-2 relative">
               <div>
                 <label>Age at exposure:{' '}
                   <Dropdown options={ages} width={90} value={age[i]} setValue={(newValue: string | null) => handleDropdownChange('age', newValue, i)} />

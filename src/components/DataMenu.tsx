@@ -18,9 +18,9 @@ const DataMenu = ({ setTable, setRadionuclide, setCancer, setIntakeMethod }: { s
   }
 
   return (
-    <div className="h-screen w-80 bg-epasagegreen pt-4 flex flex-col overflow-auto">
+    <div className="h-screen w-80 bg-epasagegreen dark:bg-blackolive dark:text-white pt-4 flex flex-col overflow-auto">
       <h1 className="font-bold pl-2 mb-8">Data</h1>
-      <details className="even:bg-epaolivegreen p-2 select-none group max-h-96 overflow-auto">
+      <details className="even:bg-epaolivegreen dark:even:bg-eerieblack p-2 select-none group max-h-96 overflow-auto">
         <summary className={`flex ${(selectedFunction == 'ingestion') ? 'font-bold' : ''}`}>
           Ingestion Risk Coefficients
           <ChevronDown className="ml-auto group-open:rotate-180" />
@@ -82,7 +82,7 @@ const DataMenu = ({ setTable, setRadionuclide, setCancer, setIntakeMethod }: { s
           );
         })}
       </details>
-      <details className="even:bg-epaolivegreen p-2">
+      <details className="even:bg-epaolivegreen dark:even:bg-eerieblack p-2">
         <summary className={`flex ${(selectedFunction == 'usage') ? 'font-bold' : ''}`}
           onClick={() => {
             setTable(2);
