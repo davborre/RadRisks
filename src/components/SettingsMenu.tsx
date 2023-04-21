@@ -1,11 +1,12 @@
 import Dropdown from "./Dropdown";
 import { useEffect, useState } from "react";
+import { useDarkMode } from "../App";
 import { Store } from "tauri-plugin-store-api";
 
 const SettingsMenu = () => {
   const [fileType, setFileType] = useState<string | null>(null);
   const [fractionalExposure, setFractionalExposure] = useState<boolean>(true);
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [darkMode, setDarkMode] = useDarkMode();
   const fileTypes = ["pdf", "txt"];
 
   useEffect(() => {
