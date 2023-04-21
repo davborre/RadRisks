@@ -20,7 +20,7 @@ function App() {
 
   return (
     <div className={`flex ${darkMode ? 'dark' : ''}`}>
-      <NavBar setOpen={setOpen} />
+      <NavBar setOpen={setOpen} darkMode={darkMode} />
       <Outlet context={[darkMode, setDarkMode]} />
       <Modal isOpen={open} setOpen={setOpen} />
     </div>
