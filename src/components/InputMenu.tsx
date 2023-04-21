@@ -55,18 +55,19 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   useEffect(() => {
     (async () => {
       const settings = new Store('.settings.dat');
-      const fractionalExposureSetting = await settings.get('fractionalExposure') as boolean;
-      setFractionalExposureSetting(fractionalExposureSetting);
+      const settingFrac = await settings.get('fractionalExposure') as boolean;
+
+      if (!settingFrac) {
+        setFractionalExposure(["0"]);
+      }
+
+      setFractionalExposureSetting(settingFrac);
     })();
   }, [])
 
   async function handleCalculate() {
     if (!radionuclide || !intakeMethod || age.includes(null) || exposureLength.includes(null) || (fractionalExposure.includes(null) && fractionalExposureSetting)) {
       return;
-    }
-
-    if (!fractionalExposureSetting) {
-      setFractionalExposure(Array(age.length).fill("0"));
     }
 
     const formattedRadionuclide = radionuclide.split("-").join("").toLowerCase();
@@ -174,7 +175,11 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   function handleAddAgeRange() {
     setAge([...age, null]);
     setExposureLength([...exposureLength, null]);
-    setFractionalExposure([...fractionalExposure, null]);
+    if (!fractionalExposureSetting) {
+      setFractionalExposure([...fractionalExposure, "0"]);
+    } else {
+      setFractionalExposure([...fractionalExposure, null]);
+    }
   }
 
   function handleSubtractAgeRange() {
