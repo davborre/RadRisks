@@ -18,10 +18,6 @@ const router = createBrowserRouter([
         element: <InputScreen />,
       },
       {
-        path: 'inputs',
-        element: <InputScreen />,
-      },
-      {
         path: 'history',
         element: <HistoryScreen />,
       },
