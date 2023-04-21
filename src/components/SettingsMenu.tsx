@@ -65,12 +65,12 @@ const SettingsMenu = () => {
       </div>
       <div>
         <label>Fractional Exposure:
-          <input className="scale-150 ml-2 accent-epablue" type="checkbox" checked={fractionalExposure} onChange={e => handleCheckbox('fractionalExposure', e.target.checked)} />
+          <input className="scale-150 ml-2 accent-epablue dark:accent-epagreen" type="checkbox" checked={fractionalExposure} onChange={e => handleCheckbox('fractionalExposure', e.target.checked)} />
         </label>
       </div>
       <div>
         <label>Dark Mode:
-          <input className="scale-150 ml-2 accent-epablue" type="checkbox" checked={darkMode} onChange={e => handleCheckbox('darkMode', e.target.checked)} />
+          <input className="scale-150 ml-2 accent-epablue dark:accent-epagreen" type="checkbox" checked={darkMode} onChange={e => handleCheckbox('darkMode', e.target.checked)} />
         </label>
       </div>
     </div>

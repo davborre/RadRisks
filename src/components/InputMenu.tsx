@@ -246,14 +246,14 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
         <button
           type="button"
           onClick={() => handleCalculate()}
-          className="border-2 border-epablue text-epablue w-fit mx-auto p-2 rounded-lg hover:bg-epablue hover:text-white"
+          className="border-2 border-epablue text-epablue hover:bg-epablue hover:text-white dark:border-epagreen dark:text-epagreen dark:hover:bg-epagreen dark:hover:text-white w-fit mx-auto p-2 rounded-lg"
         >
           Calculate
         </button>
         <button
           type="button"
           onClick={() => handleExport()}
-          className="border-2 border-epablue text-epablue w-fit mx-auto p-2 rounded-lg hover:bg-epablue hover:text-white"
+          className="border-2 border-epablue text-epablue hover:bg-epablue hover:text-white dark:border-epagreen dark:text-epagreen dark:hover:bg-epagreen dark:hover:text-white w-fit mx-auto p-2 rounded-lg"
         >
           Export
         </button>
