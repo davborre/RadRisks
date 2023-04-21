@@ -33,6 +33,7 @@ fn main() {
           let default_settings = HashMap::from([
             ("fileType".to_string(), "pdf".into()),
             ("fractionalExposure".to_string(), true.into()),
+            ("darkMode".to_string(), false.into()),
           ]);
 
           let settings = StoreBuilder::new(app.handle(), ".settings.dat".parse()?)
