@@ -168,6 +168,10 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
     }
   }
 
+  function parsedAges(i: number) {
+    return (i == 0) ? ages : (age[i - 1] == null) ? [] : ages.slice(Number(age[i - 1]) + 1);
+  }
+
   function slicedAges(i: number) {
     return (age[i] == "0") ? ages : ages.slice(0, -Number(age[i]));
   }
@@ -207,7 +211,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
             <div key={i} className="flex flex-col gap-10 odd:bg-epaolivegreen dark:odd:bg-eerieblack odd:py-10 p-2 relative">
               <div>
                 <label>Age at exposure:{' '}
-                  <Dropdown options={ages} width={90} value={age[i]} setValue={(newValue: string | null) => handleDropdownChange('age', newValue, i)} />
+                  <Dropdown options={parsedAges(i)} width={90} value={age[i]} setValue={(newValue: string | null) => handleDropdownChange('age', newValue, i)} />
                 </label>
               </div>
               <div>
