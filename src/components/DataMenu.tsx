@@ -25,9 +25,9 @@ const DataMenu = ({ setTable, setRadionuclide, setCancer, setIntakeMethod }: { s
           Ingestion Risk Coefficients
           <ChevronDown className="ml-auto group-open:rotate-180" />
         </summary>
-        {radionuclides.map((radionuclide: string) => {
+        {radionuclides.map((radionuclide: string, i) => {
           return (
-            <details className="pl-2 pt-2 space-y-2 text-sm">
+            <details className="pl-2 pt-2 space-y-2 text-sm" key={i}>
               <summary className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide) ? 'font-bold' : ''}`}>
                 {radionuclide}
               </summary>
@@ -56,9 +56,9 @@ const DataMenu = ({ setTable, setRadionuclide, setCancer, setIntakeMethod }: { s
           Inhalation Risk Coefficients
           <ChevronDown className="ml-auto group-open:rotate-180" />
         </summary>
-        {radionuclides.map((radionuclide: string) => {
+        {radionuclides.map((radionuclide: string, i) => {
           return (
-            <details className="pl-2 pt-2 space-y-2 text-sm">
+            <details className="pl-2 pt-2 space-y-2 text-sm" key={i}>
               <summary className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide) ? 'font-bold' : ''}`}>
                 {radionuclide}
               </summary>
