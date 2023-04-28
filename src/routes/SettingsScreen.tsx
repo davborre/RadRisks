@@ -5,7 +5,7 @@ const SettingsScreen = () => {
     <>
       <SettingsMenu />
       <div className="grow h-screen flex justify-center items-center">
-        <img className="w-auto h-auto" src="public/logo.png" alt="RadRisks logo" />
+        <img className="w-auto h-auto" src="/logo.png" alt="RadRisks logo" />
       </div>
     </>
   )

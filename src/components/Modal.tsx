@@ -40,7 +40,7 @@ const Modal = ({ isOpen, setOpen }: { isOpen: boolean, setOpen: React.Dispatch<R
           {tab == 2 &&
             <div className="flex grow items-center">
               <div>
-                <img src="public/calculationsFlow.png" alt="calculations flow" />
+                <img src="/calculationsFlow.png" alt="calculations flow" />
                 <p className="text-2xl mt-10">Learn more at the RadRisks Wiki.</p>
               </div>
             </div>
