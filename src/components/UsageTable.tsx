@@ -13,7 +13,7 @@ const UsageTable = () => {
 
   return (
     <table className="table-auto mx-auto text-left mt-5">
-      <thead className="bg-epablue text-white">
+      <thead className="bg-epablue dark:bg-epagreen text-white">
         <tr>
           <th />
           <th colSpan={2}>Inhalation (m3/d)</th>
@@ -33,7 +33,7 @@ const UsageTable = () => {
       <tbody>
         {Object.entries(usage).map((entries: any) => {
           return (
-            <tr className="odd:bg-epalightblue">
+            <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen">
               <td> {entries[0]} </td>
               <td> {entries[1][0].toExponential(3)} </td>
               <td> {entries[1][1].toExponential(3)} </td>
