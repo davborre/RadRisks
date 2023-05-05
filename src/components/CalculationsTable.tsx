@@ -189,7 +189,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
             <div key={i}>
               {absorptionTypes[i] && <h1 className="text-center font-bold text-2xl mb-5">Absorption Type: {(intakeMethod == 'ing' && i < absorptionTypes.length / 2) ? 'Drinking Water' : (intakeMethod == 'ing') ? 'Diet' : ''}{(absorptionTypes[i] !== 'n' && intakeMethod == 'inh') ? absorptionTypes[i].toUpperCase() : (absorptionTypes[i] !== 'n' && intakeMethod == 'ing') ? ' (' + absorptionTypes[i].toUpperCase() + ')' : ''}</h1>}
               <table className="table-auto mx-auto text-left mb-20">
-                <thead className="bg-epablue text-white">
+                <thead className="bg-epablue text-white dark:bg-epagreen">
                   <tr>
                     <th />
                     <th colSpan={3}>Mortality (/Bq)</th>
@@ -208,7 +208,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
                 <tbody>
                   {Object.entries(table).map((entries: any, j) => {
                     return (
-                      <tr key={j} className="odd:bg-epalightblue">
+                      <tr key={j} className="odd:bg-epalightblue dark:odd:bg-epaolivegreen">
                         <td> {entries[0]} </td>
                         <td> {entries[1][0].toExponential(2)} </td>
                         <td> {entries[1][1].toExponential(2)} </td>
