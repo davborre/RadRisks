@@ -176,10 +176,10 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
   const exposedString = (age) ? `${radionuclide}, Exposed Ages: [${age.join(',')}]-[${agePlusExposure.join(',')}] and [${exposureLengthDays.join(',')}] Days` : '';
 
   return (
-    <div className="grow p-20 h-screen overflow-auto">
+    <div className="grow p-20 h-screen overflow-auto dark:bg-neutral-900">
       <div id="tables" className="relative">
         {intakeMethod &&
-          <div>
+          <div className="dark:text-white">
             <h1 className="text-center font-bold text-3xl mb-3"> {(intakeMethod == 'inh') ? 'Inhalation' : 'Ingestion'} Risk Coefficients</h1>
             <h2 className="text-center font-bold text-2xl mb-20">{exposedString}</h2>
           </div>
@@ -187,7 +187,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
         {tables.map((table, i) => {
           return (
             <div key={i}>
-              {absorptionTypes[i] && <h1 className="text-center font-bold text-2xl mb-5">Absorption Type: {(intakeMethod == 'ing' && i < absorptionTypes.length / 2) ? 'Drinking Water' : (intakeMethod == 'ing') ? 'Diet' : ''}{(absorptionTypes[i] !== 'n' && intakeMethod == 'inh') ? absorptionTypes[i].toUpperCase() : (absorptionTypes[i] !== 'n' && intakeMethod == 'ing') ? ' (' + absorptionTypes[i].toUpperCase() + ')' : ''}</h1>}
+              {absorptionTypes[i] && <h1 className="text-center font-bold text-2xl mb-5 dark:text-white">Absorption Type: {(intakeMethod == 'ing' && i < absorptionTypes.length / 2) ? 'Drinking Water' : (intakeMethod == 'ing') ? 'Diet' : ''}{(absorptionTypes[i] !== 'n' && intakeMethod == 'inh') ? absorptionTypes[i].toUpperCase() : (absorptionTypes[i] !== 'n' && intakeMethod == 'ing') ? ' (' + absorptionTypes[i].toUpperCase() + ')' : ''}</h1>}
               <table className="table-auto mx-auto text-left mb-20">
                 <thead className="bg-epablue text-white dark:bg-epagreen">
                   <tr>
@@ -208,7 +208,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
                 <tbody>
                   {Object.entries(table).map((entries: any, j) => {
                     return (
-                      <tr key={j} className="odd:bg-epalightblue dark:odd:bg-epaolivegreen">
+                      <tr key={j} className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white">
                         <td> {entries[0]} </td>
                         <td> {entries[1][0].toExponential(2)} </td>
                         <td> {entries[1][1].toExponential(2)} </td>
