@@ -28,7 +28,7 @@ const RiskCoefficientsTable = ({ radionuclide, cancer, intakeMethod }: { radionu
         tables.map((table, i) => {
           return (
             <div className="mt-20">
-              {(absorptionTypes[i] !== 'n') && <h2 className="text-center font-bold text-xl">Absorption Type: {absorptionTypes[i]?.toUpperCase()}</h2>}
+              {(absorptionTypes[i] !== 'n') && <h2 className="text-center font-bold text-xl dark:text-white">Absorption Type: {absorptionTypes[i]?.toUpperCase()}</h2>}
               <table className="table-auto mx-auto text-left">
                 <thead className="bg-epablue dark:bg-epagreen text-white">
                   <tr>
@@ -49,7 +49,7 @@ const RiskCoefficientsTable = ({ radionuclide, cancer, intakeMethod }: { radionu
                 <tbody>
                   {Object.entries(table).map((entries: any) => {
                     return (
-                      <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen">
+                      <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white">
                         <td> {entries[0]} </td>
                         <td> {entries[1][0].toExponential(2)} </td>
                         <td> {entries[1][1].toExponential(2)} </td>

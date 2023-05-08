@@ -33,7 +33,7 @@ const UsageTable = () => {
       <tbody>
         {Object.entries(usage).map((entries: any) => {
           return (
-            <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen">
+            <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white">
               <td> {entries[0]} </td>
               <td> {entries[1][0].toExponential(3)} </td>
               <td> {entries[1][1].toExponential(3)} </td>
