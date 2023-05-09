@@ -1,10 +1,10 @@
 [package]
 name = "radrisks"
-version = "0.0.2"
-description = "A Tauri App"
-authors = ["you"]
+version = "0.0.3"
+description = "A tool that allows a user to estimate the risk of different types of cancer from the inhalation or ingestion of radioactive material"
+authors = ["David Borrego", "Ben Nguyen"]
 license = ""
-repository = ""
+repository = "https://github.com/davborre/RadRisks"
 edition = "2021"
 rust-version = "1.68"
 
