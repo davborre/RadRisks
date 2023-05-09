@@ -7,11 +7,16 @@
   },
   "package": {
     "productName": "RadRisks",
-    "version": "0.0.2"
+    "version": "0.0.3"
   },
   "tauri": {
     "allowlist": {
-      "all": true,
+      "dialog": {
+        "save": true
+      },
+      "fs": {
+        "writeFile": true
+      },
       "shell": {
         "open": true
       }

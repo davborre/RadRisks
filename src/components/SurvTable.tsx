@@ -13,7 +13,7 @@ const SurvTable = () => {
 
   return (
     <table className="table-auto mx-auto text-left mt-5">
-      <thead className="bg-epablue text-white">
+      <thead className="bg-epablue dark:bg-epagreen text-white">
         <tr>
           <th />
           <th colSpan={3}>Extrapolated Survival</th>
@@ -34,7 +34,7 @@ const SurvTable = () => {
       <tbody>
         {Object.entries(surv).map((entries: any) => {
           return (
-            <tr className="odd:bg-epalightblue">
+            <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white">
               <td> {entries[0]} </td>
               <td> {entries[1][0].toExponential(3)} </td>
               <td> {entries[1][1].toExponential(3)} </td>
