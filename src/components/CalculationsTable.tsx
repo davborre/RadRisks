@@ -173,13 +173,13 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
   }, [calculation])
 
   const agePlusExposure = (age) ? age.map((a: number, i: number) => a + exposureLengthYears[i]) : '';
-  const exposedString = (age) ? `${radionuclide}, Exposed Ages: [${age.join(',')}]-[${agePlusExposure.join(',')}] and [${exposureLengthDays.join(',')}] Days` : '';
+  const exposedString = (age) ? `${radionuclide}, Exposed Ages: ${age.map((a: number, i: number) => `${age[i]}-${agePlusExposure[i]} Years and ${exposureLengthDays[i]} Days`).join(', ')}` : '';
 
   return (
     <div className="grow p-20 h-screen overflow-auto dark:bg-neutral-900">
       <div id="tables" className="relative">
         {intakeMethod &&
-          <div className="dark:text-white">
+          <div className="dark:text-white mx-auto w-[950px]">
             <h1 className="text-center font-bold text-3xl mb-3"> {(intakeMethod == 'inh') ? 'Inhalation' : 'Ingestion'} Risk Coefficients</h1>
             <h2 className="text-center font-bold text-2xl mb-20">{exposedString}</h2>
           </div>
