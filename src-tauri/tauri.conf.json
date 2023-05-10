@@ -69,11 +69,11 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 800,
         "maximized": true,
         "resizable": true,
         "title": "RadRisks",
-        "width": 800
+        "width": 1500
       }
     ]
   }
