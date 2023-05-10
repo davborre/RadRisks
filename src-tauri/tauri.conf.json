@@ -46,8 +46,8 @@
         "signingIdentity": null
       },
       "resources": [
-        "resources/ingestion/*",
-        "resources/inhalation/*"
+        "resources/ingestion/*/*/*",
+        "resources/inhalation/*/*/*"
       ],
       "shortDescription": "",
       "targets": "all",
@@ -70,6 +70,7 @@
       {
         "fullscreen": false,
         "height": 600,
+        "maximized": true,
         "resizable": true,
         "title": "RadRisks",
         "width": 800
