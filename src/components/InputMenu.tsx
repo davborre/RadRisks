@@ -172,7 +172,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   }
 
   function parsedAges(i: number) {
-    return (i == 0) ? ages : (age[i - 1] == null) ? [] : ages.slice(Number(age[i - 1]) + 1);
+    return (i == 0) ? ages : (age[i - 1] == null) ? [] : ages.slice(Number(age[i - 1]) + Number(exposureLength[i - 1]) + 1);
   }
 
   function slicedAges(i: number) {
