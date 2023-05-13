@@ -1,20 +1,19 @@
 import { Dialog } from '@headlessui/react'
 import { useState } from 'react';
 
-const Modal = ({ isOpen, setOpen }: { isOpen: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
-
+const Modal = ({ darkMode, isOpen, setOpen }: { darkMode: boolean, isOpen: boolean, setOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
   const [tab, setTab] = useState(0);
 
   return (
     <Dialog
       open={isOpen}
       onClose={() => setOpen(false)}
-      className="relative z-50"
+      className={`relative z-50 ${darkMode ? 'dark' : ''}`}
     >
-      <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
+      <div className="fixed inset-0 bg-black/50 dark:bg-white/50" aria-hidden="true" />
 
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto rounded-[50px] w-[40rem] h-[40rem] bg-white text-center p-10 flex flex-col">
+        <Dialog.Panel className="mx-auto rounded-[50px] w-[40rem] h-[40rem] bg-white dark:bg-black dark:text-white text-center p-10 flex flex-col">
           {tab == 0 &&
             <h1 className="font-bold text-4xl">Getting Started</h1>
           }
@@ -59,10 +58,10 @@ const Modal = ({ isOpen, setOpen }: { isOpen: boolean, setOpen: React.Dispatch<R
               </div>
             </div>}
           <div className="flex justify-center gap-5 pt-10">
-            <div onClick={() => setTab(0)} className={`rounded-full w-2 h-2 ${tab == 0 ? "bg-epablue" : "bg-black"}`} />
-            <div onClick={() => setTab(1)} className={`rounded-full w-2 h-2 ${tab == 1 ? "bg-epablue" : "bg-black"}`} />
-            <div onClick={() => setTab(2)} className={`rounded-full w-2 h-2 ${tab == 2 ? "bg-epablue" : "bg-black"}`} />
-            <div onClick={() => setTab(3)} className={`rounded-full w-2 h-2 ${tab == 3 ? "bg-epablue" : "bg-black"}`} />
+            <div onClick={() => setTab(0)} className={`rounded-full w-2 h-2 ${tab == 0 ? "bg-epablue dark:bg-epagreen" : "bg-black dark:bg-white"}`} />
+            <div onClick={() => setTab(1)} className={`rounded-full w-2 h-2 ${tab == 1 ? "bg-epablue dark:bg-epagreen" : "bg-black dark:bg-white"}`} />
+            <div onClick={() => setTab(2)} className={`rounded-full w-2 h-2 ${tab == 2 ? "bg-epablue dark:bg-epagreen" : "bg-black dark:bg-white"}`} />
+            <div onClick={() => setTab(3)} className={`rounded-full w-2 h-2 ${tab == 3 ? "bg-epablue dark:bg-epagreen" : "bg-black dark:bg-white"}`} />
           </div>
         </Dialog.Panel>
       </div>
