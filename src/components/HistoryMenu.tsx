@@ -91,15 +91,23 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
 
   function handleSelect(radionuclide: string, entry: string) {
     const inputs = entry.split("; ");
-    const age = JSON.parse(inputs[0]);
-    console.log(age);
-    const exposureLength = inputs[1].split(" ");
-    const exposureLengthYears = JSON.parse(exposureLength[0]);
-    const exposureLengthDays = JSON.parse(exposureLength[2]);
-    const intakeMethod = inputs[2];
+    const ageRanges = inputs[0].split(", ");
+    const intakeMethod = inputs[1];
+
+    const startingAges = [];
+    const exposureLengthYears = [];
+    const exposureLengthDays = [];
+
+    for (let i = 0; i < ageRanges.length; i++) {
+      const splitString = ageRanges[i].split(' ');
+      const ageRange = splitString[0].split('-').map(Number);
+      startingAges.push(ageRange[0]);
+      exposureLengthYears.push(ageRange[1] - ageRange[0]);
+      exposureLengthDays.push(Number(splitString[3]));
+    }
 
     const formattedRadionuclide = radionuclide.split("-").join("").toLowerCase();
-    const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": age, "exposureLengthYears": exposureLengthYears, "exposureLengthDays": exposureLengthDays }
+    const form = { "radionuclide": radionuclide, "formattedRadionuclide": formattedRadionuclide, "intakeMethod": intakeMethod.toLowerCase().substring(0, 3), "age": startingAges, "exposureLengthYears": exposureLengthYears, "exposureLengthDays": exposureLengthDays }
     console.log(form);
     setCalculation(form);
     setCalculationOnScreen(form);

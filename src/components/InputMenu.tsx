@@ -81,8 +81,11 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
       await history.set(radionuclide, []);
     }
 
+    const agePlusExposure: number[] = (age.map(Number)).map((a: number, i: number) => a + Number(exposureLength[i]));
+    const exposedString = `${agePlusExposure.map((a: number, i: number) => `${age[i]}-${agePlusExposure[i]} Years and ${fractionalExposure[i]} Days`).join(', ')}`;
+
     const prevHistory = new Set(await history.get(radionuclide) as string[]);
-    prevHistory.add(`[${age.join(',')}]; [${exposureLength.join(',')}] yrs [${fractionalExposure.join(',')}] dys; ${intakeMethod}`);
+    prevHistory.add(`${exposedString}; ${intakeMethod}`);
     history.set(radionuclide, Array.from(prevHistory));
     await history.save();
 
