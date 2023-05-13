@@ -22,13 +22,13 @@ const SurvTable = () => {
         </tr>
         <tr>
           <th className="pr-10">Age</th>
-          <th className="pr-20">Combined</th>
+          <th className="pr-10">Combined</th>
           <th className="pr-20">Male</th>
-          <th className="pr-20">Female</th>
-          <th className="pr-20">Combined</th>
+          <th className="pr-10">Female</th>
+          <th className="pr-10">Combined</th>
           <th className="pr-20">Male</th>
-          <th className="pr-20">Female</th>
-          <th className="pr-20">Combined</th>
+          <th className="pr-10">Female</th>
+          <th className="pr-10">Combined</th>
         </tr>
       </thead>
       <tbody>
