@@ -1,5 +1,6 @@
 import Dropdown from "./Dropdown";
 import ComboBox from "./ComboBox";
+import MenuDescription from "./MenuDescription";
 import { radionuclides } from "../data/radionuclides";
 import { ages } from "../data/ages";
 import { useState, useEffect } from "react";
@@ -42,6 +43,8 @@ async function formatTextContent(txtTables: Object[], lastCalculation: any): Pro
 
 const intakeMethods: string[] = ["Ingestion", "Inhalation"];
 const days = Array.from(Array(365).keys()).slice().map(String);
+
+const inputDescription = 'Enter a value in all input fields and click calculate. Change the number of age ranges with the +/-.'
 
 const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<any>>, txtTables: any }) => {
   const [radionuclide, setRadionuclide] = useState<string | null>(null);
@@ -196,8 +199,9 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   }
 
   return (
-    <div className="h-screen w-80 bg-epasagegreen dark:bg-blackolive dark:text-white pt-4 flex flex-col gap-20 relative">
+    <div className="h-screen w-80 bg-epasagegreen dark:bg-blackolive dark:text-white pt-4 flex flex-col gap-5 relative">
       <h1 className="font-bold px-2">Inputs</h1>
+      <MenuDescription description={inputDescription} />
       <div className="grow flex flex-col gap-10 overflow-auto">
         <div className="px-2">
           <label>Radionuclide:{' '}
