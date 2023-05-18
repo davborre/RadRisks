@@ -58,10 +58,10 @@ const Modal = ({ darkMode, isOpen, setOpen }: { darkMode: boolean, isOpen: boole
               </div>
             </div>}
           <div className="flex justify-center gap-5 pt-10">
-            <div onClick={() => setTab(0)} className={`rounded-full w-2 h-2 ${tab == 0 ? "bg-epablue dark:bg-epagreen" : "bg-black dark:bg-white"}`} />
-            <div onClick={() => setTab(1)} className={`rounded-full w-2 h-2 ${tab == 1 ? "bg-epablue dark:bg-epagreen" : "bg-black dark:bg-white"}`} />
-            <div onClick={() => setTab(2)} className={`rounded-full w-2 h-2 ${tab == 2 ? "bg-epablue dark:bg-epagreen" : "bg-black dark:bg-white"}`} />
-            <div onClick={() => setTab(3)} className={`rounded-full w-2 h-2 ${tab == 3 ? "bg-epablue dark:bg-epagreen" : "bg-black dark:bg-white"}`} />
+            <div onClick={() => setTab(0)} className={`rounded-full w-3 h-3 ${tab == 0 ? "bg-epablue dark:bg-epagreen" : "bg-black dark:bg-white"}`} />
+            <div onClick={() => setTab(1)} className={`rounded-full w-3 h-3 ${tab == 1 ? "bg-epablue dark:bg-epagreen" : "bg-black dark:bg-white"}`} />
+            <div onClick={() => setTab(2)} className={`rounded-full w-3 h-3 ${tab == 2 ? "bg-epablue dark:bg-epagreen" : "bg-black dark:bg-white"}`} />
+            <div onClick={() => setTab(3)} className={`rounded-full w-3 h-3 ${tab == 3 ? "bg-epablue dark:bg-epagreen" : "bg-black dark:bg-white"}`} />
           </div>
         </Dialog.Panel>
       </div>
