@@ -11,7 +11,7 @@ async function formatTextContent(txtTables: Object[], lastCalculation: any): Pro
   const { radionuclide, formattedRadionuclide, age, exposureLengthYears, exposureLengthDays, intakeMethod } = lastCalculation;
 
   const agePlusExposure = age.map((a: number, i: number) => a + exposureLengthYears[i]);
-  const exposedString = `${radionuclide}, Exposed Ages: [${age.join(',')}]-[${agePlusExposure.join(',')}] and [${exposureLengthDays.join(',')}] Days`;
+  const exposedString = `${radionuclide}, Exposed Ages: ${age.map((a: number, i: number) => `${age[i]}-${agePlusExposure[i]} Years and ${exposureLengthDays[i]} Days`).join(', ')}`;
 
   let text = ' '.repeat(24) + ((intakeMethod == 'inh') ? 'Inhalation' : 'Ingestion');
   text += ' Risk Coefficients\n'
