@@ -1,12 +1,13 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect, useState } from 'react'
+import { InputData } from '../utils';
 
 const UsageTable = () => {
-  const [usage, setUsage] = useState({});
+  const [usage, setUsage] = useState<InputData | {}>({});
 
   useEffect(() => {
     (async () => {
-      const usageData: any = await invoke("usage");
+      const usageData: InputData = await invoke("usage");
       setUsage(usageData);
     })();
   }, []);

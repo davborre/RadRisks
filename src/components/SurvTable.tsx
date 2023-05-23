@@ -1,12 +1,13 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect, useState } from 'react'
+import { InputData } from '../utils';
 
 const SurvTable = () => {
-  const [surv, setSurv] = useState({});
+  const [surv, setSurv] = useState<InputData | {}>({});
 
   useEffect(() => {
     (async () => {
-      const survData: any = await invoke("survival");
+      const survData: InputData = await invoke("survival");
       setSurv(survData);
     })();
   }, []);
