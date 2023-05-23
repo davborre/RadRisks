@@ -24,7 +24,7 @@ const DataMenu = ({ setTable, setRadionuclide, setCancer, setIntakeMethod }: { s
     <div className="h-screen w-80 bg-epasagegreen dark:bg-blackolive dark:text-white pt-4 flex flex-col">
       <h1 className="font-bold pl-2 mb-5">Data</h1>
       <MenuDescription description={dataDescription} />
-      <details className="odd:bg-epaolivegreen dark:odd:bg-eerieblack p-2 select-none group max-h-96 overflow-auto mt-5">
+      <details className="odd:bg-epaolivegreen dark:odd:bg-eerieblack p-2 select-none group max-h-96 overflow-auto mt-5 cursor-default">
         <summary className={`flex ${(selectedFunction == 'ingestion') ? 'font-bold' : ''}`}>
           Ingestion Risk Coefficients
           <ChevronDown className="ml-auto group-open:rotate-180" />
@@ -55,7 +55,7 @@ const DataMenu = ({ setTable, setRadionuclide, setCancer, setIntakeMethod }: { s
           );
         })}
       </details>
-      <details className="odd:bg-epaolivegreen p-2 select-none group max-h-96 overflow-auto">
+      <details className="odd:bg-epaolivegreen p-2 select-none group max-h-96 overflow-auto cursor-default">
         <summary className={`flex ${(selectedFunction == 'inhalation') ? 'font-bold' : ''}`}>
           Inhalation Risk Coefficients
           <ChevronDown className="ml-auto group-open:rotate-180" />
@@ -86,7 +86,7 @@ const DataMenu = ({ setTable, setRadionuclide, setCancer, setIntakeMethod }: { s
           );
         })}
       </details>
-      <details className="odd:bg-epaolivegreen dark:odd:bg-eerieblack p-2">
+      <details className="odd:bg-epaolivegreen dark:odd:bg-eerieblack p-2 cursor-default">
         <summary className={`flex ${(selectedFunction == 'usage') ? 'font-bold' : ''}`}
           onClick={() => {
             setTable(2);
@@ -96,7 +96,7 @@ const DataMenu = ({ setTable, setRadionuclide, setCancer, setIntakeMethod }: { s
           Usage Function
         </summary>
       </details>
-      <details className="odd:bg-epaolivegreen p-2">
+      <details className="odd:bg-epaolivegreen p-2 cursor-default">
         <summary className={`flex ${(selectedFunction == 'survival') ? 'font-bold' : ''}`}
           onClick={() => {
             setTable(3);

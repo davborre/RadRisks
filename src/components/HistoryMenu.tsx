@@ -110,7 +110,7 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
       <div className="overflow-auto">
         {history && Object.entries(history).map((entry, i) => {
           return (
-            <details className="even:bg-epaolivegreen dark:even:bg-eerieblack p-2 select-none group" key={i}>
+            <details className="even:bg-epaolivegreen dark:even:bg-eerieblack p-2 select-none group cursor-default" key={i}>
               <summary className={`flex ${(entry[0] == selectedRadionuclide) ? 'font-bold' : ''}`}>
                 {entry[0]}
                 <ChevronDown className="ml-auto group-open:rotate-180" />
