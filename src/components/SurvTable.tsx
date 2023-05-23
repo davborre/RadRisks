@@ -5,10 +5,10 @@ const SurvTable = () => {
   const [surv, setSurv] = useState({});
 
   useEffect(() => {
-    invoke("survival")
-      .then((res: any) => {
-        setSurv(res)
-      })
+    (async () => {
+      const survData: any = await invoke("survival");
+      setSurv(survData);
+    })();
   }, []);
 
   return (

@@ -5,10 +5,10 @@ const UsageTable = () => {
   const [usage, setUsage] = useState({});
 
   useEffect(() => {
-    invoke("usage")
-      .then((res: any) => {
-        setUsage(res)
-      })
+    (async () => {
+      const usageData: any = await invoke("usage");
+      setUsage(usageData);
+    })();
   }, []);
 
   return (
