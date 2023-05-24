@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "RadRisks",
-    "version": "0.0.3"
+    "version": "0.0.4"
   },
   "tauri": {
     "allowlist": {
@@ -46,8 +46,8 @@
         "signingIdentity": null
       },
       "resources": [
-        "resources/ingestion/*",
-        "resources/inhalation/*"
+        "resources/ingestion/*/*/*",
+        "resources/inhalation/*/*/*"
       ],
       "shortDescription": "",
       "targets": "all",
@@ -69,10 +69,11 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 800,
+        "maximized": true,
         "resizable": true,
         "title": "RadRisks",
-        "width": 800
+        "width": 1500
       }
     ]
   }

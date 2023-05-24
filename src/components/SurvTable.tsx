@@ -1,14 +1,15 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect, useState } from 'react'
+import { InputData } from '../utils';
 
 const SurvTable = () => {
-  const [surv, setSurv] = useState({});
+  const [surv, setSurv] = useState<InputData | {}>({});
 
   useEffect(() => {
-    invoke("survival")
-      .then((res: any) => {
-        setSurv(res)
-      })
+    (async () => {
+      const survData: InputData = await invoke("survival");
+      setSurv(survData);
+    })();
   }, []);
 
   return (
@@ -22,19 +23,19 @@ const SurvTable = () => {
         </tr>
         <tr>
           <th className="pr-10">Age</th>
-          <th className="pr-20">Combined</th>
+          <th className="pr-10">Combined</th>
           <th className="pr-20">Male</th>
-          <th className="pr-20">Female</th>
-          <th className="pr-20">Combined</th>
+          <th className="pr-10">Female</th>
+          <th className="pr-10">Combined</th>
           <th className="pr-20">Male</th>
-          <th className="pr-20">Female</th>
-          <th className="pr-20">Combined</th>
+          <th className="pr-10">Female</th>
+          <th className="pr-10">Combined</th>
         </tr>
       </thead>
       <tbody>
-        {Object.entries(surv).map((entries: any) => {
+        {Object.entries(surv).map((entries: [string, number[]], i) => {
           return (
-            <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white">
+            <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white" key={i}>
               <td> {entries[0]} </td>
               <td> {entries[1][0].toExponential(3)} </td>
               <td> {entries[1][1].toExponential(3)} </td>

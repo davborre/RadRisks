@@ -1,5 +1,7 @@
 import Dropdown from "./Dropdown";
 import ComboBox from "./ComboBox";
+import MenuDescription from "./MenuDescription";
+import { formatTextContent, Calculation, OutputData } from "../utils";
 import { radionuclides } from "../data/radionuclides";
 import { ages } from "../data/ages";
 import { useState, useEffect } from "react";
@@ -7,49 +9,20 @@ import { Plus, Minus } from "react-feather";
 import { writeBinaryFile, writeTextFile } from "@tauri-apps/api/fs";
 import { save } from "@tauri-apps/api/dialog";
 import { Store } from "tauri-plugin-store-api";
-import { invoke } from '@tauri-apps/api/tauri';
 import jsPDF from "jspdf";
-
-async function formatTextContent(txtTables: Object[], lastCalculation: any): Promise<string> {
-  const { radionuclide, formattedRadionuclide, age, exposureLengthYears, exposureLengthDays, intakeMethod } = lastCalculation;
-
-  const agePlusExposure = age.map((a: number, i: number) => a + exposureLengthYears[i]);
-  const exposedString = `${radionuclide}, Exposed Ages: [${age.join(',')}]-[${agePlusExposure.join(',')}] and [${exposureLengthDays.join(',')}] Days`;
-
-  let text = ' '.repeat(24) + ((intakeMethod == 'inh') ? 'Inhalation' : 'Ingestion');
-  text += ' Risk Coefficients\n'
-  text += ' '.repeat((75 - exposedString.length) / 2) + `${exposedString}\n`;
-
-  const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: formattedRadionuclide }) : await invoke('ingestion_types', { radionuclide: formattedRadionuclide })
-  const absorptionTypes = (intakeMethod == 'ing') ? types.split("-").concat(types.split("-")) : types.split("-");
-
-  console.log(absorptionTypes)
-
-  for (let i = 0; i < txtTables.length; i++) {
-    text += `
-                             Absorption Type: ${(intakeMethod == 'ing' && i < absorptionTypes.length / 2) ? 'Drinking Water' : (intakeMethod == 'ing') ? 'Diet' : ''}${(absorptionTypes[i] !== 'n' && intakeMethod == 'inh') ? absorptionTypes[i].toUpperCase() : (absorptionTypes[i] !== 'n' && intakeMethod == 'ing') ? ' (' + absorptionTypes[i].toUpperCase() + ')' : ''}
-            --------Mortality (/Bq)--------   -------Morbidity (/Bq)------- 
- Cancer     Male        Female         Both   Male        Female        Both
- ---------------------------------------------------------------------------\n`;
-
-    Object.entries(txtTables[i]).map((entries) => {
-      text += ` ${entries[0]}${' '.repeat(12 - entries[0].length)}${entries[1].map((entry: number) => String(entry.toExponential(2)) + ' '.repeat(8 - String(entry.toExponential(2)).length)).join('   ')}\n`
-    })
-  }
-
-  return text;
-}
 
 const intakeMethods: string[] = ["Ingestion", "Inhalation"];
 const days = Array.from(Array(365).keys()).slice().map(String);
 
-const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<any>>, txtTables: any }) => {
+const inputDescription = 'Enter a value in all input fields and click calculate. Change the number of age ranges with the +/-.'
+
+const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<Calculation | {}>>, txtTables: OutputData[] }) => {
   const [radionuclide, setRadionuclide] = useState<string | null>(null);
   const [intakeMethod, setIntakeMethod] = useState<string | null>(null);
   const [age, setAge] = useState<(string | null)[]>([null]);
   const [exposureLength, setExposureLength] = useState<(string | null)[]>([null]);
   const [fractionalExposure, setFractionalExposure] = useState<(string | null)[]>([null]);
-  const [lastCalculation, setLastCalculation] = useState<any>(null);
+  const [lastCalculation, setLastCalculation] = useState<Calculation | null>(null);
   const [fractionalExposureSetting, setFractionalExposureSetting] = useState<boolean>(true);
 
   useEffect(() => {
@@ -81,8 +54,11 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
       await history.set(radionuclide, []);
     }
 
+    const agePlusExposure: number[] = (age.map(Number)).map((a: number, i: number) => a + Number(exposureLength[i]));
+    const exposedString = `${agePlusExposure.map((a: number, i: number) => `${age[i]}-${agePlusExposure[i]} Years and ${fractionalExposure[i]} Days`).join(', ')}`;
+
     const prevHistory = new Set(await history.get(radionuclide) as string[]);
-    prevHistory.add(`[${age.join(',')}]; [${exposureLength.join(',')}] yrs [${fractionalExposure.join(',')}] dys; ${intakeMethod}`);
+    prevHistory.add(`${exposedString}; ${intakeMethod}`);
     history.set(radionuclide, Array.from(prevHistory));
     await history.save();
 
@@ -169,7 +145,7 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   }
 
   function parsedAges(i: number) {
-    return (i == 0) ? ages : (age[i - 1] == null) ? [] : ages.slice(Number(age[i - 1]) + 1);
+    return (i == 0) ? ages : (age[i - 1] == null) ? [] : ages.slice(Number(age[i - 1]) + Number(exposureLength[i - 1]) + 1);
   }
 
   function slicedAges(i: number) {
@@ -193,8 +169,9 @@ const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispat
   }
 
   return (
-    <div className="h-screen w-80 bg-epasagegreen dark:bg-blackolive dark:text-white pt-4 flex flex-col gap-20 relative">
+    <div className="h-screen w-80 bg-epasagegreen dark:bg-blackolive dark:text-white pt-4 flex flex-col gap-5 relative">
       <h1 className="font-bold px-2">Inputs</h1>
+      <MenuDescription description={inputDescription} />
       <div className="grow flex flex-col gap-10 overflow-auto">
         <div className="px-2">
           <label>Radionuclide:{' '}

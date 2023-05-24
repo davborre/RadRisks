@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import InputMenu from '../components/InputMenu';
 import CalculationsTable from '../components/CalculationsTable';
+import { Calculation, OutputData } from '../utils';
 
 const InputScreen = () => {
-  const [calculation, setCalculation] = useState({});
-  const [txtTables, setTxtTables] = useState([]);
+  const [calculation, setCalculation] = useState<Calculation | {}>({});
+  const [txtTables, setTxtTables] = useState<OutputData[]>([]);
 
   return (
     <>

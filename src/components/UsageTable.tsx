@@ -1,14 +1,15 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect, useState } from 'react'
+import { InputData } from '../utils';
 
 const UsageTable = () => {
-  const [usage, setUsage] = useState({});
+  const [usage, setUsage] = useState<InputData | {}>({});
 
   useEffect(() => {
-    invoke("usage")
-      .then((res: any) => {
-        setUsage(res)
-      })
+    (async () => {
+      const usageData: InputData = await invoke("usage");
+      setUsage(usageData);
+    })();
   }, []);
 
   return (
@@ -31,9 +32,9 @@ const UsageTable = () => {
         </tr>
       </thead>
       <tbody>
-        {Object.entries(usage).map((entries: any) => {
+        {Object.entries(usage).map((entries: [string, number[]], i) => {
           return (
-            <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white">
+            <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white" key={i}>
               <td> {entries[0]} </td>
               <td> {entries[1][0].toExponential(3)} </td>
               <td> {entries[1][1].toExponential(3)} </td>

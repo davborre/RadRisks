@@ -1,33 +1,34 @@
 import { invoke } from '@tauri-apps/api/tauri';
 import { useEffect, useState } from 'react';
 import { cancers } from '../data/cancers';
+import { InputData, OutputData, Calculation } from '../utils';
 
 
-const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, setTxtTables: React.Dispatch<React.SetStateAction<any>> }) => {
-  const [tables, setTables] = useState([]);
+const CalculationsTable = ({ calculation, setTxtTables }: { calculation: Calculation | {}, setTxtTables: React.Dispatch<React.SetStateAction<OutputData[]>> }) => {
+  const [tables, setTables] = useState<OutputData[]>([]);
   const [absorptionTypes, setAbsorptionTypes] = useState<string[]>([]);
 
-  const { radionuclide, formattedRadionuclide, age, exposureLengthYears, exposureLengthDays, intakeMethod } = calculation;
+  const { radionuclide, formattedRadionuclide, age, exposureLengthYears, exposureLengthDays, intakeMethod } = calculation as Calculation;
 
   useEffect(() => {
     (async () => {
-      if (!radionuclide || !formattedRadionuclide || !age || age.includes(null) || exposureLengthYears.includes(null) || exposureLengthDays.includes(null) || !intakeMethod) {
+      if (radionuclide == null) {
         return;
       }
 
-      const newTables: any = [];
-      const usageTable: any = await invoke('usage');
-      const survivalTable: any = await invoke('survival');
+      const newTables: OutputData[] = [];
+      const usageTable: InputData = await invoke('usage');
+      const survivalTable: InputData = await invoke('survival');
       const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: formattedRadionuclide }) : await invoke('ingestion_types', { radionuclide: formattedRadionuclide })
       const absorptionTypes = types.split("-");
       setAbsorptionTypes(absorptionTypes);
 
       if (intakeMethod == "inh") {
         for (let absorptionType = 0; absorptionType < absorptionTypes.length; absorptionType++) {
-          const table: any = {}
+          const table: { [index: string]: number[] } = {}
           for (let i = 0; i < cancers.length; i++) {
             const calculations: number[] = [];
-            const riskCoefficientsTable: any = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: formattedRadionuclide, absorptionType: absorptionTypes[absorptionType], cancer: cancers[i] });
+            const riskCoefficientsTable: InputData = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: formattedRadionuclide, absorptionType: absorptionTypes[absorptionType], cancer: cancers[i] });
             for (let j = 0; j < 6; j++) {
               let lifetimeRisk = 0;
               let unitIntake = 0;
@@ -83,17 +84,17 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
             }
             table[cancers[i]] = calculations;
           }
-          newTables.push(table);
+          newTables.push(table as unknown as OutputData);
         }
         setTables(newTables);
         setTxtTables(newTables);
       } else { //ingestion
         for (let usage = 0; usage < 2; usage++) {
           for (let absorptionType = 0; absorptionType < absorptionTypes.length; absorptionType++) {
-            const table: any = {}
+            const table: { [index: string]: number[] } = {}
             for (let i = 0; i < cancers.length; i++) {
               const calculations: number[] = [];
-              const riskCoefficientsTable: any = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: formattedRadionuclide, absorptionType: absorptionTypes[absorptionType], cancer: cancers[i] });
+              const riskCoefficientsTable: InputData = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: formattedRadionuclide, absorptionType: absorptionTypes[absorptionType], cancer: cancers[i] });
               for (let j = 0; j < 6; j++) {
                 let lifetimeRisk = 0;
                 let unitIntake = 0;
@@ -162,7 +163,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
               }
               table[cancers[i]] = calculations;
             }
-            newTables.push(table);
+            newTables.push(table as unknown as OutputData);
           }
         }
         setTables(newTables);
@@ -173,13 +174,13 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
   }, [calculation])
 
   const agePlusExposure = (age) ? age.map((a: number, i: number) => a + exposureLengthYears[i]) : '';
-  const exposedString = (age) ? `${radionuclide}, Exposed Ages: [${age.join(',')}]-[${agePlusExposure.join(',')}] and [${exposureLengthDays.join(',')}] Days` : '';
+  const exposedString = (age) ? `${radionuclide}, Exposed Ages: ${age.map((a: number, i: number) => `${age[i]}-${agePlusExposure[i]} Years and ${exposureLengthDays[i]} Days`).join(', ')}` : '';
 
   return (
     <div className="grow p-20 h-screen overflow-auto dark:bg-neutral-900">
       <div id="tables" className="relative">
         {intakeMethod &&
-          <div className="dark:text-white">
+          <div className="dark:text-white mx-auto w-[950px]">
             <h1 className="text-center font-bold text-3xl mb-3"> {(intakeMethod == 'inh') ? 'Inhalation' : 'Ingestion'} Risk Coefficients</h1>
             <h2 className="text-center font-bold text-2xl mb-20">{exposedString}</h2>
           </div>
@@ -206,7 +207,7 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: any, se
                   </tr>
                 </thead>
                 <tbody>
-                  {Object.entries(table).map((entries: any, j) => {
+                  {Object.entries(table).map((entries: [string, number[]], j) => {
                     return (
                       <tr key={j} className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white">
                         <td> {entries[0]} </td>

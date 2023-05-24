@@ -8,5 +8,5 @@ summary::-webkit-details-marker {
 
 td,
 th {
-  @apply border-2;
+  @apply border-2 py-1 pl-1;
 }

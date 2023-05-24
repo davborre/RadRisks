@@ -1,7 +1,10 @@
 import Dropdown from "./Dropdown";
+import MenuDescription from "./MenuDescription";
 import { useEffect, useState } from "react";
 import { useDarkMode } from "../App";
 import { Store } from "tauri-plugin-store-api";
+
+const settingsDescription = 'Customize RadRisks to your preference.'
 
 const SettingsMenu = () => {
   const [fileType, setFileType] = useState<string | null>(null);
@@ -48,8 +51,9 @@ const SettingsMenu = () => {
   }
 
   return (
-    <div className="h-screen w-80 bg-epasagegreen dark:bg-blackolive dark:text-white px-2 pt-4 flex flex-col gap-10">
-      <h1 className="font-bold">Settings</h1>
+    <div className="h-screen w-80 bg-epasagegreen dark:bg-blackolive dark:text-white pt-4 flex flex-col gap-5">
+      <h1 className="font-bold px-2">Settings</h1>
+      <MenuDescription description={settingsDescription} />
       {/*
         <div>
           <label>Output File Directory:
@@ -58,20 +62,22 @@ const SettingsMenu = () => {
         </div>
         */
       }
-      <div>
-        <label>Output File Type:{' '}
-          <Dropdown options={fileTypes} width={75} value={fileType} setValue={setFileType} />
-        </label>
-      </div>
-      <div>
-        <label>Fractional Exposure:
-          <input className="scale-150 ml-2 accent-epablue dark:accent-epagreen" type="checkbox" checked={fractionalExposure} onChange={e => handleCheckbox('fractionalExposure', e.target.checked)} />
-        </label>
-      </div>
-      <div>
-        <label>Dark Mode:
-          <input className="scale-150 ml-2 accent-epablue dark:accent-epagreen" type="checkbox" checked={darkMode} onChange={e => handleCheckbox('darkMode', e.target.checked)} />
-        </label>
+      <div className="flex flex-col gap-10 px-2">
+        <div>
+          <label>Output File Type:{' '}
+            <Dropdown options={fileTypes} width={75} value={fileType} setValue={setFileType} />
+          </label>
+        </div>
+        <div>
+          <label>Fractional Exposure:
+            <input className="scale-150 ml-2 accent-epablue dark:accent-epagreen" type="checkbox" checked={fractionalExposure} onChange={e => handleCheckbox('fractionalExposure', e.target.checked)} />
+          </label>
+        </div>
+        <div>
+          <label>Dark Mode:
+            <input className="scale-150 ml-2 accent-epablue dark:accent-epagreen" type="checkbox" checked={darkMode} onChange={e => handleCheckbox('darkMode', e.target.checked)} />
+          </label>
+        </div>
       </div>
     </div>
   );
