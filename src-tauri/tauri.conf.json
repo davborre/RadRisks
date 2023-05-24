@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "RadRisks",
-    "version": "0.0.4"
+    "version": "1.0.0"
   },
   "tauri": {
     "allowlist": {
@@ -24,7 +24,7 @@
     "bundle": {
       "active": true,
       "category": "DeveloperTool",
-      "copyright": "",
+      "copyright": "© 2023 EPA",
       "deb": {
         "depends": []
       },
@@ -37,7 +37,7 @@
         "icons/icon.ico"
       ],
       "identifier": "gov.radrisks.epa",
-      "longDescription": "",
+      "longDescription": "A tool that allows a user to estimate the risk of different types of cancer from the inhalation or ingestion of radioactive material",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
@@ -49,7 +49,7 @@
         "resources/ingestion/*/*/*",
         "resources/inhalation/*/*/*"
       ],
-      "shortDescription": "",
+      "shortDescription": "Radiation risk calculator",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,
