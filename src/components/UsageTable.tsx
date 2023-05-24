@@ -32,7 +32,7 @@ const UsageTable = () => {
         </tr>
       </thead>
       <tbody>
-        {Object.entries(usage).map((entries: any) => {
+        {Object.entries(usage).map((entries: [string, number[]]) => {
           return (
             <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white">
               <td> {entries[0]} </td>

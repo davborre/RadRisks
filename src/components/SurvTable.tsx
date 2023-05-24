@@ -33,7 +33,7 @@ const SurvTable = () => {
         </tr>
       </thead>
       <tbody>
-        {Object.entries(surv).map((entries: any) => {
+        {Object.entries(surv).map((entries: [string, number[]]) => {
           return (
             <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white">
               <td> {entries[0]} </td>

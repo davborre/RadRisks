@@ -1,10 +1,11 @@
 import { useState } from "react";
 import HistoryMenu from "../components/HistoryMenu";
 import CalculationsTable from "../components/CalculationsTable";
+import { Calculation, OutputData } from "../utils";
 
 const HistoryScreen = () => {
-  const [calculation, setCalculation] = useState({});
-  const [txtTables, setTxtTables] = useState([]);
+  const [calculation, setCalculation] = useState<Calculation | {}>({});
+  const [txtTables, setTxtTables] = useState<OutputData[]>([]);
 
   return (
     <>

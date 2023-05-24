@@ -1,8 +1,9 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect, useState } from 'react'
+import { InputData } from '../utils';
 
 const RiskCoefficientsTable = ({ radionuclide, cancer, intakeMethod }: { radionuclide: string, cancer: string, intakeMethod: string }) => {
-  const [tables, setTables] = useState([]);
+  const [tables, setTables] = useState<InputData[]>([]);
   const [absorptionTypes, setAbsorptionTypes] = useState<string[]>([]);
 
   useEffect(() => {
@@ -12,9 +13,9 @@ const RiskCoefficientsTable = ({ radionuclide, cancer, intakeMethod }: { radionu
       const types: string = (intakeMethod == "inh") ? await invoke('inhalation_types', { radionuclide: radionuclideNoDash }) : await invoke('ingestion_types', { radionuclide: radionuclideNoDash });
       const absorptionTypes = types.split("-");
       setAbsorptionTypes(absorptionTypes);
-      const newTables: any = [];
+      const newTables: InputData[] = [];
       for (let i = 0; i < absorptionTypes.length; i++) {
-        const newTable = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: radionuclideNoDash, absorptionType: absorptionTypes[i], cancer: cancer });
+        const newTable: InputData = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: radionuclideNoDash, absorptionType: absorptionTypes[i], cancer: cancer });
         newTables.push(newTable);
       }
 
@@ -47,7 +48,7 @@ const RiskCoefficientsTable = ({ radionuclide, cancer, intakeMethod }: { radionu
                   </tr>
                 </thead>
                 <tbody>
-                  {Object.entries(table).map((entries: any) => {
+                  {Object.entries(table).map((entries: [string, number[]]) => {
                     return (
                       <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white">
                         <td> {entries[0]} </td>

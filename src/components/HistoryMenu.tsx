@@ -4,16 +4,16 @@ import { writeBinaryFile, writeTextFile } from "@tauri-apps/api/fs";
 import { useEffect, useState } from "react";
 import { Store } from "tauri-plugin-store-api";
 import MenuDescription from "./MenuDescription";
-import { formatTextContent } from "../utils";
+import { formatTextContent, OutputData, Calculation } from "../utils";
 import jsPDF from "jspdf";
 
 const historyDescription = 'Select a radionuclide to expand a list of previous calculations. Select a calculation to display its data.'
 
-const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<any>>, txtTables: any }) => {
-  const [history, setHistory] = useState<Object | null>(null)
+const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<Calculation | {}>>, txtTables: OutputData[] }) => {
+  const [history, setHistory] = useState<{ [index: string]: string[] } | null>(null)
   const [selectedRadionuclide, setSelectedRadionuclide] = useState('');
   const [selectedCalculation, setSelectedCalculation] = useState('');
-  const [calculationOnScreen, setCalculationOnScreen] = useState<any>(null);
+  const [calculationOnScreen, setCalculationOnScreen] = useState<Calculation | null>(null);
 
   async function handleClear() {
     const storedHistory = new Store('.history.dat');
@@ -58,7 +58,7 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
       });
     }
     else if (fileType == 'txt') {
-      const content = await formatTextContent(txtTables, calculationOnScreen);
+      const content = await formatTextContent(txtTables, calculationOnScreen as Calculation);
       await writeTextFile(path, content);
     }
   }
@@ -94,7 +94,7 @@ const HistoryMenu = ({ setCalculation, txtTables }: { setCalculation: React.Disp
       const storedHistory = new Store('.history.dat');
       const keys = (await storedHistory.keys()).sort()
 
-      const newHistory: any = {}
+      const newHistory: { [index: string]: string[] } = {}
       for (let i = 0; i < keys.length; i++) {
         newHistory[keys[i]] = (await storedHistory.get(keys[i]) as string[]).sort();
       }

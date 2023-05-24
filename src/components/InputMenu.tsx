@@ -1,7 +1,7 @@
 import Dropdown from "./Dropdown";
 import ComboBox from "./ComboBox";
 import MenuDescription from "./MenuDescription";
-import { formatTextContent } from "../utils";
+import { formatTextContent, Calculation, OutputData } from "../utils";
 import { radionuclides } from "../data/radionuclides";
 import { ages } from "../data/ages";
 import { useState, useEffect } from "react";
@@ -16,13 +16,13 @@ const days = Array.from(Array(365).keys()).slice().map(String);
 
 const inputDescription = 'Enter a value in all input fields and click calculate. Change the number of age ranges with the +/-.'
 
-const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<any>>, txtTables: any }) => {
+const InputMenu = ({ setCalculation, txtTables }: { setCalculation: React.Dispatch<React.SetStateAction<Calculation | {}>>, txtTables: OutputData[] }) => {
   const [radionuclide, setRadionuclide] = useState<string | null>(null);
   const [intakeMethod, setIntakeMethod] = useState<string | null>(null);
   const [age, setAge] = useState<(string | null)[]>([null]);
   const [exposureLength, setExposureLength] = useState<(string | null)[]>([null]);
   const [fractionalExposure, setFractionalExposure] = useState<(string | null)[]>([null]);
-  const [lastCalculation, setLastCalculation] = useState<any>(null);
+  const [lastCalculation, setLastCalculation] = useState<Calculation | null>(null);
   const [fractionalExposureSetting, setFractionalExposureSetting] = useState<boolean>(true);
 
   useEffect(() => {
