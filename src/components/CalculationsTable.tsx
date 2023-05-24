@@ -12,6 +12,10 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: Calcula
 
   useEffect(() => {
     (async () => {
+      if (radionuclide == null) {
+        return;
+      }
+
       const newTables: OutputData[] = [];
       const usageTable: InputData = await invoke('usage');
       const survivalTable: InputData = await invoke('survival');
