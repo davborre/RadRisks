@@ -1,5 +1,5 @@
 # Introduction
-RadRisks is a tool that allows radiation protection professionals to calculate the lifetime risk per unit intake by inhalation or ingestion for a specific radionuclide over a specified period of time. It is currently in development and being built with Tauri, React, Typescript, Tailwind CSS, and Rust.
+RadRisks is a tool that allows radiation protection professionals to calculate the lifetime risk per unit intake by inhalation or ingestion for a specific radionuclide over a specified period of time. It is  built with Tauri, React, Typescript, Tailwind CSS, and Rust.
 
 
 # Installation
@@ -28,8 +28,9 @@ npm install
 ```
 npm run tauri dev
 ```
-# Previous Release
-The previous release, 2.2.1, can be installed at [epa.gov](https://www.epa.gov/radiation/tools-calculating-radiation-dose-and-risk).
+
+# Previous Program
+The previous program, RiskTab, can be installed at [epa.gov](https://www.epa.gov/radiation/tools-calculating-radiation-dose-and-risk).
 
 
 # License
