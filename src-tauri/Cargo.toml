@@ -1,6 +1,6 @@
 [package]
 name = "radrisks"
-version = "1.0.0"
+version = "1.0.1"
 description = "A tool that allows a user to estimate the risk of different types of cancer from the inhalation or ingestion of radioactive material"
 authors = ["David Borrego", "Ben Nguyen"]
 license = "BSD-3-Clause"
