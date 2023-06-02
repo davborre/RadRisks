@@ -2,6 +2,21 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect, useState } from 'react'
 import { InputData } from '../utils';
 
+const enum SurvFunction {
+  Age,
+  SurvData
+}
+
+const enum SurvDataColumn {
+  CombinedSurvival,
+  MaleSurvival,
+  FemaleSurvival,
+  CombinedLifetime,
+  MaleLifetime,
+  FemaleLifetime,
+  CombinedRatio
+}
+
 const SurvTable = () => {
   const [surv, setSurv] = useState<InputData | {}>({});
 
@@ -36,14 +51,14 @@ const SurvTable = () => {
         {Object.entries(surv).map((entries: [string, number[]], i) => {
           return (
             <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white" key={i}>
-              <td> {entries[0]} </td>
-              <td> {entries[1][0].toExponential(3)} </td>
-              <td> {entries[1][1].toExponential(3)} </td>
-              <td> {entries[1][2].toExponential(3)} </td>
-              <td> {entries[1][3].toFixed(3)} </td>
-              <td> {entries[1][4].toFixed(3)} </td>
-              <td> {entries[1][5].toFixed(3)} </td>
-              <td> {entries[1][6].toFixed(3)} </td>
+              <td> {entries[SurvFunction.Age]} </td>
+              <td> {entries[SurvFunction.SurvData][SurvDataColumn.CombinedSurvival].toExponential(3)} </td>
+              <td> {entries[SurvFunction.SurvData][SurvDataColumn.MaleSurvival].toExponential(3)} </td>
+              <td> {entries[SurvFunction.SurvData][SurvDataColumn.FemaleSurvival].toExponential(3)} </td>
+              <td> {entries[SurvFunction.SurvData][SurvDataColumn.CombinedLifetime].toFixed(3)} </td>
+              <td> {entries[SurvFunction.SurvData][SurvDataColumn.MaleLifetime].toFixed(3)} </td>
+              <td> {entries[SurvFunction.SurvData][SurvDataColumn.FemaleLifetime].toFixed(3)} </td>
+              <td> {entries[SurvFunction.SurvData][SurvDataColumn.CombinedRatio].toFixed(3)} </td>
             </tr>
           );
         })}
