@@ -35,7 +35,7 @@ const Modal = ({ darkMode, isOpen, setOpen }: { darkMode: boolean, isOpen: boole
               <ul className="list-disc text-2xl text-left pl-10">
                 <li>Calculate risk</li>
                 <li>Export past output history</li>
-                <li>View and edit data coefficients</li>
+                <li>View input data</li>
                 <li>Customize the program</li>
               </ul>
             </div>
