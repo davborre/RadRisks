@@ -1,5 +1,19 @@
 import { invoke } from "@tauri-apps/api/tauri";
 
+export const enum TableColumn {
+  Age,
+  RiskCoefficients
+}
+
+export const enum RiskCoefficientColumn {
+  MaleMortality,
+  FemaleMortality,
+  BothMortality,
+  MaleMorbidity,
+  FemaleMorbidity,
+  BothMorbidity
+}
+
 export interface Calculation {
   radionuclide: string;
   formattedRadionuclide: string;
