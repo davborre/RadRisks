@@ -2,6 +2,20 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect, useState } from 'react'
 import { InputData } from '../utils';
 
+const enum UsageFunction {
+  Age,
+  UsageData
+}
+
+const enum UsageDataColumn {
+  MaleInhalation,
+  FemaleInhalation,
+  MaleTapwater,
+  FemaleTapwater,
+  MaleDietary,
+  FemaleDietary
+}
+
 const UsageTable = () => {
   const [usage, setUsage] = useState<InputData | {}>({});
 
@@ -35,13 +49,13 @@ const UsageTable = () => {
         {Object.entries(usage).map((entries: [string, number[]], i) => {
           return (
             <tr className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white" key={i}>
-              <td> {entries[0]} </td>
-              <td> {entries[1][0].toExponential(3)} </td>
-              <td> {entries[1][1].toExponential(3)} </td>
-              <td> {entries[1][2].toExponential(3)} </td>
-              <td> {entries[1][3].toExponential(3)} </td>
-              <td> {entries[1][4].toExponential(3)} </td>
-              <td> {entries[1][5].toExponential(3)} </td>
+              <td> {entries[UsageFunction.Age]} </td>
+              <td> {entries[UsageFunction.UsageData][UsageDataColumn.MaleInhalation].toExponential(3)} </td>
+              <td> {entries[UsageFunction.UsageData][UsageDataColumn.FemaleInhalation].toExponential(3)} </td>
+              <td> {entries[UsageFunction.UsageData][UsageDataColumn.MaleTapwater].toExponential(3)} </td>
+              <td> {entries[UsageFunction.UsageData][UsageDataColumn.FemaleTapwater].toExponential(3)} </td>
+              <td> {entries[UsageFunction.UsageData][UsageDataColumn.MaleDietary].toExponential(3)} </td>
+              <td> {entries[UsageFunction.UsageData][UsageDataColumn.FemaleDietary].toExponential(3)} </td>
             </tr>
           );
         })}
