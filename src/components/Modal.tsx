@@ -44,7 +44,7 @@ const Modal = ({ darkMode, isOpen, setOpen }: { darkMode: boolean, isOpen: boole
             <div className="flex grow items-center">
               <div>
                 <img src="/calculationsFlow.png" alt="calculations flow" />
-                <p className="text-2xl mt-10">Learn more at the RadRisks Wiki.</p>
+                <p className="text-2xl mt-10">Learn more at the <a className="text-epablue dark:text-epagreen underline" href="https://github.com/davborre/RadRisks/wiki" target="_blank">RadRisks Wiki</a>.</p>
               </div>
             </div>
           }
@@ -55,7 +55,7 @@ const Modal = ({ darkMode, isOpen, setOpen }: { darkMode: boolean, isOpen: boole
                 <br />
                 <p>Made with Tauri, React, Typescript, Rust, and Tailwind CSS.</p>
                 <br />
-                <p>See the code on <a href="https://github.com/davborre/RadRisks" target="_blank">GitHub</a>.</p>
+                <p>See the code on <a className="text-epablue dark:text-epagreen underline" href="https://github.com/davborre/RadRisks" target="_blank">GitHub</a>.</p>
               </div>
             </div>}
           <div className="flex justify-center gap-5">
