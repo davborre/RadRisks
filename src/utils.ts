@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/tauri";
 
-export const enum TableColumn {
+export const enum RiskFunction {
   Age,
   RiskCoefficients
 }

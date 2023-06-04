@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api/tauri';
 import { useEffect, useState } from 'react';
 import { cancers } from '../data/cancers';
-import { InputData, OutputData, Calculation, TableColumn, RiskCoefficientColumn, SurvDataColumn, UsageDataColumn } from '../utils';
+import { InputData, OutputData, Calculation, RiskFunction, RiskCoefficientColumn, SurvDataColumn, UsageDataColumn } from '../utils';
 
 const enum IngestionType {
   Tapwater,
@@ -212,13 +212,13 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: Calcula
                   {Object.entries(table).map((entries: [string, number[]], j) => {
                     return (
                       <tr key={j} className="odd:bg-epalightblue dark:odd:bg-epaolivegreen dark:even:bg-white">
-                        <td> {entries[TableColumn.Age]} </td>
-                        <td> {entries[TableColumn.RiskCoefficients][RiskCoefficientColumn.MaleMortality].toExponential(2)} </td>
-                        <td> {entries[TableColumn.RiskCoefficients][RiskCoefficientColumn.FemaleMortality].toExponential(2)} </td>
-                        <td> {entries[TableColumn.RiskCoefficients][RiskCoefficientColumn.BothMortality].toExponential(2)} </td>
-                        <td> {entries[TableColumn.RiskCoefficients][RiskCoefficientColumn.MaleMorbidity].toExponential(2)} </td>
-                        <td> {entries[TableColumn.RiskCoefficients][RiskCoefficientColumn.FemaleMorbidity].toExponential(2)} </td>
-                        <td> {entries[TableColumn.RiskCoefficients][RiskCoefficientColumn.BothMorbidity].toExponential(2)} </td>
+                        <td> {entries[RiskFunction.Age]} </td>
+                        <td> {entries[RiskFunction.RiskCoefficients][RiskCoefficientColumn.MaleMortality].toExponential(2)} </td>
+                        <td> {entries[RiskFunction.RiskCoefficients][RiskCoefficientColumn.FemaleMortality].toExponential(2)} </td>
+                        <td> {entries[RiskFunction.RiskCoefficients][RiskCoefficientColumn.BothMortality].toExponential(2)} </td>
+                        <td> {entries[RiskFunction.RiskCoefficients][RiskCoefficientColumn.MaleMorbidity].toExponential(2)} </td>
+                        <td> {entries[RiskFunction.RiskCoefficients][RiskCoefficientColumn.FemaleMorbidity].toExponential(2)} </td>
+                        <td> {entries[RiskFunction.RiskCoefficients][RiskCoefficientColumn.BothMorbidity].toExponential(2)} </td>
                       </tr>
                     );
                   })}
