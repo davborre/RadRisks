@@ -1,5 +1,6 @@
 import { ChevronDown } from "react-feather";
 import { radionuclides } from "../data/radionuclides";
+import { cancers } from "../data/cancers";
 import { useState } from "react";
 import MenuDescription from "./MenuDescription";
 
@@ -36,20 +37,11 @@ const DataMenu = ({ setTable, setRadionuclide, setCancer, setIntakeMethod }: { s
                 {radionuclide}
               </summary>
               <ul className="pl-4">
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'esophagus') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "esophagus", 'ingestion')}>Esophagus</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'stomach') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "stomach", 'ingestion')}>Stomach</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'colon') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "colon", 'ingestion')}>Colon</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'liver') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "liver", 'ingestion')}>Liver</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'lung') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "lung", 'ingestion')}>Lung</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'bone') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "bone", 'ingestion')}>Bone</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'skin') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "skin", 'ingestion')}>Skin</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'breast') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "breast", 'ingestion')}>Breast</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'ovary') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "ovary", 'ingestion')}>Ovary</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'bladder') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "bladder", 'ingestion')}>Bladder</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'kidney') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "kidney", 'ingestion')}>Kidney</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'thyroid') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "thyroid", 'ingestion')}>Thyroid</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'leukemia') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "leukemia", 'ingestion')}>Leukemia</li>
-                <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == 'residual') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "residual", 'ingestion')}>Residual</li>
+                {cancers.map((cancer, j) => {
+                  return (
+                    <li className={`${(selectedFunction == 'ingestion' && selectedRadionuclide == radionuclide && selectedCancer == cancer) ? 'font-bold' : ''}`} key={j} onClick={() => handleClick(radionuclide, cancer, 'ingestion')}>{cancer.charAt(0).toUpperCase() + cancer.slice(1)}</li>
+                  )
+                })}
               </ul>
             </details>
           );
@@ -67,20 +59,11 @@ const DataMenu = ({ setTable, setRadionuclide, setCancer, setIntakeMethod }: { s
                 {radionuclide}
               </summary>
               <ul className="pl-4">
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'esophagus') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "esophagus", 'inhalation')}>Esophagus</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'stomach') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "stomach", 'inhalation')}>Stomach</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'colon') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "colon", 'inhalation')}>Colon</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'liver') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "liver", 'inhalation')}>Liver</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'lung') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "lung", 'inhalation')}>Lung</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'bone') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "bone", 'inhalation')}>Bone</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'skin') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "skin", 'inhalation')}>Skin</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'breast') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "breast", 'inhalation')}>Breast</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'ovary') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "ovary", 'inhalation')}>Ovary</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'bladder') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "bladder", 'inhalation')}>Bladder</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'kidney') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "kidney", 'inhalation')}>Kidney</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'thyroid') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "thyroid", 'inhalation')}>Thyroid</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'leukemia') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "leukemia", 'inhalation')}>Leukemia</li>
-                <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == 'residual') ? 'font-bold' : ''}`} onClick={() => handleClick(radionuclide, "residual", 'inhalation')}>Residual</li>
+                {cancers.map((cancer, j) => {
+                  return (
+                    <li className={`${(selectedFunction == 'inhalation' && selectedRadionuclide == radionuclide && selectedCancer == cancer) ? 'font-bold' : ''}`} key={j} onClick={() => handleClick(radionuclide, cancer, 'inhalation')}>{cancer.charAt(0).toUpperCase() + cancer.slice(1)}</li>
+                  )
+                })}
               </ul>
             </details>
           );
