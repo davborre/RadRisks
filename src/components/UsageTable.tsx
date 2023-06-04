@@ -1,19 +1,10 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect, useState } from 'react'
-import { InputData } from '../utils';
+import { InputData, UsageDataColumn } from '../utils';
 
 const enum UsageFunction {
   Age,
   UsageData
-}
-
-const enum UsageDataColumn {
-  MaleInhalation,
-  FemaleInhalation,
-  MaleTapwater,
-  FemaleTapwater,
-  MaleDietary,
-  FemaleDietary
 }
 
 const UsageTable = () => {

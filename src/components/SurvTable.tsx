@@ -1,20 +1,10 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { useEffect, useState } from 'react'
-import { InputData } from '../utils';
+import { InputData, SurvDataColumn } from '../utils';
 
 const enum SurvFunction {
   Age,
   SurvData
-}
-
-const enum SurvDataColumn {
-  CombinedSurvival,
-  MaleSurvival,
-  FemaleSurvival,
-  CombinedLifetime,
-  MaleLifetime,
-  FemaleLifetime,
-  CombinedRatio
 }
 
 const SurvTable = () => {

@@ -14,6 +14,25 @@ export const enum RiskCoefficientColumn {
   BothMorbidity
 }
 
+export const enum SurvDataColumn {
+  CombinedSurvival,
+  MaleSurvival,
+  FemaleSurvival,
+  CombinedLifetime,
+  MaleLifetime,
+  FemaleLifetime,
+  CombinedRatio
+}
+
+export const enum UsageDataColumn {
+  MaleInhalation,
+  FemaleInhalation,
+  MaleTapwater,
+  FemaleTapwater,
+  MaleDietary,
+  FemaleDietary
+}
+
 export interface Calculation {
   radionuclide: string;
   formattedRadionuclide: string;
