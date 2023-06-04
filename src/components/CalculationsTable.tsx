@@ -1,7 +1,12 @@
 import { invoke } from '@tauri-apps/api/tauri';
 import { useEffect, useState } from 'react';
 import { cancers } from '../data/cancers';
-import { InputData, OutputData, Calculation, TableColumn, RiskCoefficientColumn } from '../utils';
+import { InputData, OutputData, Calculation, TableColumn, RiskCoefficientColumn, SurvDataColumn, UsageDataColumn } from '../utils';
+
+const enum IngestionType {
+  Tapwater,
+  Dietary
+}
 
 const CalculationsTable = ({ calculation, setTxtTables }: { calculation: Calculation | {}, setTxtTables: React.Dispatch<React.SetStateAction<OutputData[]>> }) => {
   const [tables, setTables] = useState<OutputData[]>([]);
@@ -25,142 +30,140 @@ const CalculationsTable = ({ calculation, setTxtTables }: { calculation: Calcula
       if (intakeMethod == "inh") {
         for (let absorptionType = 0; absorptionType < absorptionTypes.length; absorptionType++) {
           const table: { [index: string]: number[] } = {}
-          for (let i = 0; i < cancers.length; i++) {
+          for (let cancer = 0; cancer < cancers.length; cancer++) {
             const calculations: number[] = [];
-            const riskCoefficientsTable: InputData = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: formattedRadionuclide, absorptionType: absorptionTypes[absorptionType], cancer: cancers[i] });
-            for (let j = 0; j < 6; j++) {
+            const riskCoefficientsTable: InputData = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: formattedRadionuclide, absorptionType: absorptionTypes[absorptionType], cancer: cancers[cancer] });
+            for (let tableCol = 0; tableCol < 6; tableCol++) {
               let lifetimeRisk = 0;
               let unitIntake = 0;
-
               let survCol;
               let usageCol;
-              if (j == 0 || j == 3) {
-                survCol = 1;
-                usageCol = 0;
-              } else if (j == 1 || j == 4) {
-                survCol = 2;
-                usageCol = 1;
+
+              if (tableCol == RiskCoefficientColumn.MaleMortality || tableCol == RiskCoefficientColumn.MaleMorbidity) {
+                survCol = SurvDataColumn.MaleSurvival;
+                usageCol = UsageDataColumn.MaleInhalation;
+              } else if (tableCol == RiskCoefficientColumn.FemaleMortality || tableCol == RiskCoefficientColumn.FemaleMorbidity) {
+                survCol = SurvDataColumn.FemaleSurvival;
+                usageCol = UsageDataColumn.FemaleInhalation;
               } else {
-                survCol = 0;
-                usageCol = 0;
+                survCol = SurvDataColumn.CombinedSurvival;
+                usageCol = UsageDataColumn.MaleInhalation;
               }
 
-              for (let x = 0; x < age.length; x++) {
-                const startingYear = age[x];
-                const endingYear = age[x] + exposureLengthYears[x];
+              for (let ageRange = 0; ageRange < age.length; ageRange++) {
+                const startingYear = age[ageRange];
+                const endingYear = age[ageRange] + exposureLengthYears[ageRange];
 
-                for (let k = startingYear; k <= endingYear; k++) {
-                  if (k == startingYear || k == endingYear) {
-                    lifetimeRisk += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
-                    unitIntake += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+                for (let year = startingYear; year <= endingYear; year++) {
+                  if (year == startingYear || year == endingYear) {
+                    lifetimeRisk += 0.5 * survivalTable[year][survCol] * usageTable[year][usageCol] * 365 * riskCoefficientsTable[year][tableCol];
+                    unitIntake += 0.5 * survivalTable[year][survCol] * usageTable[year][usageCol] * 365;
                   }
                   else {
-                    lifetimeRisk += survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
-                    unitIntake += survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+                    lifetimeRisk += survivalTable[year][survCol] * usageTable[year][usageCol] * 365 * riskCoefficientsTable[year][tableCol];
+                    unitIntake += survivalTable[year][survCol] * usageTable[year][usageCol] * 365;
                   }
                 }
 
                 //fractional exposure
-
-                const riskSlope = (riskCoefficientsTable[endingYear + 1][j] - riskCoefficientsTable[endingYear][j]) / 365; // units = /day
+                const riskSlope = (riskCoefficientsTable[endingYear + 1][tableCol] - riskCoefficientsTable[endingYear][tableCol]) / 365; // units = /day
                 const survSlope = (survivalTable[endingYear + 1][survCol] - survivalTable[endingYear][survCol]) / 365; //units = /day
                 const usageSlope = (usageTable[endingYear + 1][usageCol] - usageTable[endingYear][usageCol]) / 365; //units = /day^2
 
                 //trapezoidal integration = (b1 + b2) * 0.5h = [f(a) + f(b)] * 0.5dx
-                const endingRisk = riskCoefficientsTable[endingYear][j]; //at ending year
+                const endingRisk = riskCoefficientsTable[endingYear][tableCol]; //at ending year
                 const endingSurv = survivalTable[endingYear][survCol];
                 const endingUsage = usageTable[endingYear][usageCol];
 
-                const riskFraction = endingRisk + (riskSlope * exposureLengthDays[x]);
-                const survFraction = endingSurv + (survSlope * exposureLengthDays[x]);
-                const usageFraction = endingUsage + (usageSlope * exposureLengthDays[x]);
+                const riskFraction = endingRisk + (riskSlope * exposureLengthDays[ageRange]);
+                const survFraction = endingSurv + (survSlope * exposureLengthDays[ageRange]);
+                const usageFraction = endingUsage + (usageSlope * exposureLengthDays[ageRange]);
 
-                lifetimeRisk += (0.5 * exposureLengthDays[x] / 365) * ((endingSurv * endingUsage * 365 * endingRisk) + (survFraction * usageFraction * 365 * riskFraction));
-                unitIntake += (0.5 * exposureLengthDays[x] / 365) * ((endingSurv * endingUsage * 365) + (survFraction * usageFraction * 365));
+                lifetimeRisk += (0.5 * exposureLengthDays[ageRange] / 365) * ((endingSurv * endingUsage * 365 * endingRisk) + (survFraction * usageFraction * 365 * riskFraction));
+                unitIntake += (0.5 * exposureLengthDays[ageRange] / 365) * ((endingSurv * endingUsage * 365) + (survFraction * usageFraction * 365));
               }
 
               calculations.push(lifetimeRisk / unitIntake);
             }
-            table[cancers[i]] = calculations;
+            table[cancers[cancer]] = calculations;
           }
           newTables.push(table as unknown as OutputData);
         }
         setTables(newTables);
         setTxtTables(newTables);
       } else { //ingestion
-        for (let usage = 0; usage < 2; usage++) {
+        for (let ingestionType = 0; ingestionType < 2; ingestionType++) {
           for (let absorptionType = 0; absorptionType < absorptionTypes.length; absorptionType++) {
             const table: { [index: string]: number[] } = {}
-            for (let i = 0; i < cancers.length; i++) {
+            for (let cancer = 0; cancer < cancers.length; cancer++) {
               const calculations: number[] = [];
-              const riskCoefficientsTable: InputData = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: formattedRadionuclide, absorptionType: absorptionTypes[absorptionType], cancer: cancers[i] });
-              for (let j = 0; j < 6; j++) {
+              const riskCoefficientsTable: InputData = await invoke(`coefficients`, { intakeMethod: (intakeMethod == 'inh') ? 'inhalation' : 'ingestion', radionuclide: formattedRadionuclide, absorptionType: absorptionTypes[absorptionType], cancer: cancers[cancer] });
+              for (let tableCol = 0; tableCol < 6; tableCol++) {
                 let lifetimeRisk = 0;
                 let unitIntake = 0;
 
                 let survCol;
                 let usageCol;
-                if (usage == 0) { //tapwater
-                  if (j == 0 || j == 3) {
-                    survCol = 1;
-                    usageCol = 2;
-                  } else if (j == 1 || j == 4) {
-                    survCol = 2;
-                    usageCol = 3;
+                if (ingestionType == IngestionType.Tapwater) { //tapwater
+                  if (tableCol == RiskCoefficientColumn.MaleMortality || tableCol == RiskCoefficientColumn.MaleMorbidity) {
+                    survCol = SurvDataColumn.MaleSurvival;
+                    usageCol = UsageDataColumn.MaleTapwater;
+                  } else if (tableCol == RiskCoefficientColumn.FemaleMortality || tableCol == RiskCoefficientColumn.FemaleMorbidity) {
+                    survCol = SurvDataColumn.FemaleSurvival;
+                    usageCol = UsageDataColumn.FemaleTapwater;
                   } else {
-                    survCol = 0;
-                    usageCol = 2;
+                    survCol = SurvDataColumn.CombinedSurvival;
+                    usageCol = UsageDataColumn.MaleTapwater;;
                   }
                 } else { //dietary
-                  if (j == 0 || j == 3) {
-                    survCol = 1;
-                    usageCol = 4;
-                  } else if (j == 1 || j == 4) {
-                    survCol = 2;
-                    usageCol = 5;
+                  if (tableCol == RiskCoefficientColumn.MaleMortality || tableCol == RiskCoefficientColumn.MaleMorbidity) {
+                    survCol = SurvDataColumn.MaleSurvival;
+                    usageCol = UsageDataColumn.MaleDietary;
+                  } else if (tableCol == RiskCoefficientColumn.FemaleMortality || tableCol == RiskCoefficientColumn.FemaleMorbidity) {
+                    survCol = SurvDataColumn.FemaleSurvival;
+                    usageCol = UsageDataColumn.FemaleDietary;
                   } else {
-                    survCol = 0;
-                    usageCol = 4;
+                    survCol = SurvDataColumn.CombinedSurvival;
+                    usageCol = UsageDataColumn.MaleDietary;
                   }
                 }
 
-                for (let x = 0; x < age.length; x++) {
-                  const startingYear = age[x];
-                  const endingYear = age[x] + exposureLengthYears[x];
+                for (let ageRange = 0; ageRange < age.length; ageRange++) {
+                  const startingYear = age[ageRange];
+                  const endingYear = age[ageRange] + exposureLengthYears[ageRange];
 
-                  for (let k = startingYear; k <= endingYear; k++) {
-                    if (k == startingYear || k == endingYear) {
-                      lifetimeRisk += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
-                      unitIntake += 0.5 * survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+                  for (let year = startingYear; year <= endingYear; year++) {
+                    if (year == startingYear || year == endingYear) {
+                      lifetimeRisk += 0.5 * survivalTable[year][survCol] * usageTable[year][usageCol] * 365 * riskCoefficientsTable[year][tableCol];
+                      unitIntake += 0.5 * survivalTable[year][survCol] * usageTable[year][usageCol] * 365;
                     }
                     else {
-                      lifetimeRisk += survivalTable[k][survCol] * usageTable[k][usageCol] * 365 * riskCoefficientsTable[k][j];
-                      unitIntake += survivalTable[k][survCol] * usageTable[k][usageCol] * 365;
+                      lifetimeRisk += survivalTable[year][survCol] * usageTable[year][usageCol] * 365 * riskCoefficientsTable[year][tableCol];
+                      unitIntake += survivalTable[year][survCol] * usageTable[year][usageCol] * 365;
                     }
                   }
 
                   //fractional exposure
 
-                  const riskSlope = (riskCoefficientsTable[endingYear + 1][j] - riskCoefficientsTable[endingYear][j]) / 365;
+                  const riskSlope = (riskCoefficientsTable[endingYear + 1][tableCol] - riskCoefficientsTable[endingYear][tableCol]) / 365;
                   const survSlope = (survivalTable[endingYear + 1][survCol] - survivalTable[endingYear][survCol]) / 365;
                   const usageSlope = (usageTable[endingYear + 1][usageCol] - usageTable[endingYear][usageCol]) / 365;
 
                   //trapezoidal integration = (b1 + b2) * 0.5h = [f(a) + f(b)] * 0.5dx
-                  const endingRisk = riskCoefficientsTable[endingYear][j]; //at ending year
+                  const endingRisk = riskCoefficientsTable[endingYear][tableCol]; //at ending year
                   const endingSurv = survivalTable[endingYear][survCol];
                   const endingUsage = usageTable[endingYear][usageCol];
 
-                  const riskFraction = endingRisk + (riskSlope * exposureLengthDays[x]);
-                  const survFraction = endingSurv + (survSlope * exposureLengthDays[x]);
-                  const usageFraction = endingUsage + (usageSlope * exposureLengthDays[x]);
+                  const riskFraction = endingRisk + (riskSlope * exposureLengthDays[ageRange]);
+                  const survFraction = endingSurv + (survSlope * exposureLengthDays[ageRange]);
+                  const usageFraction = endingUsage + (usageSlope * exposureLengthDays[ageRange]);
 
-                  lifetimeRisk += (0.5 * exposureLengthDays[x] / 365) * ((endingSurv * endingUsage * 365 * endingRisk) + (survFraction * usageFraction * 365 * riskFraction));
-                  unitIntake += (0.5 * exposureLengthDays[x] / 365) * ((endingSurv * endingUsage * 365) + (survFraction * usageFraction * 365));
+                  lifetimeRisk += (0.5 * exposureLengthDays[ageRange] / 365) * ((endingSurv * endingUsage * 365 * endingRisk) + (survFraction * usageFraction * 365 * riskFraction));
+                  unitIntake += (0.5 * exposureLengthDays[ageRange] / 365) * ((endingSurv * endingUsage * 365) + (survFraction * usageFraction * 365));
                 }
-
                 calculations.push(lifetimeRisk / unitIntake);
               }
-              table[cancers[i]] = calculations;
+              table[cancers[cancer]] = calculations;
             }
             newTables.push(table as unknown as OutputData);
           }
